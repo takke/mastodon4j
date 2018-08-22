@@ -47,7 +47,9 @@ class StreamingMethod(private val client: MastodonClient) {
                         break
                     }
                 }
-                reader.close()
+                try {
+                    reader.close()
+                } catch (ignore: java.io.IOException) {}
             })
             return Shutdownable(dispatcher)
         } else {
@@ -92,7 +94,9 @@ class StreamingMethod(private val client: MastodonClient) {
                         break
                     }
                 }
-                reader.close()
+                try {
+                    reader.close()
+                } catch (ignore: java.io.IOException) {}
             })
             return Shutdownable(dispatcher)
         } else {
@@ -137,7 +141,9 @@ class StreamingMethod(private val client: MastodonClient) {
                         break
                     }
                 }
-                reader.close()
+                try {
+                    reader.close()
+                } catch (ignore: java.io.IOException) {}
             })
             return Shutdownable(dispatcher)
         } else {
@@ -182,7 +188,9 @@ class StreamingMethod(private val client: MastodonClient) {
                         break
                     }
                 }
-                reader.close()
+                try {
+                    reader.close()
+                } catch (ignore: java.io.IOException) {}
             })
             return Shutdownable(dispatcher)
         } else {
@@ -242,7 +250,9 @@ class StreamingMethod(private val client: MastodonClient) {
                         break
                     }
                 }
-                reader.close()
+                try {
+                    reader.close()
+                } catch (ignore: java.io.IOException) {}
             })
             return Shutdownable(dispatcher)
         } else {
