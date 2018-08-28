@@ -1,11 +1,13 @@
 buildscript {
-    ext.kotlin_version = '1.2.51'
+//    ext.kotlin_version = '1.2.51'
     ext.supportTestVersion = '0.5'
-    ext.okhttpVersion = '3.6.0'
+//    ext.okhttpVersion = '3.6.0'
+//    ext.gradleToolsVersion = '2.3.1'
     ext.rxJavaVersion = '2.0.8'
     ext.gsonVersion = '2.8.0'
 
     repositories {
+        google()
         jcenter()
     }
 
