@@ -9,15 +9,14 @@ import com.sys1yagi.mastodon4j.api.entity.MastodonList
 import com.sys1yagi.mastodon4j.api.entity.Notification
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import java.util.concurrent.locks.ReentrantLock
-import kotlin.concurrent.withLock
 
 class Streaming(private val client: MastodonClient) {
     @Throws(Mastodon4jRequestException::class)
     fun federatedPublic(handler: Handler): Shutdownable {
         val response = client.get("streaming/public")
         if (response.isSuccessful) {
-            val reader = response.body().byteStream().bufferedReader()
+            val body = response.body() ?: throw Mastodon4jRequestException(response)
+            val reader = body.byteStream().bufferedReader()
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
@@ -61,7 +60,8 @@ class Streaming(private val client: MastodonClient) {
     fun localPublic(handler: Handler): Shutdownable {
         val response = client.get("streaming/public/local")
         if (response.isSuccessful) {
-            val reader = response.body().byteStream().bufferedReader()
+            val body = response.body() ?: throw Mastodon4jRequestException(response)
+            val reader = body.byteStream().bufferedReader()
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
@@ -108,7 +108,8 @@ class Streaming(private val client: MastodonClient) {
                 Parameter().append("tag", tag)
         )
         if (response.isSuccessful) {
-            val reader = response.body().byteStream().bufferedReader()
+            val body = response.body() ?: throw Mastodon4jRequestException(response)
+            val reader = body.byteStream().bufferedReader()
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
@@ -155,7 +156,8 @@ class Streaming(private val client: MastodonClient) {
                 Parameter().append("tag", tag)
         )
         if (response.isSuccessful) {
-            val reader = response.body().byteStream().bufferedReader()
+            val body = response.body() ?: throw Mastodon4jRequestException(response)
+            val reader = body.byteStream().bufferedReader()
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
@@ -201,7 +203,8 @@ class Streaming(private val client: MastodonClient) {
                 "streaming/user"
         )
         if (response.isSuccessful) {
-            val reader = response.body().byteStream().bufferedReader()
+            val body = response.body() ?: throw Mastodon4jRequestException(response)
+            val reader = body.byteStream().bufferedReader()
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {

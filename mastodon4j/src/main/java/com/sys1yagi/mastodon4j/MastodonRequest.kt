@@ -37,7 +37,7 @@ open class MastodonRequest<T>(
         val response = executor()
         if (response.isSuccessful) {
             try {
-                val body = response.body().string()
+                val body = response.body()?.string() ?: throw Mastodon4jRequestException(response)
                 val element = JsonParser().parse(body)
                 if (element.isJsonObject) {
                     action(body)
