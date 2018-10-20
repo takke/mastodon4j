@@ -4,129 +4,115 @@ import mastodon4j.MastodonClient
 import mastodon4j.Parameter
 import mastodon4j.api.Dispatcher
 import mastodon4j.api.Handler
+import mastodon4j.api.Retryable
 import mastodon4j.api.Shutdownable
 import mastodon4j.api.entity.Notification
 import mastodon4j.api.entity.Status
 import mastodon4j.api.exception.MastodonException
+import okhttp3.Response
 import java.io.BufferedReader
+import java.io.IOException
+import java.io.InterruptedIOException
 
 class Streaming(private val client: MastodonClient) {
 
     @Throws(MastodonException::class)
     fun federatedPublic(handler: Handler): Shutdownable {
-        val response = client.get("streaming/public")
-        if (response.isSuccessful) {
-            val reader = response.body!!.byteStream().bufferedReader()
-            val dispatcher = Dispatcher()
-            dispatcher.invokeLater(
-                streamingRunnable(reader, handler)
-            )
-            return Shutdownable(dispatcher)
-        } else {
-            throw MastodonException(response)
-        }
+        return connect(
+            handler,
+            {
+                client.get("streaming/public")
+            }
+        )
     }
 
     @Throws(MastodonException::class)
     fun localPublic(handler: Handler): Shutdownable {
-        val response = client.get("streaming/public/local")
-        if (response.isSuccessful) {
-            val reader = response.body!!.byteStream().bufferedReader()
-            val dispatcher = Dispatcher()
-            dispatcher.invokeLater(
-                streamingRunnable(reader, handler)
-            )
-            return Shutdownable(dispatcher)
-        } else {
-            throw MastodonException(response)
-        }
+        return connect(
+            handler,
+            {
+                client.get("streaming/public/local")
+            }
+        )
     }
 
     @Throws(MastodonException::class)
     fun federatedHashtag(tag: String, handler: Handler): Shutdownable {
-        val response = client.get(
-            "streaming/hashtag",
-            Parameter().append("tag", tag)
+        val parameter = Parameter().append("tag", tag)
+        return connect(
+            handler,
+            {
+                client.get("streaming/hashtag", parameter)
+            }
         )
-        if (response.isSuccessful) {
-            val reader = response.body!!.byteStream().bufferedReader()
-            val dispatcher = Dispatcher()
-            dispatcher.invokeLater(
-                streamingRunnable(reader, handler)
-            )
-            return Shutdownable(dispatcher)
-        } else {
-            throw MastodonException(response)
-        }
     }
 
     @Throws(MastodonException::class)
     fun localHashtag(tag: String, handler: Handler): Shutdownable {
-        val response = client.get(
-            "streaming/hashtag/local",
-            Parameter().append("tag", tag)
+        val parameter = Parameter().append("tag", tag)
+        return connect(
+            handler,
+            {
+                client.get("streaming/hashtag/local", parameter)
+            }
         )
-        if (response.isSuccessful) {
-            val reader = response.body!!.byteStream().bufferedReader()
-            val dispatcher = Dispatcher()
-            dispatcher.invokeLater(
-                streamingRunnable(reader, handler)
-            )
-            return Shutdownable(dispatcher)
-        } else {
-            throw MastodonException(response)
-        }
     }
 
     @Throws(MastodonException::class)
     fun user(handler: Handler): Shutdownable {
-        val response = client.get(
-            "streaming/user"
+        return connect(
+            handler,
+            {
+                client.get("streaming/user")
+            }
         )
-        if (response.isSuccessful) {
-            val reader = response.body!!.byteStream().bufferedReader()
-            val dispatcher = Dispatcher()
-            dispatcher.invokeLater(
-                streamingRunnable(reader, handler)
-            )
-            return Shutdownable(dispatcher)
-        } else {
-            throw MastodonException(response)
-        }
     }
 
     @Throws(MastodonException::class)
     fun userList(handler: Handler, listID: String): Shutdownable {
-        val response = client.get(
-            "streaming/list",
-            Parameter().apply {
-                append("list", listID)
+        val parameter = Parameter().apply {
+            append("list", listID)
+        }
+        return connect(
+            handler,
+            {
+                client.get("streaming/list", parameter)
             }
         )
+    }
+
+    private fun connect(handler: Handler, executor: () -> Response, dispatcher: Dispatcher = Dispatcher()): Shutdownable {
+        val response = executor()
         if (response.isSuccessful) {
             val reader = response.body!!.byteStream().bufferedReader()
-            val dispatcher = Dispatcher()
-            dispatcher.invokeLater(
-                streamingRunnable(reader, handler)
-            )
+            dispatcher.invokeLater(Runnable {
+                while (true) {
+                    try {
+                        receiveUser(reader, client, handler)
+                    } catch (e: InterruptedIOException) {
+                        break
+                    } catch (e: IOException) {
+                        handler.onDisconnected(retryable {
+                            connect(handler, executor, dispatcher)
+                        })
+                        break
+                    }
+                }
+                try {
+                    reader.close()
+                } catch (ignore: IOException) {}
+            })
             return Shutdownable(dispatcher)
         } else {
             throw MastodonException(response)
         }
     }
 
-    private fun streamingRunnable(reader: BufferedReader, handler: Handler): Runnable {
-        return Runnable {
-            while (true) {
-                try{
-                    receiveUser(reader, client, handler)
-                }catch (e:java.io.InterruptedIOException){
-                    break
-                }
+    private fun retryable(proc: () -> Unit): Retryable {
+        return object : Retryable {
+            override fun retry() {
+                proc()
             }
-            try {
-                reader.close()
-            } catch (ignore: java.io.IOException) {}
         }
     }
 
