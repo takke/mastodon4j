@@ -27,6 +27,10 @@ object StreamPublicTimeline {
             override fun onDelete(id: Long) {
 
             }
+
+            override fun onDisconnected(retryable: Retryable) {
+
+            }
         }
         val streaming = Streaming(client)
         try {

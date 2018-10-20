@@ -10,8 +10,6 @@ import mastodon4j.api.exception.MastodonException;
 import mastodon4j.api.method.Streaming;
 import okhttp3.OkHttpClient;
 
-import java.util.concurrent.TimeUnit;
-
 public class StreamPublicTimeline {
     public static void main(String[] args) {
         // require authentication even if public streaming
@@ -33,6 +31,11 @@ public class StreamPublicTimeline {
 
             @Override
             public void onDelete(long id) {
+
+            }
+
+            @Override
+            public void onDisconnected(@NotNull Retryable retryable) {
 
             }
         };

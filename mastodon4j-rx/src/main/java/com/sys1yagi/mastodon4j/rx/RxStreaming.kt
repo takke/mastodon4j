@@ -27,6 +27,10 @@ class RxStreaming(client: MastodonClient) {
                 override fun onDelete(id: Long) {
                     // no op
                 }
+
+                override fun onDisconnected(retryable: Retryable) {
+
+                }
             })
             emmiter.setCancellable {
                 shutdownable.shutdown()
