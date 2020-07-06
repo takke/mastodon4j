@@ -268,7 +268,8 @@ class Streaming(private val client: MastodonClient) {
                 }
         )
         if (response.isSuccessful) {
-            val reader = response.body().byteStream().bufferedReader()
+            val body = response.body() ?: throw Mastodon4jRequestException(response)
+            val reader = body.byteStream().bufferedReader()
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
                 while (true) {
