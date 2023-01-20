@@ -4,9 +4,9 @@ import com.google.gson.Gson
 import com.nhaarman.mockito_kotlin.eq
 import com.sys1yagi.kmockito.any
 import com.sys1yagi.kmockito.invoked
-import com.sys1yagi.kmockito.mock
 import com.sys1yagi.mastodon4j.MastodonClient
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okio.BufferedSource
 import org.mockito.ArgumentMatchers
 import java.net.SocketTimeoutException
@@ -29,8 +29,8 @@ object MockClient {
                 .request(Request.Builder().url("https://test.com/").build())
                 .protocol(Protocol.HTTP_1_1)
                 .body(ResponseBody.create(
-                        MediaType.parse("application/json; charset=utf-8"),
-                        AssetsUtil.readFromAssets(jsonName)
+                    "application/json; charset=utf-8".toMediaTypeOrNull(),
+                    AssetsUtil.readFromAssets(jsonName)
                 ))
                 .apply {
                     val linkHeader = arrayListOf<String>().apply {
@@ -59,9 +59,9 @@ object MockClient {
                 .request(Request.Builder().url("https://test.com/").build())
                 .protocol(Protocol.HTTP_1_1)
                 .body(ResponseBody.create(
-                        MediaType.parse("application/json; charset=utf-8"),
-                        1024,
-                        source
+                    "application/json; charset=utf-8".toMediaTypeOrNull(),
+                    1024,
+                    source
                 ))
                 .build()
         setResponse(client, response)

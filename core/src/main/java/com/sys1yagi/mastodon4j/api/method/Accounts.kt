@@ -9,7 +9,7 @@ import com.sys1yagi.mastodon4j.api.entity.Account
 import com.sys1yagi.mastodon4j.api.entity.Relationship
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 
 /**
@@ -59,7 +59,7 @@ class Accounts(private val client: MastodonClient) {
                 client.patch(
                     "accounts/update_credentials",
                     RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         parameters
                     )
                 )

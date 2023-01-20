@@ -8,7 +8,7 @@ import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.*
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 
 /**
@@ -128,7 +128,7 @@ class Statuses(private val client: MastodonClient) {
                 client.post(
                     "statuses",
                     RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         parameters
                     )
                 )

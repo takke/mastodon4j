@@ -7,7 +7,7 @@ import com.sys1yagi.mastodon4j.api.Pageable
 import com.sys1yagi.mastodon4j.api.Range
 import com.sys1yagi.mastodon4j.api.entity.Report
 import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 
 /**
@@ -49,7 +49,7 @@ class Reports(private val client: MastodonClient) {
                 client.post(
                     "reports",
                     RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         parameters
                     )
                 )

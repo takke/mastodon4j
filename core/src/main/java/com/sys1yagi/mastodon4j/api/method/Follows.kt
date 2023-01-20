@@ -4,7 +4,7 @@ import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.entity.Account
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 
 /**
@@ -24,7 +24,7 @@ class Follows(private val client: MastodonClient) {
                 client.post(
                     "follows",
                     RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         parameters
                     )
                 )

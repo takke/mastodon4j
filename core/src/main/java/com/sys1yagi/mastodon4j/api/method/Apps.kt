@@ -6,7 +6,7 @@ import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.Scope
 import com.sys1yagi.mastodon4j.api.entity.auth.AccessToken
 import com.sys1yagi.mastodon4j.api.entity.auth.AppRegistration
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 
 /**
@@ -27,7 +27,7 @@ class Apps(private val client: MastodonClient) {
                 client.post(
                     "apps",
                     RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         arrayListOf(
                             "client_name=$clientName",
                             "scopes=$scope",
@@ -81,7 +81,7 @@ class Apps(private val client: MastodonClient) {
                 client.postUrl(
                     url,
                     RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         parameters
                     )
                 )
@@ -115,7 +115,7 @@ class Apps(private val client: MastodonClient) {
                 client.postUrl(
                     url,
                     RequestBody.create(
-                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         parameters
                     )
                 )
