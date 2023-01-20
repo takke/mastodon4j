@@ -4,8 +4,6 @@ import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.MastodonRequest
 import com.sys1yagi.mastodon4j.Parameter
 import com.sys1yagi.mastodon4j.api.entity.Account
-import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import com.sys1yagi.mastodon4j.extension.fromJson
 import okhttp3.MediaType
 import okhttp3.RequestBody
 
@@ -19,20 +17,21 @@ class Follows(private val client: MastodonClient) {
      */
     fun postRemoteFollow(uri: String): MastodonRequest<Account> {
         val parameters = Parameter()
-                .append("uri", uri)
-                .build()
+            .append("uri", uri)
+            .build()
         return MastodonRequest<Account>(
-                {
-                    client.post("follows",
-                            RequestBody.create(
-                                    MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
-                                    parameters
-                            )
+            {
+                client.post(
+                    "follows",
+                    RequestBody.create(
+                        MediaType.parse("application/x-www-form-urlencoded; charset=utf-8"),
+                        parameters
                     )
-                },
-                {
-                    client.getSerializer().fromJson(it, Account::class.java)
-                }
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, Account::class.java)
+            }
         )
     }
 }

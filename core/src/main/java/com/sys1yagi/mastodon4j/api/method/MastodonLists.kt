@@ -13,14 +13,14 @@ class MastodonLists(private val client: MastodonClient) {
     // GET /api/v1/lists
     fun getLists(): MastodonRequest<Pageable<MastodonList>> {
         return MastodonRequest<Pageable<MastodonList>>(
-                {
-                    client.get(
-                            "lists"
-                    )
-                },
-                {
-                    client.getSerializer().fromJson(it, MastodonList::class.java)
-                }
+            {
+                client.get(
+                    "lists"
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, MastodonList::class.java)
+            }
         ).toPageable()
     }
 
@@ -28,15 +28,15 @@ class MastodonLists(private val client: MastodonClient) {
     @Throws(Mastodon4jRequestException::class)
     fun getListTimeLine(listID: Long, range: Range = Range()): MastodonRequest<Pageable<Status>> {
         return MastodonRequest<Pageable<Status>>(
-                {
-                    client.get(
-                            "timelines/list/$listID",
-                            range.toParameter()
-                    )
-                },
-                {
-                    client.getSerializer().fromJson(it, Status::class.java)
-                }
+            {
+                client.get(
+                    "timelines/list/$listID",
+                    range.toParameter()
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, Status::class.java)
+            }
         ).toPageable()
     }
 }
