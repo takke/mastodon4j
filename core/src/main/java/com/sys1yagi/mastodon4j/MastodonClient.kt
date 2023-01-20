@@ -59,11 +59,11 @@ private constructor(
         override fun intercept(chain: Interceptor.Chain): Response {
             val originalRequest = chain.request()
             val compressedRequest = originalRequest.newBuilder()
-                .headers(originalRequest.headers())
-                .method(originalRequest.method(), originalRequest.body())
+                .headers(originalRequest.headers)
+                .method(originalRequest.method, originalRequest.body)
                 .apply {
                     accessToken?.let {
-                        header("Authorization", String.format("Bearer %s", it));
+                        header("Authorization", String.format("Bearer %s", it))
                     }
                 }
                 .build()
