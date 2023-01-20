@@ -14,7 +14,7 @@ class Streaming(private val client: MastodonClient) {
     fun federatedPublic(handler: Handler): Shutdownable {
         val response = client.get("streaming/public")
         if (response.isSuccessful) {
-            val body = response.body() ?: throw Mastodon4jRequestException(response)
+            val body = response.body ?: throw Mastodon4jRequestException(response)
             val reader = body.byteStream().bufferedReader()
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
@@ -59,7 +59,7 @@ class Streaming(private val client: MastodonClient) {
     fun localPublic(handler: Handler): Shutdownable {
         val response = client.get("streaming/public/local")
         if (response.isSuccessful) {
-            val body = response.body() ?: throw Mastodon4jRequestException(response)
+            val body = response.body ?: throw Mastodon4jRequestException(response)
             val reader = body.byteStream().bufferedReader()
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
@@ -107,7 +107,7 @@ class Streaming(private val client: MastodonClient) {
             Parameter().append("tag", tag)
         )
         if (response.isSuccessful) {
-            val body = response.body() ?: throw Mastodon4jRequestException(response)
+            val body = response.body ?: throw Mastodon4jRequestException(response)
             val reader = body.byteStream().bufferedReader()
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
@@ -155,7 +155,7 @@ class Streaming(private val client: MastodonClient) {
             Parameter().append("tag", tag)
         )
         if (response.isSuccessful) {
-            val body = response.body() ?: throw Mastodon4jRequestException(response)
+            val body = response.body ?: throw Mastodon4jRequestException(response)
             val reader = body.byteStream().bufferedReader()
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
@@ -202,7 +202,7 @@ class Streaming(private val client: MastodonClient) {
             "streaming/user"
         )
         if (response.isSuccessful) {
-            val body = response.body() ?: throw Mastodon4jRequestException(response)
+            val body = response.body ?: throw Mastodon4jRequestException(response)
             val reader = body.byteStream().bufferedReader()
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
@@ -267,7 +267,7 @@ class Streaming(private val client: MastodonClient) {
             }
         )
         if (response.isSuccessful) {
-            val body = response.body() ?: throw Mastodon4jRequestException(response)
+            val body = response.body ?: throw Mastodon4jRequestException(response)
             val reader = body.byteStream().bufferedReader()
             val dispatcher = Dispatcher()
             dispatcher.invokeLater(Runnable {
