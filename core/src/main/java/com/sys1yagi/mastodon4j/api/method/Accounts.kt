@@ -134,7 +134,7 @@ class Accounts(private val client: MastodonClient) {
 
     //  POST /api/v1/accounts/:id/follow
     fun postFollow(accountId: Long): MastodonRequest<Relationship> {
-        return MastodonRequest<Relationship>(
+        return MastodonRequest(
             {
                 client.post("accounts/$accountId/follow", emptyRequestBody())
             },
@@ -146,7 +146,7 @@ class Accounts(private val client: MastodonClient) {
 
     //  POST /api/v1/accounts/:id/unfollow
     fun postUnFollow(accountId: Long): MastodonRequest<Relationship> {
-        return MastodonRequest<Relationship>(
+        return MastodonRequest(
             {
                 client.post("accounts/$accountId/unfollow", emptyRequestBody())
             },
@@ -158,7 +158,7 @@ class Accounts(private val client: MastodonClient) {
 
     //  POST /api/v1/accounts/:id/block
     fun postBlock(accountId: Long): MastodonRequest<Relationship> {
-        return MastodonRequest<Relationship>(
+        return MastodonRequest(
             {
                 client.post("accounts/$accountId/block", emptyRequestBody())
             },
@@ -170,7 +170,7 @@ class Accounts(private val client: MastodonClient) {
 
     //  POST /api/v1/accounts/:id/unblock
     fun postUnblock(accountId: Long): MastodonRequest<Relationship> {
-        return MastodonRequest<Relationship>(
+        return MastodonRequest(
             {
                 client.post("accounts/$accountId/unblock", emptyRequestBody())
             },
@@ -182,7 +182,7 @@ class Accounts(private val client: MastodonClient) {
 
     //  POST /api/v1/accounts/:id/mute
     fun postMute(accountId: Long): MastodonRequest<Relationship> {
-        return MastodonRequest<Relationship>(
+        return MastodonRequest(
             {
                 client.post("accounts/$accountId/mute", emptyRequestBody())
             },
@@ -194,7 +194,7 @@ class Accounts(private val client: MastodonClient) {
 
     //  POST /api/v1/accounts/:id/unmute
     fun postUnmute(accountId: Long): MastodonRequest<Relationship> {
-        return MastodonRequest<Relationship>(
+        return MastodonRequest(
             {
                 client.post("accounts/$accountId/unmute", emptyRequestBody())
             },
