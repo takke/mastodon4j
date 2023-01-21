@@ -10,7 +10,7 @@ import com.sys1yagi.mastodon4j.api.entity.Relationship
 import com.sys1yagi.mastodon4j.api.entity.Status
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#accounts
@@ -58,10 +58,8 @@ class Accounts(private val client: MastodonClient) {
             {
                 client.patch(
                     "accounts/update_credentials",
-                    RequestBody.create(
-                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
-                        parameters
-                    )
+                    parameters
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
                 )
             },
             {
