@@ -24,6 +24,14 @@ class Accounts(private val client: MastodonClient) {
         )
     }
 
+    // GET /api/v1/accounts/lookup
+    fun lookup(acct: String): MastodonRequest<Account> {
+        return MastodonRequest(
+            { client.get("accounts/lookup", Parameter().append("acct", acct)) },
+            { client.getSerializer().fromJson(it, Account::class.java) }
+        )
+    }
+
     //  GET /api/v1/accounts/verify_credentials
     fun getVerifyCredentials(): MastodonRequest<Account> {
         return MastodonRequest(
