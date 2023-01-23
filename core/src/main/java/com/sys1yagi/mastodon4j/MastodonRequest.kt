@@ -6,14 +6,14 @@ import com.sys1yagi.mastodon4j.extension.toPageable
 import okhttp3.Response
 
 open class MastodonRequest<T>(
-        private val executor: () -> Response,
-        private val mapper: (String) -> Any
+    private val executor: () -> Response,
+    private val mapper: (String) -> Any
 ) {
     interface Action1<T> {
-        fun invoke(arg: T)
+        fun invoke(arg1: T, arg2: Any)
     }
 
-    private var action: (String) -> Unit = {}
+    private var action: (json: String, value: Any) -> Unit = { _, _ -> }
 
     private var isPageable: Boolean = false
 
@@ -22,12 +22,12 @@ open class MastodonRequest<T>(
     }
 
     @JvmSynthetic
-    fun doOnJson(action: (String) -> Unit) = apply {
+    fun doOnJson(action: (json: String, value: Any) -> Unit) = apply {
         this.action = action
     }
 
     fun doOnJson(action: Action1<String>) = apply {
-        this.action = { action.invoke(it) }
+        this.action = { json, value -> action.invoke(json, value) }
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -39,19 +39,21 @@ open class MastodonRequest<T>(
                 val body = response.body?.string() ?: throw Mastodon4jRequestException(response)
                 val element = JsonParser().parse(body)
                 if (element.isJsonObject) {
-                    action(body)
-                    return mapper(body) as T
+                    val v = mapper(body)
+                    action(body, v)
+                    return v as T
                 } else {
                     val list = arrayListOf<Any>()
                     element.asJsonArray.forEach {
                         val json = it.toString()
-                        action(json)
-                        list.add(mapper(json))
+                        val v = mapper(json)
+                        action(json, v)
+                        list.add(v)
                     }
-                    if (isPageable) {
-                        return list.toPageable(response) as T
+                    return if (isPageable) {
+                        list.toPageable(response) as T
                     } else {
-                        return list as T
+                        list as T
                     }
                 }
             } catch (e: Exception) {
