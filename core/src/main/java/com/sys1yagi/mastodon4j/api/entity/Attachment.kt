@@ -11,7 +11,8 @@ class Attachment(
     @SerializedName("url") val url: String = "",
     @SerializedName("remote_url") val remoteUrl: String? = null,
     @SerializedName("preview_url") val previewUrl: String = "",
-    @SerializedName("text_url") val textUrl: String? = null
+    @SerializedName("text_url") val textUrl: String? = null,
+    @SerializedName("description") val description: String? = null,
 ) {
     enum class Type(val value: String) {
         Image("image"),
