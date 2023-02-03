@@ -18,6 +18,7 @@ class Attachment(
         Image("image"),
         Video("video"),
         Gifv("gifv"),
-        Audio("audio")
+        Audio("audio"),
+        Unknown("unknwon")
     }
 }
