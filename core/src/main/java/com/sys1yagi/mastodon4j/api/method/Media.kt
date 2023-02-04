@@ -2,7 +2,7 @@ package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.MastodonClient
 import com.sys1yagi.mastodon4j.MastodonRequest
-import com.sys1yagi.mastodon4j.api.entity.Attachment
+import com.sys1yagi.mastodon4j.api.entity.MediaAttachment
 import okhttp3.MultipartBody
 
 /**
@@ -10,17 +10,17 @@ import okhttp3.MultipartBody
  */
 class Media(private val client: MastodonClient) {
     //  POST /api/v1/media
-    fun postMedia(file: MultipartBody.Part): MastodonRequest<Attachment> {
+    fun postMedia(file: MultipartBody.Part): MastodonRequest<MediaAttachment> {
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
             .addPart(file)
             .build()
-        return MastodonRequest<Attachment>(
+        return MastodonRequest<MediaAttachment>(
             {
                 client.post("media", requestBody)
             },
             {
-                client.getSerializer().fromJson(it, Attachment::class.java)
+                client.getSerializer().fromJson(it, MediaAttachment::class.java)
             }
         )
     }

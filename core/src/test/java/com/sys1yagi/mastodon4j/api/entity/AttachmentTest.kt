@@ -10,12 +10,12 @@ class AttachmentTest {
     @Test
     fun deserialize() {
         val json = AssetsUtil.readFromAssets("attachment.json")
-        val status: Attachment = Gson().fromJson(json, Attachment::class.java)
+        val status: MediaAttachment = Gson().fromJson(json, MediaAttachment::class.java)
         status.id shouldEqualTo 10L
         status.url shouldEqualTo "youtube"
         status.remoteUrl shouldNotBe null
         status.previewUrl shouldEqualTo "preview"
         status.textUrl shouldNotBe null
-        status.type shouldEqualTo Attachment.Type.Video.value
+        status.type shouldEqualTo MediaAttachment.Type.Video.value
     }
 }

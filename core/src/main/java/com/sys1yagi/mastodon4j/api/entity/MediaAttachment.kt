@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#attachment
  */
-class Attachment(
+class MediaAttachment(
     @SerializedName("id") val id: Long = 0L,
     @SerializedName("type") val type: String = Type.Image.value,
     @SerializedName("url") val url: String = "",

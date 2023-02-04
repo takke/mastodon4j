@@ -24,7 +24,7 @@ class Status(
     @SerializedName("sensitive") val isSensitive: Boolean = false,
     @SerializedName("spoiler_text") val spoilerText: String = "",
     @SerializedName("visibility") val visibility: String = Visibility.Public.value,
-    @SerializedName("media_attachments") val mediaAttachments: List<Attachment> = emptyList(),
+    @SerializedName("media_attachments") val mediaAttachments: List<MediaAttachment> = emptyList(),
     @SerializedName("mentions") val mentions: List<Mention> = emptyList(),
     @SerializedName("tags") val tags: List<Tag> = emptyList(),
     @SerializedName("application") val application: Application? = null,
