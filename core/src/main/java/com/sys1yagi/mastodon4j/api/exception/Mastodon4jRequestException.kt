@@ -30,7 +30,16 @@ class Mastodon4jRequestException : Exception {
         this.responseBody = response.body?.string()
     }
 
-    constructor(e : Exception) : super(e) {
+    constructor(e: Exception) : super(e) {
+        this.requestUrl = null
+        this.protocol = null
+        this.headers = null
+        this.code = 0
+        this.statusMessage = null
+        this.responseBody = null
+    }
+
+    constructor(message: String) : super(message) {
         this.requestUrl = null
         this.protocol = null
         this.headers = null
