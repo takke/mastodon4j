@@ -1,8 +1,8 @@
 package com.sys1yagi.mastodon4j.api.method
 
-import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import com.sys1yagi.mastodon4j.extension.emptyRequestBody
 import com.sys1yagi.mastodon4j.testtool.MockClient
+import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.extension.emptyRequestBody
 import okhttp3.MultipartBody
 import org.amshove.kluent.shouldEqualTo
 import org.amshove.kluent.shouldNotBe

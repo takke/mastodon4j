@@ -1,11 +1,11 @@
 package com.sys1yagi.mastodon4j.rx
 
 import com.sys1yagi.mastodon4j.MastodonClient
-import com.sys1yagi.mastodon4j.api.Handler
-import com.sys1yagi.mastodon4j.api.Shutdownable
-import com.sys1yagi.mastodon4j.api.entity.Notification
-import com.sys1yagi.mastodon4j.api.entity.Status
-import com.sys1yagi.mastodon4j.api.method.Streaming
+import mastodon4j.api.Handler
+import mastodon4j.api.Shutdownable
+import mastodon4j.api.entity.Notification
+import mastodon4j.api.entity.Status
+import mastodon4j.api.method.Streaming
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 

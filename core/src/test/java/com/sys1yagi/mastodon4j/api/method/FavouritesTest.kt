@@ -1,12 +1,10 @@
 package com.sys1yagi.mastodon4j.api.method
 
-import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.testtool.MockClient
+import mastodon4j.api.exception.Mastodon4jRequestException
 import org.amshove.kluent.shouldEqualTo
-import org.junit.Test
-
 import org.junit.Assert.*
-import java.net.SocketTimeoutException
+import org.junit.Test
 
 class FavouritesTest {
     @Test

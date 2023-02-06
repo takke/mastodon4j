@@ -1,12 +1,11 @@
 package com.sys1yagi.mastodon4j.api.method
 
-import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.testtool.MockClient
+import mastodon4j.api.exception.Mastodon4jRequestException
 import org.amshove.kluent.shouldEqualTo
 import org.amshove.kluent.shouldNotBe
-import org.junit.Test
-
 import org.junit.Assert.*
+import org.junit.Test
 
 class NotificationsTest {
     @Test

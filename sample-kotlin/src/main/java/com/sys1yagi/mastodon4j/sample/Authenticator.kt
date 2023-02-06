@@ -2,10 +2,10 @@ package com.sys1yagi.mastodon4j.sample
 
 import com.google.gson.Gson
 import com.sys1yagi.mastodon4j.MastodonClient
-import com.sys1yagi.mastodon4j.api.Scope
-import com.sys1yagi.mastodon4j.api.entity.auth.AccessToken
-import com.sys1yagi.mastodon4j.api.entity.auth.AppRegistration
-import com.sys1yagi.mastodon4j.api.method.Apps
+import mastodon4j.api.Scope
+import mastodon4j.api.entity.auth.AccessToken
+import mastodon4j.api.entity.auth.AppRegistration
+import mastodon4j.api.method.Apps
 import okhttp3.OkHttpClient
 import java.io.File
 import java.util.*

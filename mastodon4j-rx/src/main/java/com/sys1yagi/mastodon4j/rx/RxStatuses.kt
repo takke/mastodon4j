@@ -1,14 +1,14 @@
 package com.sys1yagi.mastodon4j.rx
 
 import com.sys1yagi.mastodon4j.MastodonClient
-import com.sys1yagi.mastodon4j.api.Pageable
-import com.sys1yagi.mastodon4j.api.Range
-import com.sys1yagi.mastodon4j.api.entity.Account
-import com.sys1yagi.mastodon4j.api.entity.Card
-import com.sys1yagi.mastodon4j.api.entity.Context
-import com.sys1yagi.mastodon4j.api.entity.Status
-import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import com.sys1yagi.mastodon4j.api.method.Statuses
+import mastodon4j.api.Pageable
+import mastodon4j.api.Range
+import mastodon4j.api.entity.Account
+import mastodon4j.api.entity.Card
+import mastodon4j.api.entity.Context
+import mastodon4j.api.entity.Status
+import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.method.Statuses
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
 import io.reactivex.Completable
 import io.reactivex.Single

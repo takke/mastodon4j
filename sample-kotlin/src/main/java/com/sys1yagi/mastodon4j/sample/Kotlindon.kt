@@ -1,10 +1,10 @@
 package com.sys1yagi.mastodon4j.sample
 
 import com.sys1yagi.mastodon4j.MastodonClient
-import com.sys1yagi.mastodon4j.api.Pageable
-import com.sys1yagi.mastodon4j.api.Range
-import com.sys1yagi.mastodon4j.api.entity.Status
-import com.sys1yagi.mastodon4j.api.method.Timelines
+import mastodon4j.api.Pageable
+import mastodon4j.api.Range
+import mastodon4j.api.entity.Status
+import mastodon4j.api.method.Timelines
 import kotlinx.coroutines.experimental.delay
 import kotlinx.coroutines.experimental.runBlocking
 

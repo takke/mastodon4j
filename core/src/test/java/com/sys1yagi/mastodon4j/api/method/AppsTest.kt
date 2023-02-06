@@ -2,10 +2,10 @@ package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.kmockito.invoked
 import com.sys1yagi.kmockito.mock
-import com.sys1yagi.mastodon4j.MastodonClient
-import com.sys1yagi.mastodon4j.api.Scope
-import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
 import com.sys1yagi.mastodon4j.testtool.MockClient
+import mastodon4j.MastodonClient
+import mastodon4j.api.Scope
+import mastodon4j.api.exception.Mastodon4jRequestException
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
 

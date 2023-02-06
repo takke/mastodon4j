@@ -2,13 +2,13 @@ package com.sys1yagi.mastodon4j.sample;
 
 import com.google.gson.Gson;
 import com.sys1yagi.mastodon4j.MastodonClient;
-import com.sys1yagi.mastodon4j.api.Pageable;
-import com.sys1yagi.mastodon4j.api.Range;
-import com.sys1yagi.mastodon4j.api.entity.Status;
-import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException;
-import com.sys1yagi.mastodon4j.api.method.Favourites;
-import com.sys1yagi.mastodon4j.api.method.Public;
-import com.sys1yagi.mastodon4j.api.method.Timelines;
+import mastodon4j.api.Pageable;
+import mastodon4j.api.Range;
+import mastodon4j.api.entity.Status;
+import mastodon4j.api.exception.Mastodon4jRequestException;
+import mastodon4j.api.method.Favourites;
+import mastodon4j.api.method.Public;
+import mastodon4j.api.method.Timelines;
 import kotlin.Unit;
 import okhttp3.OkHttpClient;
 

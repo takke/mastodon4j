@@ -1,6 +1,6 @@
 package com.sys1yagi.mastodon4j.entity
 
-import com.sys1yagi.mastodon4j.api.Scope
+import mastodon4j.api.Scope
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
 

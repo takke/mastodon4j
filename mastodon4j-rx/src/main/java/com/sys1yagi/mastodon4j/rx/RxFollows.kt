@@ -1,8 +1,8 @@
 package com.sys1yagi.mastodon4j.rx
 
 import com.sys1yagi.mastodon4j.MastodonClient
-import com.sys1yagi.mastodon4j.api.entity.Account
-import com.sys1yagi.mastodon4j.api.method.Follows
+import mastodon4j.api.entity.Account
+import mastodon4j.api.method.Follows
 import com.sys1yagi.mastodon4j.rx.extensions.onErrorIfNotDisposed
 import io.reactivex.Single
 

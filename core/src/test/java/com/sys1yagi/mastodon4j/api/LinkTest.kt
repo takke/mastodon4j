@@ -1,16 +1,15 @@
 package com.sys1yagi.mastodon4j.api
 
 import org.amshove.kluent.shouldEqualTo
-import org.junit.Test
-
 import org.junit.Assert.*
+import org.junit.Test
 
 class LinkTest {
     @Test
     fun parse() {
         // both
         run {
-            val link = Link.parse(
+            val link = mastodon4j.api.Link.parse(
                     """
 <https://mstdn.jp/api/v1/timelines/public?limit=20&local=true&max_id=1552>; rel="next", <https://mstdn.jp/api/v1/timelines/public?limit=20&local=true&since_id=105>; rel="prev"
 """
@@ -25,7 +24,7 @@ class LinkTest {
 
         // max
         run {
-            val link = Link.parse(
+            val link = mastodon4j.api.Link.parse(
                     """
 <https://mstdn.jp/api/v1/timelines/public?limit=20&local=true&max_id=1553>; rel="next"
 """
@@ -41,7 +40,7 @@ class LinkTest {
 
         // since
         run {
-            val link = Link.parse(
+            val link = mastodon4j.api.Link.parse(
                     """
 <https://mstdn.jp/api/v1/timelines/public?limit=20&local=true&since_id=105>; rel="prev"
 """

@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.nhaarman.mockito_kotlin.eq
 import com.sys1yagi.kmockito.any
 import com.sys1yagi.kmockito.invoked
-import com.sys1yagi.mastodon4j.MastodonClient
+import mastodon4j.MastodonClient
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okio.BufferedSource

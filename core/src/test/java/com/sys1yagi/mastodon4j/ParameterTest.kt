@@ -1,5 +1,6 @@
 package com.sys1yagi.mastodon4j
 
+import mastodon4j.Parameter
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
 

@@ -1,10 +1,10 @@
 package com.sys1yagi.mastodon4j.rx
 
 import com.sys1yagi.mastodon4j.MastodonClient
-import com.sys1yagi.mastodon4j.api.Pageable
-import com.sys1yagi.mastodon4j.api.Range
-import com.sys1yagi.mastodon4j.api.entity.Account
-import com.sys1yagi.mastodon4j.api.method.Blocks
+import mastodon4j.api.Pageable
+import mastodon4j.api.Range
+import mastodon4j.api.entity.Account
+import mastodon4j.api.method.Blocks
 import com.sys1yagi.mastodon4j.rx.extensions.onErrorIfNotDisposed
 import io.reactivex.Single
 

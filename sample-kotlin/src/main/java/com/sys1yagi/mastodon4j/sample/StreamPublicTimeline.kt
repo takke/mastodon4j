@@ -1,10 +1,10 @@
 package com.sys1yagi.mastodon4j.sample
 
-import com.sys1yagi.mastodon4j.api.Handler
-import com.sys1yagi.mastodon4j.api.entity.Notification
-import com.sys1yagi.mastodon4j.api.entity.Status
-import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
-import com.sys1yagi.mastodon4j.api.method.Streaming
+import mastodon4j.api.Handler
+import mastodon4j.api.entity.Notification
+import mastodon4j.api.entity.Status
+import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.method.Streaming
 
 
 object StreamPublicTimeline {
