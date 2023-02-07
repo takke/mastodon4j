@@ -35,10 +35,16 @@ class Status(
         Public("public"),
         Unlisted("unlisted"),
         Private("private"),
-        Direct("direct")
+        Direct("direct");
+
+        companion object {
+            fun fromString(value: String): Visibility {
+                return Visibility.values().firstOrNull { it.value == value } ?: Public
+            }
+        }
     }
 
     val visibility: Visibility by lazy {
-        Visibility.values().firstOrNull { it.value == visibilityValue } ?: Visibility.Public
+        Visibility.fromString(visibilityValue)
     }
 }
