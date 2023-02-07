@@ -29,5 +29,4 @@ data class Instance(
 
     @SerializedName("contact_account")
     val contact_account: Account? = null
-) {
-}
+)

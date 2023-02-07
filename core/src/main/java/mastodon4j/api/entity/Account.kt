@@ -17,5 +17,4 @@ class Account(
     @SerializedName("following_count") val followingCount: Int = 0,
     @SerializedName("statuses_count") val statusesCount: Int = 0,
     @SerializedName("emojis") val emojis: List<Emoji> = emptyList()
-) {
-}
+)
