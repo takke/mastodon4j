@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#card
  */
 class Card(
-9    @SerializedName("url")
+    @SerializedName("url")
     val url: String = "",
 
     @SerializedName("title")
