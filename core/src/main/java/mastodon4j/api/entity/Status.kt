@@ -23,7 +23,7 @@ class Status(
     @SerializedName("favourited") val isFavourited: Boolean = false,
     @SerializedName("sensitive") val isSensitive: Boolean = false,
     @SerializedName("spoiler_text") val spoilerText: String = "",
-    @SerializedName("visibility") val visibility: String = Visibility.Public.value,
+    @SerializedName("visibility") val visibilityValue: String = Visibility.Public.value,
     @SerializedName("media_attachments") val mediaAttachments: List<MediaAttachment> = emptyList(),
     @SerializedName("mentions") val mentions: List<Mention> = emptyList(),
     @SerializedName("tags") val tags: List<Tag> = emptyList(),
@@ -36,5 +36,9 @@ class Status(
         Unlisted("unlisted"),
         Private("private"),
         Direct("direct")
+    }
+
+    val visibility: Visibility by lazy {
+        Visibility.values().firstOrNull { it.value == visibilityValue } ?: Visibility.Public
     }
 }
