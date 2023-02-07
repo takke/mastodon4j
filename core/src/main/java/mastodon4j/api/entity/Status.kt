@@ -29,7 +29,8 @@ class Status(
     @SerializedName("tags") val tags: List<Tag> = emptyList(),
     @SerializedName("application") val application: Application? = null,
     @SerializedName("language") val language: String? = null,
-    @SerializedName("pinned") val pinned: Boolean? = null
+    @SerializedName("pinned") val pinned: Boolean? = null,
+    @SerializedName("card") val card: PreviewCard? = null,
 ) {
     enum class Visibility(val value: String) {
         Public("public"),

@@ -42,18 +42,19 @@ class Statuses(private val client: MastodonClient) {
         )
     }
 
-    //  GET /api/v1/statuses/:id/card
-    @Throws(Mastodon4jRequestException::class)
-    fun getCard(statusId: Long): MastodonRequest<Card> {
-        return MastodonRequest<Card>(
-            {
-                client.get("statuses/$statusId/card")
-            },
-            {
-                client.getSerializer().fromJson(it, Card::class.java)
-            }
-        )
-    }
+//    //  GET /api/v1/statuses/:id/card =>
+//    //  2.6.0 - deprecated in favor of card property inlined on Status entity
+//    @Throws(Mastodon4jRequestException::class)
+//    fun getCard(statusId: Long): MastodonRequest<Card> {
+//        return MastodonRequest<Card>(
+//            {
+//                client.get("statuses/$statusId/card")
+//            },
+//            {
+//                client.getSerializer().fromJson(it, Card::class.java)
+//            }
+//        )
+//    }
 
     //  GET /api/v1/reblogged_by
     @JvmOverloads
