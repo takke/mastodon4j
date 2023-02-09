@@ -5,26 +5,38 @@ import com.google.gson.annotations.SerializedName
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#notification
  */
-class Notification(
+data class Notification(
+    // The notification ID
     @SerializedName("id")
-    val id: Long = 0L, //	The notification ID
+    val id: Long = 0L,
 
+    // The type of event that resulted in the notification.
     @SerializedName("type")
-    val type: String = Type.Mention.value, //	One of: "mention", "reblog", "favourite", "follow"
+    val typeValue: String = Type.Mention.value,
 
-    @SerializedName("created_at")
-    val createdAt: String = "", //	The time the notification was created
+    // The timestamp of the notification.
+    @SerializedName("created_at") val createdAt: String = "",
 
+    // The account that performed the action that generated the notification.
     @SerializedName("account")
-    val account: Account? = null, //	The Account sending the notification to the user
+    val account: Account? = null,
 
+    // Status that was the object of the notification.
+    // Attached when type of the notification is favourite, reblog, status, mention, poll, or update.
     @SerializedName("status")
-    val status: Status? = null //	The Status associated with the notification, if applicable
+    val status: Status? = null,
 ) {
     enum class Type(val value: String) {
         Mention("mention"),
+        Status("status"),
         Reblog("reblog"),
+        Follow("follow"),
+        FollowRequest("follow_request"),
         Favourite("favourite"),
-        Follow("follow")
+        Poll("poll"),
+        Update("update"),
+        Unknown("unknown"),
     }
+
+    val type: Type get() = Type.values().firstOrNull { it.value == this.typeValue } ?: Type.Unknown
 }
