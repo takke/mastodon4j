@@ -21,6 +21,10 @@ constructor(vararg private val scopes: Name = arrayOf(Name.ALL)) {
     }
 
     override fun toString(): String {
-        return scopes.joinToString(separator = " ", transform = { it.scopeName })
+        return scopes.joinToString(
+            // "+" is url encoded " ".
+            separator = "+",
+            transform = { it.scopeName }
+        )
     }
 }
