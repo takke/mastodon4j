@@ -10,7 +10,8 @@ constructor(vararg private val scopes: Name = arrayOf(Name.ALL)) {
         READ("read"),
         WRITE("write"),
         FOLLOW("follow"),
-        ALL(Scope(READ, WRITE, FOLLOW).toString())
+        PUSH("push"),
+        ALL(Scope(READ, WRITE, FOLLOW, PUSH).toString())
     }
 
     fun validate() {
