@@ -10,7 +10,7 @@ class MediaAttachment(
     @SerializedName("type") val type: String = Type.Image.value,
     @SerializedName("url") val url: String = "",
     @SerializedName("remote_url") val remoteUrl: String? = null,
-    @SerializedName("preview_url") val previewUrl: String = "",
+    @SerializedName("preview_url") val previewUrl: String? = null,
     @SerializedName("text_url") val textUrl: String? = null,
     @SerializedName("description") val description: String? = null,
 ) {
