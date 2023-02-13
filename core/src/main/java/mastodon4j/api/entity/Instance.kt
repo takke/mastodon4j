@@ -28,5 +28,22 @@ data class Instance(
     val languages: List<String> = emptyList(),
 
     @SerializedName("contact_account")
-    val contact_account: Account? = null
+    val contactAccount: Account? = null,
+
+    @SerializedName("stats")
+    val stats: Stats? = null,
+
+
+)
+
+data class Stats(
+    @SerializedName("user_count")
+    val userCount: Long? = null,
+
+    @SerializedName("status_count")
+    val statusCount: Long? = null,
+
+    @SerializedName("domain_count")
+    val domainCount: Long? = null,
+
 )
