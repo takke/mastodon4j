@@ -25,6 +25,11 @@ data class Notification(
     // Attached when type of the notification is favourite, reblog, status, mention, poll, or update.
     @SerializedName("status")
     val status: Status? = null,
+
+    // emoji_reaction for fedibird
+    @SerializedName("emoji_reaction")
+    val emojiReaction: EmojiReaction? = null,
+
 ) {
     enum class Type(val value: String) {
         Mention("mention"),
@@ -35,8 +40,26 @@ data class Notification(
         Favourite("favourite"),
         Poll("poll"),
         Update("update"),
+        EmojiReaction("emoji_reaction"),
         Unknown("unknown"),
     }
 
     val type: Type get() = Type.values().firstOrNull { it.value == this.typeValue } ?: Type.Unknown
 }
+
+data class EmojiReaction(
+    @SerializedName("name")
+    val name: String,
+
+    @SerializedName("count")
+    val count: Int,
+
+    @SerializedName("me")
+    val me: Boolean?,
+
+    @SerializedName("url")
+    val url: String?,
+
+    @SerializedName("static_url")
+    val staticUrl: String?,
+)
