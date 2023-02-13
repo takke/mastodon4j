@@ -33,6 +33,8 @@ data class Instance(
     @SerializedName("stats")
     val stats: Stats? = null,
 
+    @SerializedName("thumbnail")
+    val thumbnail: String? = null,
 
 )
 
