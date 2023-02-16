@@ -19,7 +19,7 @@ class Accounts(private val client: MastodonClient) {
     // GET /api/v1/accounts/:id
     fun getAccount(accountId: Long): MastodonRequest<Account> {
         return MastodonRequest(
-            { client.get("accounts/$accountId") },
+            { client.get("/api/v1/accounts/$accountId") },
             { client.getSerializer().fromJson(it, Account::class.java) }
         )
     }
@@ -27,7 +27,7 @@ class Accounts(private val client: MastodonClient) {
     // GET /api/v1/accounts/lookup
     fun lookup(acct: String): MastodonRequest<Account> {
         return MastodonRequest(
-            { client.get("accounts/lookup", Parameter().append("acct", acct)) },
+            { client.get("/api/v1/accounts/lookup", Parameter().append("acct", acct)) },
             { client.getSerializer().fromJson(it, Account::class.java) }
         )
     }
@@ -35,7 +35,7 @@ class Accounts(private val client: MastodonClient) {
     //  GET /api/v1/accounts/verify_credentials
     fun getVerifyCredentials(): MastodonRequest<Account> {
         return MastodonRequest(
-            { client.get("accounts/verify_credentials") },
+            { client.get("/api/v1/accounts/verify_credentials") },
             { client.getSerializer().fromJson(it, Account::class.java) }
         )
     }
@@ -82,7 +82,7 @@ class Accounts(private val client: MastodonClient) {
         return MastodonRequest<Pageable<Account>>(
             {
                 client.get(
-                    "accounts/$accountId/followers",
+                    "/api/v1/accounts/$accountId/followers",
                     range.toParameter()
                 )
             },
@@ -98,7 +98,7 @@ class Accounts(private val client: MastodonClient) {
         return MastodonRequest<Pageable<Account>>(
             {
                 client.get(
-                    "accounts/$accountId/following",
+                    "/api/v1/accounts/$accountId/following",
                     range.toParameter()
                 )
             },
@@ -130,7 +130,7 @@ class Accounts(private val client: MastodonClient) {
         return MastodonRequest<Pageable<Status>>(
             {
                 client.get(
-                    "accounts/$accountId/statuses",
+                    "/api/v1/accounts/$accountId/statuses",
                     parameters
                 )
             },
@@ -217,7 +217,7 @@ class Accounts(private val client: MastodonClient) {
         return MastodonRequest(
             {
                 client.get(
-                    "accounts/relationships",
+                    "/api/v1/accounts/relationships",
                     Parameter().append("id", accountIds)
                 )
             },
@@ -237,7 +237,7 @@ class Accounts(private val client: MastodonClient) {
         return MastodonRequest(
             {
                 client.get(
-                    "accounts/search",
+                    "/api/v1/accounts/search",
                     Parameter()
                         .append("q", query)
                         .append("limit", limit)

@@ -71,7 +71,8 @@ private constructor(
         }
     }
 
-    val baseUrl = "https://${instanceName}/api/v1"
+    val baseUrl0 = "https://${instanceName}"
+    val baseUrl1 = "https://${instanceName}/api/v1"
 
     open fun getSerializer() = gson
 
@@ -79,7 +80,7 @@ private constructor(
 
     open fun get(path: String, parameter: Parameter? = null): Response {
         try {
-            val url = "$baseUrl/$path"
+            val url = "$baseUrl0$path"
             debugPrint(url)
             val urlWithParams = parameter?.let {
                 "$url?${it.build()}"
@@ -114,11 +115,11 @@ private constructor(
     }
 
     open fun post(path: String, body: RequestBody) =
-        postUrl("$baseUrl/$path", body)
+        postUrl("$baseUrl1/$path", body)
 
     open fun patch(path: String, body: RequestBody): Response {
         try {
-            val url = "$baseUrl/$path"
+            val url = "$baseUrl1/$path"
             debugPrint(url)
             val call = client.newCall(
                 Request.Builder()
@@ -134,7 +135,7 @@ private constructor(
 
     open fun delete(path: String): Response {
         try {
-            val url = "$baseUrl/$path"
+            val url = "$baseUrl1/$path"
             debugPrint(url)
             val call = client.newCall(
                 Request.Builder()

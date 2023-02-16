@@ -21,7 +21,7 @@ class Reports(private val client: MastodonClient) {
         return MastodonRequest<Pageable<Report>>(
             {
                 client.get(
-                    "reports",
+                    "/api/v1/reports",
                     range.toParameter()
                 )
             },

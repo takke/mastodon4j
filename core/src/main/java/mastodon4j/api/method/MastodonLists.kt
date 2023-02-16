@@ -14,9 +14,7 @@ class MastodonLists(private val client: MastodonClient) {
     fun getLists(): MastodonRequest<Pageable<MastodonList>> {
         return MastodonRequest<Pageable<MastodonList>>(
             {
-                client.get(
-                    "lists"
-                )
+                client.get("/api/v1/lists")
             },
             {
                 client.getSerializer().fromJson(it, MastodonList::class.java)
@@ -29,10 +27,7 @@ class MastodonLists(private val client: MastodonClient) {
     fun getListTimeLine(listID: Long, range: Range = Range()): MastodonRequest<Pageable<Status>> {
         return MastodonRequest<Pageable<Status>>(
             {
-                client.get(
-                    "timelines/list/$listID",
-                    range.toParameter()
-                )
+                client.get("/api/v1/timelines/list/$listID", range.toParameter())
             },
             {
                 client.getSerializer().fromJson(it, Status::class.java)

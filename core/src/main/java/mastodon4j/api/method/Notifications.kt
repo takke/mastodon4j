@@ -21,10 +21,7 @@ class Notifications(private val client: MastodonClient) {
         }
         return MastodonRequest<Pageable<Notification>>(
             {
-                client.get(
-                    "notifications",
-                    parameter
-                )
+                client.get("/api/v1/notifications", parameter)
             },
             {
                 client.getSerializer().fromJson(it, Notification::class.java)
@@ -36,7 +33,7 @@ class Notifications(private val client: MastodonClient) {
     fun getNotification(id: Long): MastodonRequest<Notification> {
         return MastodonRequest<Notification>(
             {
-                client.get("notifications/$id")
+                client.get("/api/v1/notifications/$id")
             },
             {
                 client.getSerializer().fromJson(it, Notification::class.java)

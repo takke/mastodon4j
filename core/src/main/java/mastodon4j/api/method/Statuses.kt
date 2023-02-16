@@ -21,7 +21,7 @@ class Statuses(private val client: MastodonClient) {
     fun getStatus(statusId: Long): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
-                client.get("statuses/$statusId")
+                client.get("/api/v1/statuses/$statusId")
             },
             {
                 client.getSerializer().fromJson(it, Status::class.java)
@@ -34,7 +34,7 @@ class Statuses(private val client: MastodonClient) {
     fun getContext(statusId: Long): MastodonRequest<Context> {
         return MastodonRequest<Context>(
             {
-                client.get("statuses/$statusId/context")
+                client.get("/api/v1/statuses/$statusId/context")
             },
             {
                 client.getSerializer().fromJson(it, Context::class.java)
@@ -63,7 +63,7 @@ class Statuses(private val client: MastodonClient) {
         return MastodonRequest<Pageable<Account>>(
             {
                 client.get(
-                    "statuses/$statusId/reblogged_by",
+                    "/api/v1/statuses/$statusId/reblogged_by",
                     range.toParameter()
                 )
             },
@@ -80,7 +80,7 @@ class Statuses(private val client: MastodonClient) {
         return MastodonRequest<Pageable<Account>>(
             {
                 client.get(
-                    "statuses/$statusId/favourited_by",
+                    "/api/v1/statuses/$statusId/favourited_by",
                     range.toParameter()
                 )
             },

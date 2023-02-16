@@ -18,7 +18,7 @@ class Trends(private val client: MastodonClient) {
         return MastodonRequest<List<Tag>>(
             {
                 client.get(
-                    "trends/tags",
+                    "/api/v1/trends/tags",
                     Parameter().apply {
                         limit?.let {
                             append("limit", it)
