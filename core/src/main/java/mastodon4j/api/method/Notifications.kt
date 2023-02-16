@@ -44,10 +44,7 @@ class Notifications(private val client: MastodonClient) {
     //  POST /api/v1/notifications/clear
     @Throws(Mastodon4jRequestException::class)
     fun clearNotifications() {
-        val response = client.post(
-            "notifications/clear",
-            emptyRequestBody()
-        )
+        val response = client.post("/api/v1/notifications/clear", emptyRequestBody())
         if (!response.isSuccessful) {
             throw Mastodon4jRequestException(response)
         }

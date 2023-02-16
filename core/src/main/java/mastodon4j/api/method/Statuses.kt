@@ -127,7 +127,7 @@ class Statuses(private val client: MastodonClient) {
         return MastodonRequest<Status>(
             {
                 client.post(
-                    "statuses",
+                    "/api/v1/statuses",
                     RequestBody.create(
                         "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         parameters
@@ -154,7 +154,7 @@ class Statuses(private val client: MastodonClient) {
     fun postReblog(statusId: Long): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
-                client.post("statuses/$statusId/reblog", emptyRequestBody())
+                client.post("/api/v1/statuses/$statusId/reblog", emptyRequestBody())
             },
             {
                 client.getSerializer().fromJson(it, Status::class.java)
@@ -167,7 +167,7 @@ class Statuses(private val client: MastodonClient) {
     fun postUnreblog(statusId: Long): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
-                client.post("statuses/$statusId/unreblog", emptyRequestBody())
+                client.post("/api/v1/statuses/$statusId/unreblog", emptyRequestBody())
             },
             {
                 client.getSerializer().fromJson(it, Status::class.java)
@@ -180,7 +180,7 @@ class Statuses(private val client: MastodonClient) {
     fun postFavourite(statusId: Long): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
-                client.post("statuses/$statusId/favourite", emptyRequestBody())
+                client.post("/api/v1/statuses/$statusId/favourite", emptyRequestBody())
             },
             {
                 client.getSerializer().fromJson(it, Status::class.java)
@@ -193,7 +193,7 @@ class Statuses(private val client: MastodonClient) {
     fun postUnfavourite(statusId: Long): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
-                client.post("statuses/$statusId/unfavourite", emptyRequestBody())
+                client.post("/api/v1/statuses/$statusId/unfavourite", emptyRequestBody())
             },
             {
                 client.getSerializer().fromJson(it, Status::class.java)

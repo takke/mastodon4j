@@ -47,7 +47,7 @@ class Reports(private val client: MastodonClient) {
         return MastodonRequest<Report>(
             {
                 client.post(
-                    "reports",
+                    "/api/v1/reports",
                     RequestBody.create(
                         "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         parameters

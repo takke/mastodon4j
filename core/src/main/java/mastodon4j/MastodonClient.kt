@@ -115,7 +115,7 @@ private constructor(
     }
 
     open fun post(path: String, body: RequestBody) =
-        postUrl("$baseUrl1/$path", body)
+        postUrl("$baseUrl0$path", body)
 
     open fun patch(path: String, body: RequestBody): Response {
         try {

@@ -25,7 +25,7 @@ class Apps(private val client: MastodonClient) {
         return MastodonRequest(
             {
                 client.post(
-                    "apps",
+                    "/api/v1/apps",
                     RequestBody.create(
                         "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         arrayListOf(

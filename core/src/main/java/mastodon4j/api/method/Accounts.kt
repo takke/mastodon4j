@@ -144,7 +144,7 @@ class Accounts(private val client: MastodonClient) {
     fun postFollow(accountId: Long): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
-                client.post("accounts/$accountId/follow", emptyRequestBody())
+                client.post("/api/v1/accounts/$accountId/follow", emptyRequestBody())
             },
             {
                 client.getSerializer().fromJson(it, Relationship::class.java)
@@ -156,7 +156,7 @@ class Accounts(private val client: MastodonClient) {
     fun postUnFollow(accountId: Long): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
-                client.post("accounts/$accountId/unfollow", emptyRequestBody())
+                client.post("/api/v1/accounts/$accountId/unfollow", emptyRequestBody())
             },
             {
                 client.getSerializer().fromJson(it, Relationship::class.java)
@@ -168,7 +168,7 @@ class Accounts(private val client: MastodonClient) {
     fun postBlock(accountId: Long): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
-                client.post("accounts/$accountId/block", emptyRequestBody())
+                client.post("/api/v1/accounts/$accountId/block", emptyRequestBody())
             },
             {
                 client.getSerializer().fromJson(it, Relationship::class.java)
@@ -180,7 +180,7 @@ class Accounts(private val client: MastodonClient) {
     fun postUnblock(accountId: Long): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
-                client.post("accounts/$accountId/unblock", emptyRequestBody())
+                client.post("/api/v1/accounts/$accountId/unblock", emptyRequestBody())
             },
             {
                 client.getSerializer().fromJson(it, Relationship::class.java)
@@ -192,7 +192,7 @@ class Accounts(private val client: MastodonClient) {
     fun postMute(accountId: Long): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
-                client.post("accounts/$accountId/mute", emptyRequestBody())
+                client.post("/api/v1/accounts/$accountId/mute", emptyRequestBody())
             },
             {
                 client.getSerializer().fromJson(it, Relationship::class.java)
@@ -204,7 +204,7 @@ class Accounts(private val client: MastodonClient) {
     fun postUnmute(accountId: Long): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
-                client.post("accounts/$accountId/unmute", emptyRequestBody())
+                client.post("/api/v1/accounts/$accountId/unmute", emptyRequestBody())
             },
             {
                 client.getSerializer().fromJson(it, Relationship::class.java)
