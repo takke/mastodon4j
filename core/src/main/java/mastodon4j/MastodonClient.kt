@@ -119,7 +119,7 @@ private constructor(
 
     open fun patch(path: String, body: RequestBody): Response {
         try {
-            val url = "$baseUrl1/$path"
+            val url = "$baseUrl0$path"
             debugPrint(url)
             val call = client.newCall(
                 Request.Builder()

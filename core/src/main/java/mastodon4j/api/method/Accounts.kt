@@ -65,7 +65,7 @@ class Accounts(private val client: MastodonClient) {
         return MastodonRequest(
             {
                 client.patch(
-                    "accounts/update_credentials",
+                    "/api/v1/accounts/update_credentials",
                     parameters
                         .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
                 )
