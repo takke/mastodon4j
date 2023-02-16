@@ -96,8 +96,9 @@ private constructor(
         }
     }
 
-    open fun postUrl(url: String, body: RequestBody): Response {
+    open fun post(path: String, body: RequestBody): Response {
         try {
+            val url = "$baseUrl$path"
             debugPrint(url)
             val call = client.newCall(
                 Request.Builder()
@@ -112,9 +113,6 @@ private constructor(
             throw Mastodon4jRequestException(e)
         }
     }
-
-    open fun post(path: String, body: RequestBody) =
-        postUrl("$baseUrl$path", body)
 
     open fun patch(path: String, body: RequestBody): Response {
         try {

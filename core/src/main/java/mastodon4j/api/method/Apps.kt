@@ -68,7 +68,6 @@ class Apps(private val client: MastodonClient) {
         code: String,
         grantType: String = "authorization_code"
     ): MastodonRequest<AccessToken> {
-        val url = "https://${client.getInstanceName()}/oauth/token"
         val parameters = listOf(
             "client_id=$clientId",
             "client_secret=$clientSecret",
@@ -78,8 +77,8 @@ class Apps(private val client: MastodonClient) {
         ).joinToString(separator = "&")
         return MastodonRequest(
             {
-                client.postUrl(
-                    url,
+                client.post(
+                    "/oauth/token",
                     RequestBody.create(
                         "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         parameters
@@ -100,7 +99,6 @@ class Apps(private val client: MastodonClient) {
         userName: String,
         password: String
     ): MastodonRequest<AccessToken> {
-        val url = "https://${client.getInstanceName()}/oauth/token"
         val parameters = Parameter().apply {
             append("client_id", clientId)
             append("client_secret", clientSecret)
@@ -112,8 +110,8 @@ class Apps(private val client: MastodonClient) {
 
         return MastodonRequest(
             {
-                client.postUrl(
-                    url,
+                client.post(
+                    "/oauth/token",
                     RequestBody.create(
                         "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         parameters

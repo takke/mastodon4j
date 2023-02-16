@@ -17,7 +17,6 @@ object MockClient {
         client.get(ArgumentMatchers.anyString(), eq(null)).invoked.thenReturn(response)
         client.get(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
         client.post(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
-        client.postUrl(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
         client.patch(ArgumentMatchers.anyString(), any()).invoked.thenReturn(response)
         client.getSerializer().invoked.thenReturn(Gson())
     }
