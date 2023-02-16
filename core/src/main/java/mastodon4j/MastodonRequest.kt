@@ -1,6 +1,7 @@
 package mastodon4j
 
 import com.google.gson.JsonParser
+import mastodon4j.api.MastodonResponse
 import mastodon4j.api.exception.Mastodon4jRequestException
 import mastodon4j.extension.toPageable
 import okhttp3.Response
@@ -38,10 +39,11 @@ open class MastodonRequest<T>(
             try {
                 val body = response.body?.string() ?: throw Mastodon4jRequestException(response)
                 val element = JsonParser().parse(body)
-                if (element.isJsonObject) {
+
+                val result = if (element.isJsonObject) {
                     val v = mapper(body)
                     action(body, v)
-                    return v as T
+                    v as T
                 } else {
                     val list = arrayListOf<Any>()
                     element.asJsonArray.forEach {
@@ -50,12 +52,20 @@ open class MastodonRequest<T>(
                         action(json, v)
                         list.add(v)
                     }
-                    return if (isPageable) {
+                    if (isPageable) {
                         list.toPageable(response) as T
                     } else {
                         list as T
                     }
                 }
+
+                // collect info
+                // TODO とりあえず Pageable だけ MastodonResponse を実装するけど全てのレスポンスが実装すること
+                if (result is MastodonResponse) {
+                    result.collectResponse(response)
+                }
+
+                return result
             } catch (e: Exception) {
                 throw Mastodon4jRequestException(e)
             }
