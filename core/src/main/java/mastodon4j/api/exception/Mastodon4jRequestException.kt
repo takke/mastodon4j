@@ -49,4 +49,8 @@ class Mastodon4jRequestException : Exception {
     }
 
     fun isErrorResponse() = responseBody != null
+
+    fun resourceNotFound(): Boolean {
+        return code == 404
+    }
 }
