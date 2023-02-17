@@ -31,6 +31,9 @@ class Status(
     @SerializedName("language") val language: String? = null,
     @SerializedName("pinned") val pinned: Boolean? = null,
     @SerializedName("card") val card: PreviewCard? = null,
+
+    // emoji_reactions of fedibird.com
+    @SerializedName("emoji_reactions") val emojiReactions: List<EmojiReaction> = emptyList(),
 ) {
     enum class Visibility(val value: String) {
         Public("public"),

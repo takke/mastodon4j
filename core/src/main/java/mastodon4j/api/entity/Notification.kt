@@ -47,19 +47,3 @@ data class Notification(
     val type: Type get() = Type.values().firstOrNull { it.value == this.typeValue } ?: Type.Unknown
 }
 
-data class EmojiReaction(
-    @SerializedName("name")
-    val name: String,
-
-    @SerializedName("count")
-    val count: Int,
-
-    @SerializedName("me")
-    val me: Boolean?,
-
-    @SerializedName("url")
-    val url: String?,
-
-    @SerializedName("static_url")
-    val staticUrl: String?,
-)
