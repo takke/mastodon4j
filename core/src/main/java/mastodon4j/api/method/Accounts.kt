@@ -233,14 +233,18 @@ class Accounts(private val client: MastodonClient) {
      * limit: Maximum number of matching accounts to return (default: 40)
      */
     @JvmOverloads
-    fun getAccountSearch(query: String, limit: Int = 40): MastodonRequest<List<Account>> {
+    fun search(query: String, limit: Int = 40, resolve: Boolean = false): MastodonRequest<List<Account>> {
         return MastodonRequest(
             {
                 client.get(
                     "/api/v1/accounts/search",
-                    Parameter()
-                        .append("q", query)
-                        .append("limit", limit)
+                    Parameter().apply {
+                        append("q", query)
+                        append("limit", limit)
+                        if (resolve) {
+                            append("resolve", resolve)
+                        }
+                    }
                 )
             },
             {
