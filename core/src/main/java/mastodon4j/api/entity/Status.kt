@@ -34,6 +34,9 @@ class Status(
 
     // emoji_reactions of fedibird.com
     @SerializedName("emoji_reactions") val emojiReactions: List<EmojiReaction> = emptyList(),
+
+    // quote of fedibird.com
+    @SerializedName("quote") val quote: Status? = null,
 ) {
     enum class Visibility(val value: String) {
         Public("public"),
