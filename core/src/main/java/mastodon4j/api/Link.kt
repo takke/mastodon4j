@@ -1,11 +1,11 @@
 package mastodon4j.api
 
-class Link(
-        val linkHeader: String,
-        val nextPath: String,
-        val prevPath: String,
-        val maxId: Long,
-        val sinceId: Long
+data class Link(
+    val linkHeader: String,
+    val nextPath: String,
+    val prevPath: String,
+    val maxId: Long,
+    val sinceId: Long
 ) {
     companion object {
         @JvmStatic
