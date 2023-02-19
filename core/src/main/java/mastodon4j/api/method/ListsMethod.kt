@@ -8,7 +8,7 @@ import mastodon4j.api.entity.MastodonList
 import mastodon4j.api.entity.Status
 import mastodon4j.api.exception.Mastodon4jRequestException
 
-class MastodonLists(private val client: MastodonClient) {
+class ListsMethod(private val client: MastodonClient) {
 
     // GET /api/v1/lists
     fun getLists(): MastodonRequest<Pageable<MastodonList>> {

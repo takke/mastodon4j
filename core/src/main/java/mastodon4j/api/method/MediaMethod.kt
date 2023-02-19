@@ -8,7 +8,7 @@ import okhttp3.MultipartBody
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#media
  */
-class Media(private val client: MastodonClient) {
+class MediaMethod(private val client: MastodonClient) {
     //  POST /api/v1/media
     fun postMedia(file: MultipartBody.Part): MastodonRequest<MediaAttachment> {
         val requestBody = MultipartBody.Builder()

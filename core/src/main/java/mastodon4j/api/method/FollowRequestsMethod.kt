@@ -11,7 +11,7 @@ import mastodon4j.extension.emptyRequestBody
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#follow-requests
  */
-class FollowRequests(private val client: MastodonClient) {
+class FollowRequestsMethod(private val client: MastodonClient) {
     // GET /api/v1/follow_requests
     @JvmOverloads
     fun getFollowRequests(range: Range = Range()): MastodonRequest<Pageable<Account>> {

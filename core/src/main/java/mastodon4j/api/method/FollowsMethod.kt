@@ -10,7 +10,7 @@ import okhttp3.RequestBody
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#follows
  */
-class Follows(private val client: MastodonClient) {
+class FollowsMethod(private val client: MastodonClient) {
     /**
      * POST /api/v1/follows
      * @param uri: username@domain of the person you want to follow

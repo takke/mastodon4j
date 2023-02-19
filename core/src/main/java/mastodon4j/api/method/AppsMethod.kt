@@ -12,7 +12,7 @@ import okhttp3.RequestBody
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps
  */
-class Apps(private val client: MastodonClient) {
+class AppsMethod(private val client: MastodonClient) {
     // POST /api/v1/apps
     @JvmOverloads
     fun createApp(
