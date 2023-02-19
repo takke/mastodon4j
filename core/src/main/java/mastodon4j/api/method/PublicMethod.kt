@@ -7,7 +7,7 @@ import mastodon4j.api.Range
 import mastodon4j.api.entity.Instance
 import mastodon4j.api.entity.Status
 
-class Public(private val client: MastodonClient) {
+class PublicMethod(private val client: MastodonClient) {
     /**
      * GET /api/v1/instance
      * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#instances

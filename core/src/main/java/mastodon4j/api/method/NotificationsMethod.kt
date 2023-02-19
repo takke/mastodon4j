@@ -11,7 +11,7 @@ import mastodon4j.extension.emptyRequestBody
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#notifications
  */
-class Notifications(private val client: MastodonClient) {
+class NotificationsMethod(private val client: MastodonClient) {
     // GET /api/v1/notifications
     @JvmOverloads
     fun getNotifications(range: Range = Range(), excludeTypes: List<Notification.Type>? = null): MastodonRequest<Pageable<Notification>> {

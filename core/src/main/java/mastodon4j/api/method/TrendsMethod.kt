@@ -9,7 +9,7 @@ import mastodon4j.api.exception.Mastodon4jRequestException
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
  */
-class Trends(private val client: MastodonClient) {
+class TrendsMethod(private val client: MastodonClient) {
 
     // GET /api/v1/trends/tags
     @JvmOverloads

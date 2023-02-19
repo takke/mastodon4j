@@ -13,7 +13,7 @@ import okhttp3.RequestBody
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#reports
  */
-class Reports(private val client: MastodonClient) {
+class ReportsMethod(private val client: MastodonClient) {
     // GET /api/v1/reports
     @JvmOverloads
     @Throws(Mastodon4jRequestException::class)

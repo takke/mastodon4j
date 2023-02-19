@@ -14,7 +14,7 @@ import okhttp3.RequestBody
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#statuses
  */
-class Statuses(private val client: MastodonClient) {
+class StatusesMethod(private val client: MastodonClient) {
 
     //  GET /api/v1/statuses/:id
     @Throws(Mastodon4jRequestException::class)

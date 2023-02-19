@@ -9,7 +9,7 @@ import mastodon4j.api.entity.Notification
 import mastodon4j.api.entity.Status
 import mastodon4j.api.exception.Mastodon4jRequestException
 
-class Streaming(private val client: MastodonClient) {
+class StreamingMethod(private val client: MastodonClient) {
     @Throws(Mastodon4jRequestException::class)
     fun federatedPublic(handler: Handler): Shutdownable {
         val response = client.get("/api/v1/streaming/public")
