@@ -16,5 +16,11 @@ class Emoji(
     val url: String = "",
 
     @SerializedName("visible_in_picker")
-    val visibleInPicker: Boolean = true
+    val visibleInPicker: Boolean = true,
+
+    @SerializedName("width")
+    val width: Int? = null,
+
+    @SerializedName("height")
+    val height: Int? = null,
 )
