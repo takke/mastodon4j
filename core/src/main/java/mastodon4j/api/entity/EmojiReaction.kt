@@ -17,4 +17,10 @@ data class EmojiReaction(
 
     @SerializedName("static_url")
     val staticUrl: String?,
+
+    @SerializedName("width")
+    val width: Int? = null,
+
+    @SerializedName("height")
+    val height: Int? = null,
 )
