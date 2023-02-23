@@ -4,6 +4,7 @@ import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
+import mastodon4j.api.entity.Account
 import mastodon4j.api.entity.MstList
 import mastodon4j.api.entity.Status
 import mastodon4j.api.exception.Mastodon4jRequestException
@@ -22,7 +23,7 @@ class ListsMethod(private val client: MastodonClient) {
         ).toPageable()
     }
 
-    //GET /api/v1/timelines/list/:list_id
+    // GET /api/v1/timelines/list/:list_id
     @Throws(Mastodon4jRequestException::class)
     fun getListTimeLine(listID: Long, range: Range = Range()): MastodonRequest<Pageable<Status>> {
         return MastodonRequest<Pageable<Status>>(
@@ -31,6 +32,22 @@ class ListsMethod(private val client: MastodonClient) {
             },
             {
                 client.getSerializer().fromJson(it, Status::class.java)
+            }
+        ).toPageable()
+    }
+
+    // GET /api/v1/lists/:id/accounts
+    @JvmOverloads
+    fun getListAccounts(listId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
+        return MastodonRequest<Pageable<Account>>(
+            {
+                client.get(
+                    "/api/v1/lists/$listId/accounts",
+                    range.toParameter()
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, Account::class.java)
             }
         ).toPageable()
     }
