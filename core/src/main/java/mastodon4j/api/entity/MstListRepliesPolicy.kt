@@ -8,7 +8,7 @@ enum class MstListRepliesPolicy(val value: String) {
     ;
 
     companion object {
-        fun fromString(value: String): MstListRepliesPolicy {
+        fun fromString(value: String?): MstListRepliesPolicy {
             return values().firstOrNull { it.value == value } ?: List
         }
     }
