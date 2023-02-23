@@ -4,20 +4,20 @@ import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
-import mastodon4j.api.entity.MastodonList
+import mastodon4j.api.entity.MstList
 import mastodon4j.api.entity.Status
 import mastodon4j.api.exception.Mastodon4jRequestException
 
 class ListsMethod(private val client: MastodonClient) {
 
     // GET /api/v1/lists
-    fun getLists(): MastodonRequest<Pageable<MastodonList>> {
-        return MastodonRequest<Pageable<MastodonList>>(
+    fun getLists(): MastodonRequest<Pageable<MstList>> {
+        return MastodonRequest<Pageable<MstList>>(
             {
                 client.get("/api/v1/lists")
             },
             {
-                client.getSerializer().fromJson(it, MastodonList::class.java)
+                client.getSerializer().fromJson(it, MstList::class.java)
             }
         ).toPageable()
     }
