@@ -4,8 +4,10 @@ import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
+import mastodon4j.api.entity.Emoji
 import mastodon4j.api.entity.Instance
 import mastodon4j.api.entity.Status
+import mastodon4j.api.exception.Mastodon4jRequestException
 
 class PublicMethod(private val client: MastodonClient) {
     /**
@@ -75,4 +77,21 @@ class PublicMethod(private val client: MastodonClient) {
 
     @JvmOverloads
     fun getFederatedTag(tag: String, range: Range = Range()) = getTag(tag, false, range)
+
+    /**
+     * GET /api/v1/custom_emojis
+     *
+     * @see https://docs.joinmastodon.org/methods/custom_emojis/
+     */
+    @Throws(Mastodon4jRequestException::class)
+    fun getCustomEmojis(): MastodonRequest<List<Emoji>> {
+        return MastodonRequest(
+            {
+                client.get("/api/v1/custom_emojis")
+            },
+            {
+                client.getSerializer().fromJson(it, Emoji::class.java)
+            }
+        )
+    }
 }
