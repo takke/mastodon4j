@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#emoji
  */
-class Emoji(
+data class Emoji(
     @SerializedName("shortcode")
     val shortcode: String = "",
 
@@ -23,4 +23,8 @@ class Emoji(
 
     @SerializedName("height")
     val height: Int? = null,
+
+    @SerializedName("category")
+    val category: String? = null,
+
 )
