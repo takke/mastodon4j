@@ -141,10 +141,23 @@ class AccountsMethod(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/follow
-    fun postFollow(accountId: Long): MastodonRequest<Relationship> {
+    fun postFollow(accountId: Long, reblogs: Boolean? = null, notify: Boolean? = null): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
-                client.post("/api/v1/accounts/$accountId/follow", emptyRequestBody())
+                val parameter = Parameter().apply {
+                    if (reblogs != null) {
+                        append("reblogs", reblogs)
+                    }
+                    if (notify != null) {
+                        append("notify", notify)
+                    }
+                }.build()
+
+                client.post(
+                    "/api/v1/accounts/$accountId/follow",
+                    parameter.toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
+
+                )
             },
             {
                 client.getSerializer().fromJson(it, Relationship::class.java)
