@@ -3,6 +3,7 @@ package mastodon4j.api.method
 import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.Parameter
+import mastodon4j.api.Range
 import mastodon4j.api.entity.*
 import mastodon4j.api.exception.Mastodon4jRequestException
 
@@ -13,17 +14,14 @@ class SearchMethod(private val client: MastodonClient) {
 
     //  GET /api/v2/search
     @Throws(Mastodon4jRequestException::class)
-    fun getSearch2(query: String, resolve: Boolean = false, limit: Int? = null): MastodonRequest<Results> {
+    fun getSearch2(query: String, resolve: Boolean = false, range: Range? = null): MastodonRequest<Results> {
 
         return MastodonRequest(
             {
-                client.get("/api/v2/search", Parameter().apply {
+                client.get("/api/v2/search", (range?.toParameter() ?: Parameter()).apply {
                     append("q", query)
                     if (resolve) {
-                        append("resolve", resolve)
-                    }
-                    if (limit != null) {
-                        append("limit", limit.coerceIn(1, 40))
+                        append("resolve", true)
                     }
                 })
             },
