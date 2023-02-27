@@ -15,7 +15,7 @@ class SearchMethod(private val client: MastodonClient) {
     @Throws(Mastodon4jRequestException::class)
     fun getSearch2(query: String, resolve: Boolean = false): MastodonRequest<Results> {
 
-        return MastodonRequest<Results>(
+        return MastodonRequest(
             {
                 client.get("/api/v2/search", Parameter().apply {
                     append("q", query)
@@ -34,11 +34,11 @@ class SearchMethod(private val client: MastodonClient) {
      * GET /api/v1/search
      * q: The search query
      * resolve: Whether to resolve non-local accounts
-     * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#search
+     * @see "https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#search"
      */
     @JvmOverloads
-    fun getSearch(query: String, resolve: Boolean = false): MastodonRequest<Results> {
-        return MastodonRequest<Results>(
+    fun getSearch(query: String, resolve: Boolean = false): MastodonRequest<ResultsV1> {
+        return MastodonRequest(
             {
                 client.get(
                     "/api/v1/search",
@@ -51,7 +51,7 @@ class SearchMethod(private val client: MastodonClient) {
                 )
             },
             {
-                client.getSerializer().fromJson(it, Results::class.java)
+                client.getSerializer().fromJson(it, ResultsV1::class.java)
             }
         )
     }
