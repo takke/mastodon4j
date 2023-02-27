@@ -54,7 +54,7 @@ class PublicMethod(private val client: MastodonClient) {
      * GET /api/v1/timelines/tag/:tag
      * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
      */
-    private fun getTag(tag: String, local: Boolean, range: Range): MastodonRequest<Pageable<Status>> {
+    private fun getTagTimeline(tag: String, local: Boolean, range: Range): MastodonRequest<Pageable<Status>> {
         val parameter = range.toParameter()
         if (local) {
             parameter.append("local", local)
@@ -73,10 +73,10 @@ class PublicMethod(private val client: MastodonClient) {
     }
 
     @JvmOverloads
-    fun getLocalTag(tag: String, range: Range = Range()) = getTag(tag, true, range)
+    fun getLocalTagTimeline(tag: String, range: Range = Range()) = getTagTimeline(tag, true, range)
 
     @JvmOverloads
-    fun getFederatedTag(tag: String, range: Range = Range()) = getTag(tag, false, range)
+    fun getFederatedTagTimeline(tag: String, range: Range = Range()) = getTagTimeline(tag, false, range)
 
     /**
      * GET /api/v1/custom_emojis
