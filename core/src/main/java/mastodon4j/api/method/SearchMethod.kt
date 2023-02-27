@@ -13,7 +13,7 @@ class SearchMethod(private val client: MastodonClient) {
 
     //  GET /api/v2/search
     @Throws(Mastodon4jRequestException::class)
-    fun getSearch2(query: String, resolve: Boolean = false): MastodonRequest<Results> {
+    fun getSearch2(query: String, resolve: Boolean = false, limit: Int? = null): MastodonRequest<Results> {
 
         return MastodonRequest(
             {
@@ -21,6 +21,9 @@ class SearchMethod(private val client: MastodonClient) {
                     append("q", query)
                     if (resolve) {
                         append("resolve", resolve)
+                    }
+                    if (limit != null) {
+                        append("limit", limit.coerceIn(1, 40))
                     }
                 })
             },
