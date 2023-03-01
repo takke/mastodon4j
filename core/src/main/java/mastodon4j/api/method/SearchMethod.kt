@@ -5,7 +5,7 @@ import mastodon4j.MastodonRequest
 import mastodon4j.Parameter
 import mastodon4j.api.Range
 import mastodon4j.api.entity.*
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 
 /**
  * See more https://docs.joinmastodon.org/methods/search/
@@ -13,7 +13,7 @@ import mastodon4j.api.exception.Mastodon4jRequestException
 class SearchMethod(private val client: MastodonClient) {
 
     //  GET /api/v2/search
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun getSearch2(query: String, resolve: Boolean = false, range: Range? = null): MastodonRequest<Results> {
 
         return MastodonRequest(

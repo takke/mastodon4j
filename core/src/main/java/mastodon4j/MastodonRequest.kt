@@ -2,7 +2,7 @@ package mastodon4j
 
 import com.google.gson.JsonParser
 import mastodon4j.api.MastodonResponse
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.toPageable
 import okhttp3.Response
 
@@ -32,12 +32,12 @@ open class MastodonRequest<T>(
     }
 
     @Suppress("UNCHECKED_CAST")
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun execute(): T {
         val response = executor()
         if (response.isSuccessful) {
             try {
-                val body = response.body?.string() ?: throw Mastodon4jRequestException(response)
+                val body = response.body?.string() ?: throw MastodonException(response)
                 val element = JsonParser().parse(body)
 
                 val result = if (element.isJsonObject) {
@@ -67,10 +67,10 @@ open class MastodonRequest<T>(
 
                 return result
             } catch (e: Exception) {
-                throw Mastodon4jRequestException(e)
+                throw MastodonException(e)
             }
         } else {
-            throw Mastodon4jRequestException(response)
+            throw MastodonException(response)
         }
     }
 }

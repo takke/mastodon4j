@@ -1,7 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.testtool.MockClient
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicInteger
@@ -38,7 +38,7 @@ class PublicTest {
                 .execute()
     }
 
-    @Test(expected = Mastodon4jRequestException::class)
+    @Test(expected = MastodonException::class)
     fun getInstanceWithException() {
         val client = MockClient.ioException()
         val publicMethod = Public(client)
@@ -57,7 +57,7 @@ class PublicTest {
         result.hashtags.size shouldEqualTo 5
     }
 
-    @Test(expected = Mastodon4jRequestException::class)
+    @Test(expected = MastodonException::class)
     fun getSearchWithException() {
         val client = MockClient.ioException()
         val publicMethod = Public(client)
@@ -91,7 +91,7 @@ class PublicTest {
         atomicInt.get() shouldEqualTo 20
     }
 
-    @Test(expected = Mastodon4jRequestException::class)
+    @Test(expected = MastodonException::class)
     fun getLocalPublicWithException() {
         val client = MockClient.ioException()
         val publicMethod = Public(client)
@@ -106,7 +106,7 @@ class PublicTest {
         statuses.part.size shouldEqualTo 20
     }
 
-    @Test(expected = Mastodon4jRequestException::class)
+    @Test(expected = MastodonException::class)
     fun getLocalTagWithException() {
         val client = MockClient.ioException()
         val publicMethod = Public(client)

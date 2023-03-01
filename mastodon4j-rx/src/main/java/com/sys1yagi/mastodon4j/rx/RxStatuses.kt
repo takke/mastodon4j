@@ -7,7 +7,7 @@ import mastodon4j.api.entity.Account
 import mastodon4j.api.entity.Card
 import mastodon4j.api.entity.Context
 import mastodon4j.api.entity.Status
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 import mastodon4j.api.method.Statuses
 import com.sys1yagi.mastodon4j.extension.emptyRequestBody
 import io.reactivex.Completable

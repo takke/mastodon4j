@@ -7,7 +7,7 @@ import mastodon4j.api.Range
 import mastodon4j.api.entity.Account
 import mastodon4j.api.entity.MstList
 import mastodon4j.api.entity.Status
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 
 class ListsMethod(private val client: MastodonClient) {
 
@@ -24,7 +24,7 @@ class ListsMethod(private val client: MastodonClient) {
     }
 
     // GET /api/v1/timelines/list/:list_id
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun getListTimeLine(listID: Long, range: Range = Range()): MastodonRequest<Pageable<Status>> {
         return MastodonRequest<Pageable<Status>>(
             {

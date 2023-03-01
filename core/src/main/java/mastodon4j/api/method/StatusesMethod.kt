@@ -6,7 +6,7 @@ import mastodon4j.Parameter
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.*
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.emptyRequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
@@ -17,7 +17,7 @@ import okhttp3.RequestBody
 class StatusesMethod(private val client: MastodonClient) {
 
     //  GET /api/v1/statuses/:id
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun getStatus(statusId: Long): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
@@ -30,7 +30,7 @@ class StatusesMethod(private val client: MastodonClient) {
     }
 
     //  GET /api/v1/statuses/:id/context
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun getContext(statusId: Long): MastodonRequest<Context> {
         return MastodonRequest<Context>(
             {
@@ -44,7 +44,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
 //    //  GET /api/v1/statuses/:id/card =>
 //    //  2.6.0 - deprecated in favor of card property inlined on Status entity
-//    @Throws(Mastodon4jRequestException::class)
+//    @Throws(MastodonException::class)
 //    fun getCard(statusId: Long): MastodonRequest<Card> {
 //        return MastodonRequest<Card>(
 //            {
@@ -58,7 +58,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
     //  GET /api/v1/reblogged_by
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun getRebloggedBy(statusId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
         return MastodonRequest<Pageable<Account>>(
             {
@@ -75,7 +75,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
     //  GET /api/v1/favourited_by
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun getFavouritedBy(statusId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
         return MastodonRequest<Pageable<Account>>(
             {
@@ -100,7 +100,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * visibility (optional): either "direct", "private", "unlisted" or "public"
      */
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun postStatus(
         status: String,
         inReplyToId: Long?,
@@ -141,16 +141,16 @@ class StatusesMethod(private val client: MastodonClient) {
     }
 
     //  DELETE /api/v1/statuses/:id
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun deleteStatus(statusId: Long) {
         val response = client.delete("/api/v1/statuses/$statusId")
         if (!response.isSuccessful) {
-            throw Mastodon4jRequestException(response)
+            throw MastodonException(response)
         }
     }
 
     //  POST /api/v1/statuses/:id/reblog
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun postReblog(statusId: Long): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
@@ -163,7 +163,7 @@ class StatusesMethod(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/statuses/:id/unreblog
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun postUnreblog(statusId: Long): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
@@ -176,7 +176,7 @@ class StatusesMethod(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/statuses/:id/favourite
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun postFavourite(statusId: Long): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
@@ -189,7 +189,7 @@ class StatusesMethod(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/statuses/:id/unfavourite
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun postUnfavourite(statusId: Long): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {

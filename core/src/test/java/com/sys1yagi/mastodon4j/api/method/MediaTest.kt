@@ -1,7 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.testtool.MockClient
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.emptyRequestBody
 import okhttp3.MultipartBody
 import org.amshove.kluent.shouldEqualTo
@@ -22,7 +22,7 @@ class MediaTest {
         attachment.textUrl shouldNotBe  null
     }
 
-    @Test(expected = Mastodon4jRequestException::class)
+    @Test(expected = MastodonException::class)
     fun postMediaWithException() {
         val client = MockClient.ioException()
         val media = Media(client)

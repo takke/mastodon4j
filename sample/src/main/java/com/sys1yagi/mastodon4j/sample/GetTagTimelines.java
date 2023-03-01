@@ -5,7 +5,7 @@ import com.sys1yagi.mastodon4j.MastodonClient;
 import mastodon4j.api.Pageable;
 import mastodon4j.api.Range;
 import mastodon4j.api.entity.Status;
-import mastodon4j.api.exception.Mastodon4jRequestException;
+import mastodon4j.api.exception.MastodonException;
 import mastodon4j.api.method.Public;
 import mastodon4j.api.method.Timelines;
 import okhttp3.OkHttpClient;
@@ -25,7 +25,7 @@ public class GetTagTimelines {
                 System.out.println(status.getContent());
                 System.out.println(status.isReblogged());
             });
-        } catch (Mastodon4jRequestException e) {
+        } catch (MastodonException e) {
             e.printStackTrace();
         }
     }

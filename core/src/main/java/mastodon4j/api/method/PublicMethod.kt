@@ -7,7 +7,7 @@ import mastodon4j.api.Range
 import mastodon4j.api.entity.Emoji
 import mastodon4j.api.entity.Instance
 import mastodon4j.api.entity.Status
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 
 class PublicMethod(private val client: MastodonClient) {
     /**
@@ -83,7 +83,7 @@ class PublicMethod(private val client: MastodonClient) {
      *
      * @see https://docs.joinmastodon.org/methods/custom_emojis/
      */
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun getCustomEmojis(): MastodonRequest<List<Emoji>> {
         return MastodonRequest(
             {

@@ -5,7 +5,7 @@ import com.sys1yagi.kmockito.mock
 import com.sys1yagi.mastodon4j.testtool.MockClient
 import mastodon4j.MastodonClient
 import mastodon4j.api.Scope
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 import org.amshove.kluent.shouldEqualTo
 import org.junit.Test
 
@@ -27,7 +27,7 @@ class AppsTest {
         registration.redirectUri shouldEqualTo "urn:ietf:wg:oauth:2.0:oob"
     }
 
-    @Test(expected = Mastodon4jRequestException::class)
+    @Test(expected = MastodonException::class)
     fun createAppWithException() {
         val client = MockClient.ioException()
 
@@ -58,7 +58,7 @@ class AppsTest {
         accessToken.createdAt shouldEqualTo 1493188835
     }
 
-    @Test(expected = Mastodon4jRequestException::class)
+    @Test(expected = MastodonException::class)
     fun getAccessTokenWithException() {
         val client: MastodonClient = MockClient.ioException()
         val apps = Apps(client)
@@ -76,7 +76,7 @@ class AppsTest {
         accessToken.createdAt shouldEqualTo 1493188835
     }
 
-    @Test(expected = Mastodon4jRequestException::class)
+    @Test(expected = MastodonException::class)
     fun postUserNameAndPasswordWithException() {
         val client: MastodonClient = MockClient.ioException()
         val apps = Apps(client)

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.sys1yagi.mastodon4j.MastodonClient;
 import mastodon4j.api.Scope;
 import mastodon4j.api.entity.auth.AppRegistration;
-import mastodon4j.api.exception.Mastodon4jRequestException;
+import mastodon4j.api.exception.MastodonException;
 import mastodon4j.api.method.Apps;
 import okhttp3.OkHttpClient;
 
@@ -22,7 +22,7 @@ public class GetAppRegistration {
             System.out.println("instance=" + registration.getInstanceName());
             System.out.println("client_id=" + registration.getClientId());
             System.out.println("client_secret=" + registration.getClientSecret());
-        } catch (Mastodon4jRequestException e) {
+        } catch (MastodonException e) {
             int statusCode = e.getResponse().code();
         }
     }

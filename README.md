@@ -64,7 +64,7 @@ try {
     System.out.println(status.getAccount().getDisplayName());
     System.out.println(status.getContent());
   });
-} catch (Mastodon4jRequestException e) {
+} catch (MastodonException e) {
   e.printStackTrace();
 }
 ```
@@ -104,7 +104,7 @@ try {
     System.out.println("instance=" + registration.getInstanceName());
     System.out.println("client_id=" + registration.getClientId());
     System.out.println("client_secret=" + registration.getClientSecret());
-} catch (Mastodon4jRequestException e) {
+} catch (MastodonException e) {
 	int statusCode = e.getResponse().code();
 	// error handling.
 }
@@ -193,7 +193,7 @@ try {
   val shutdownable = streaming.localPublic(handler)
   Thread.sleep(10000L)
   shutdownable.shutdown()
-} catch(e: Mastodon4jRequestException) {
+} catch(e: MastodonException) {
   e.printStackTrace()
 }
 ```

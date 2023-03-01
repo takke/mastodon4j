@@ -3,7 +3,7 @@ package com.sys1yagi.mastodon4j.sample
 import mastodon4j.api.Handler
 import mastodon4j.api.entity.Notification
 import mastodon4j.api.entity.Status
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 import mastodon4j.api.method.Streaming
 
 
@@ -33,7 +33,7 @@ object StreamPublicTimeline {
             val shutdownable = streaming.localPublic(handler)
             Thread.sleep(10000L)
             shutdownable.shutdown()
-        } catch(e: Mastodon4jRequestException) {
+        } catch(e: MastodonException) {
             println("error")
             println(e.response?.code())
             println(e.response?.message())

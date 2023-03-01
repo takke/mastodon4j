@@ -5,7 +5,7 @@ import mastodon4j.MastodonRequest
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.Account
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.emptyRequestBody
 
 /**
@@ -24,20 +24,20 @@ class FollowRequestsMethod(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/follow_requests/:id/authorize
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun postAuthorize(accountId: Long) {
         val response = client.post("/api/v1/follow_requests/$accountId/authorize", emptyRequestBody())
         if (!response.isSuccessful) {
-            throw Mastodon4jRequestException(response)
+            throw MastodonException(response)
         }
     }
 
     //  POST /api/v1/follow_requests/:id/reject
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun postReject(accountId: Long) {
         val response = client.post("/api/v1/follow_requests/$accountId/reject", emptyRequestBody())
         if (!response.isSuccessful) {
-            throw Mastodon4jRequestException(response)
+            throw MastodonException(response)
         }
     }
 }

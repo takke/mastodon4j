@@ -6,7 +6,7 @@ import mastodon4j.api.Handler;
 import mastodon4j.api.Shutdownable;
 import mastodon4j.api.entity.Notification;
 import mastodon4j.api.entity.Status;
-import mastodon4j.api.exception.Mastodon4jRequestException;
+import mastodon4j.api.exception.MastodonException;
 import mastodon4j.api.method.Streaming;
 import okhttp3.OkHttpClient;
 

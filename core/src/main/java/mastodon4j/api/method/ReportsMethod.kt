@@ -6,7 +6,7 @@ import mastodon4j.Parameter
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.Report
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 
@@ -16,7 +16,7 @@ import okhttp3.RequestBody
 class ReportsMethod(private val client: MastodonClient) {
     // GET /api/v1/reports
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun getReports(range: Range = Range()): MastodonRequest<Pageable<Report>> {
         return MastodonRequest<Pageable<Report>>(
             {
@@ -37,7 +37,7 @@ class ReportsMethod(private val client: MastodonClient) {
      * status_ids: The IDs of statuses to report (can be an array)
      * comment: A comment to associate with the report.
      */
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun postReport(accountId: Long, statusId: Long, comment: String): MastodonRequest<Report> {
         val parameters = Parameter().apply {
             append("account_id", accountId)

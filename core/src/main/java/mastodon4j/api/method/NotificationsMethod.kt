@@ -5,7 +5,7 @@ import mastodon4j.MastodonRequest
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.Notification
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.emptyRequestBody
 
 /**
@@ -42,11 +42,11 @@ class NotificationsMethod(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/notifications/clear
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun clearNotifications() {
         val response = client.post("/api/v1/notifications/clear", emptyRequestBody())
         if (!response.isSuccessful) {
-            throw Mastodon4jRequestException(response)
+            throw MastodonException(response)
         }
     }
 }

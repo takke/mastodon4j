@@ -1,7 +1,7 @@
 package com.sys1yagi.mastodon4j.api.method
 
 import com.sys1yagi.mastodon4j.testtool.MockClient
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 import org.amshove.kluent.shouldEqualTo
 import org.amshove.kluent.shouldNotBe
 import org.junit.Assert.*
@@ -19,14 +19,14 @@ class NotificationsTest {
         notification.status shouldNotBe null
     }
 
-    @Test(expected = Mastodon4jRequestException::class)
+    @Test(expected = MastodonException::class)
     fun getNotificationsWithException() {
         val client = MockClient.ioException()
         val notifications = Notifications(client)
         notifications.getNotifications().execute()
     }
 
-    @Test(expected = Mastodon4jRequestException::class)
+    @Test(expected = MastodonException::class)
     fun getNotificationWithException() {
         val client = MockClient.ioException()
         val notifications = Notifications(client)

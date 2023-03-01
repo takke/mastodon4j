@@ -1,7 +1,7 @@
 package mastodon4j
 
 import com.google.gson.Gson
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 import okhttp3.*
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -92,7 +92,7 @@ private constructor(
             )
             return call.execute()
         } catch (e: IOException) {
-            throw Mastodon4jRequestException(e)
+            throw MastodonException(e)
         }
     }
 
@@ -108,9 +108,9 @@ private constructor(
             )
             return call.execute()
         } catch (e: IllegalArgumentException) {
-            throw Mastodon4jRequestException(e)
+            throw MastodonException(e)
         } catch (e: IOException) {
-            throw Mastodon4jRequestException(e)
+            throw MastodonException(e)
         }
     }
 
@@ -126,7 +126,7 @@ private constructor(
             )
             return call.execute()
         } catch (e: IOException) {
-            throw Mastodon4jRequestException(e)
+            throw MastodonException(e)
         }
     }
 
@@ -142,7 +142,7 @@ private constructor(
             )
             return call.execute()
         } catch (e: IOException) {
-            throw Mastodon4jRequestException(e)
+            throw MastodonException(e)
         }
     }
 }

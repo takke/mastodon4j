@@ -5,7 +5,7 @@ import mastodon4j.MastodonRequest
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.Status
-import mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
@@ -13,7 +13,7 @@ import mastodon4j.api.exception.Mastodon4jRequestException
 class TimelinesMethod(private val client: MastodonClient) {
     //  GET /api/v1/timelines/home
     @JvmOverloads
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun getHome(range: Range = Range()): MastodonRequest<Pageable<Status>> {
         return MastodonRequest<Pageable<Status>>(
             {

@@ -5,7 +5,7 @@ import okhttp3.HttpUrl
 import okhttp3.Protocol
 import okhttp3.Response
 
-class Mastodon4jRequestException : Exception {
+class MastodonException : Exception {
 
     val requestUrl: HttpUrl?
     val protocol: Protocol?
