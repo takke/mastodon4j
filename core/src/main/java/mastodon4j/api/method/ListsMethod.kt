@@ -98,7 +98,7 @@ class ListsMethod(private val client: MastodonClient) {
     }
 
     /**
-     * PUT /api/v1/lists
+     * PUT /api/v1/lists/:id
      */
     @Throws(MastodonException::class)
     fun editList(
@@ -125,5 +125,17 @@ class ListsMethod(private val client: MastodonClient) {
                 client.getSerializer().fromJson(it, MstList::class.java)
             }
         )
+    }
+
+    /**
+     * DELETE /api/v1/lists/:id
+     */
+    @Throws(MastodonException::class)
+    fun deleteList(listId: Long) {
+
+        val response = client.delete("/api/v1/lists/$listId")
+        if (!response.isSuccessful) {
+            throw MastodonException(response)
+        }
     }
 }
