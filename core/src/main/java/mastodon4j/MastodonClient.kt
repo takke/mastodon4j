@@ -114,6 +114,24 @@ private constructor(
         }
     }
 
+    open fun put(path: String, body: RequestBody): Response {
+        try {
+            val url = "$baseUrl$path"
+            debugPrint(url)
+            val call = client.newCall(
+                Request.Builder()
+                    .url(url)
+                    .put(body)
+                    .build()
+            )
+            return call.execute()
+        } catch (e: IllegalArgumentException) {
+            throw MastodonException(e)
+        } catch (e: IOException) {
+            throw MastodonException(e)
+        }
+    }
+
     open fun patch(path: String, body: RequestBody): Response {
         try {
             val url = "$baseUrl$path"
