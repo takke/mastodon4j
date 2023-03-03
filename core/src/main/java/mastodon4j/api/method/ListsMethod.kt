@@ -154,7 +154,7 @@ class ListsMethod(private val client: MastodonClient) {
         }.build()
 
         val response = client.post(
-            "/api/v1/lists/$listId",
+            "/api/v1/lists/$listId/accounts",
             parameters.toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
         )
         if (!response.isSuccessful) {
@@ -175,7 +175,7 @@ class ListsMethod(private val client: MastodonClient) {
         }.build()
 
         val response = client.delete(
-            "/api/v1/lists/$listId",
+            "/api/v1/lists/$listId/accounts",
             parameters.toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
         )
         if (!response.isSuccessful) {
