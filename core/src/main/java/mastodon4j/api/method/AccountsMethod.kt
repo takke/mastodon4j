@@ -6,8 +6,10 @@ import mastodon4j.Parameter
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.Account
+import mastodon4j.api.entity.MstList
 import mastodon4j.api.entity.Relationship
 import mastodon4j.api.entity.Status
+import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.emptyRequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -264,5 +266,20 @@ class AccountsMethod(private val client: MastodonClient) {
                 client.getSerializer().fromJson(it, Account::class.java)
             }
         )
+    }
+
+    /**
+     * GET /api/v1/accounts/:id/lists
+     */
+    @Throws(MastodonException::class)
+    fun getListsContainingThisAccount(accountId: Long): MastodonRequest<Pageable<MstList>> {
+        return MastodonRequest<Pageable<MstList>>(
+            {
+                client.get("/api/v1/accounts/${accountId}/lists")
+            },
+            {
+                client.getSerializer().fromJson(it, MstList::class.java)
+            }
+        ).toPageable()
     }
 }
