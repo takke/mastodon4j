@@ -148,14 +148,14 @@ private constructor(
         }
     }
 
-    open fun delete(path: String): Response {
+    open fun delete(path: String, body: RequestBody? = null): Response {
         try {
             val url = "$baseUrl$path"
             debugPrint(url)
             val call = client.newCall(
                 Request.Builder()
                     .url(url)
-                    .delete()
+                    .delete(body)
                     .build()
             )
             return call.execute()
