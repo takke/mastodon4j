@@ -142,6 +142,27 @@ class ListsMethod(private val client: MastodonClient) {
     }
 
     /**
+     * POST /api/v1/lists/:id/accounts
+     */
+    @Throws(MastodonException::class)
+    fun addAccountsToList(listId: Long, accountIds: LongArray) {
+
+        val parameters = Parameter().apply {
+            accountIds.forEach {
+                append("account_ids[]", it.toString())
+            }
+        }.build()
+
+        val response = client.post(
+            "/api/v1/lists/$listId",
+            parameters.toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
+        )
+        if (!response.isSuccessful) {
+            throw MastodonException(response)
+        }
+    }
+
+    /**
      * DELETE /api/v1/lists/:id/accounts
      */
     @Throws(MastodonException::class)
