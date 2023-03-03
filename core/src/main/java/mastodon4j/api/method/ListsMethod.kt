@@ -16,6 +16,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 class ListsMethod(private val client: MastodonClient) {
 
     // GET /api/v1/lists
+    @Throws(MastodonException::class)
     fun getLists(): MastodonRequest<Pageable<MstList>> {
         return MastodonRequest<Pageable<MstList>>(
             {
@@ -28,6 +29,7 @@ class ListsMethod(private val client: MastodonClient) {
     }
 
     // GET /api/v1/lists/:id
+    @Throws(MastodonException::class)
     fun getList(listId: Long): MastodonRequest<MstList> {
         return MastodonRequest(
             {
@@ -134,6 +136,27 @@ class ListsMethod(private val client: MastodonClient) {
     fun deleteList(listId: Long) {
 
         val response = client.delete("/api/v1/lists/$listId")
+        if (!response.isSuccessful) {
+            throw MastodonException(response)
+        }
+    }
+
+    /**
+     * DELETE /api/v1/lists/:id/accounts
+     */
+    @Throws(MastodonException::class)
+    fun removeAccountsFromList(listId: Long, accountIds: LongArray) {
+
+        val parameters = Parameter().apply {
+            accountIds.forEach {
+                append("account_ids[]", it.toString())
+            }
+        }.build()
+
+        val response = client.delete(
+            "/api/v1/lists/$listId",
+            parameters.toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
+        )
         if (!response.isSuccessful) {
             throw MastodonException(response)
         }
