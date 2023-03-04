@@ -35,6 +35,9 @@ data class Instance(
 
     @SerializedName("thumbnail")
     val thumbnail: String? = null,
+
+    @SerializedName("configuration")
+    val configuration: Configuration? = null,
 ) {
 
     data class Stats(
@@ -47,5 +50,15 @@ data class Instance(
         @SerializedName("domain_count")
         val domainCount: Long? = null,
     )
+
+    data class Configuration(
+        @SerializedName("statuses")
+        val statuses: Statuses? = null,
+    ) {
+        data class Statuses(
+            @SerializedName("max_characters")
+            val maxCharacters: Int? = null,
+        )
+    }
 }
 
