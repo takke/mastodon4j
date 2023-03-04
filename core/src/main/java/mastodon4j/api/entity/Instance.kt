@@ -35,17 +35,17 @@ data class Instance(
 
     @SerializedName("thumbnail")
     val thumbnail: String? = null,
+) {
 
-)
+    data class Stats(
+        @SerializedName("user_count")
+        val userCount: Long? = null,
 
-data class Stats(
-    @SerializedName("user_count")
-    val userCount: Long? = null,
+        @SerializedName("status_count")
+        val statusCount: Long? = null,
 
-    @SerializedName("status_count")
-    val statusCount: Long? = null,
+        @SerializedName("domain_count")
+        val domainCount: Long? = null,
+    )
+}
 
-    @SerializedName("domain_count")
-    val domainCount: Long? = null,
-
-)
