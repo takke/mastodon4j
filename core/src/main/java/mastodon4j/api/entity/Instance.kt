@@ -38,6 +38,9 @@ data class Instance(
 
     @SerializedName("configuration")
     val configuration: Configuration? = null,
+
+    @SerializedName("fedibird_capabilities")
+    val fedibirdCapabilities: List<String> = emptyList(),
 ) {
 
     data class Stats(
