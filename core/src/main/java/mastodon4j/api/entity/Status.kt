@@ -34,6 +34,7 @@ class Status(
 
     // emoji_reactions of fedibird.com
     @SerializedName("emoji_reactions") val emojiReactions: List<EmojiReaction> = emptyList(),
+    @SerializedName("emoji_reactioned") val emojiReactioned: Boolean = false,
 
     // quote of fedibird.com
     @SerializedName("quote") val quote: Status? = null,

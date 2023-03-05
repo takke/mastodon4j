@@ -23,4 +23,7 @@ data class EmojiReaction(
 
     @SerializedName("height")
     val height: Int? = null,
+
+    @SerializedName("domain")
+    val domain: String?,
 )

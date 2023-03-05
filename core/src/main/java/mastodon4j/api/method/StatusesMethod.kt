@@ -200,4 +200,22 @@ class StatusesMethod(private val client: MastodonClient) {
             }
         )
     }
+
+    // PUT /api/v1/statuses/:id/emoji_reactions/:emojiName
+    @Throws(MastodonException::class)
+    fun putEmojiReaction(statusId: Long, emojiName: String) {
+        val response = client.put("/api/v1/statuses/$statusId/emoji_reactions/$emojiName", emptyRequestBody())
+        if (!response.isSuccessful) {
+            throw MastodonException(response)
+        }
+    }
+
+    // POST /api/v1/statuses/:id/emoji_unreaction
+    fun removeEmojiReaction(statusId: Long) {
+        val response = client.post("/api/v1/statuses/$statusId/emoji_unreaction", emptyRequestBody())
+        if (!response.isSuccessful) {
+            throw MastodonException(response)
+        }
+    }
+
 }
