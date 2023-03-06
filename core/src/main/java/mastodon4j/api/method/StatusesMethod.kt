@@ -218,4 +218,18 @@ class StatusesMethod(private val client: MastodonClient) {
         }
     }
 
+    // GET /api/v1/statuses/:id/emoji_reactioned_by
+    fun getEmojiReactionedByUsers(statusId: Long): MastodonRequest<Pageable<EmojiReactionedAccount>> {
+        return MastodonRequest<Pageable<EmojiReactionedAccount>>(
+            {
+                client.get(
+                    "/api/v1/statuses/$statusId/emoji_reactioned_by"
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, EmojiReactionedAccount::class.java)
+            }
+        ).toPageable()
+    }
+
 }
