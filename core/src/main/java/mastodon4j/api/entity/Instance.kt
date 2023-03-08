@@ -15,6 +15,9 @@ data class Instance(
     @SerializedName("description")
     val description: String = "",
 
+    @SerializedName("short_description")
+    val shortDescription: String = "",
+
     @SerializedName("email")
     val email: String = "",
 
