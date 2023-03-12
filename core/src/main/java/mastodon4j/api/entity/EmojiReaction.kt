@@ -26,4 +26,6 @@ data class EmojiReaction(
 
     @SerializedName("domain")
     val domain: String?,
-)
+) {
+    val toEmoji: Emoji get() = Emoji(name, staticUrl ?: "", url ?: "", false, width, height, null)
+}
