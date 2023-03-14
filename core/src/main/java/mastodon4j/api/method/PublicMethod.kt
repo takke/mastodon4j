@@ -4,15 +4,18 @@ import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
+import mastodon4j.api.entity.DomainBlock
 import mastodon4j.api.entity.Emoji
 import mastodon4j.api.entity.Instance
 import mastodon4j.api.entity.Status
 import mastodon4j.api.exception.MastodonException
 
 class PublicMethod(private val client: MastodonClient) {
+
     /**
      * GET /api/v1/instance
-     * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#instances
+     *
+     * @see https://docs.joinmastodon.org/methods/instance/
      */
     fun getInstance(): MastodonRequest<Instance> {
         return MastodonRequest(
@@ -26,8 +29,25 @@ class PublicMethod(private val client: MastodonClient) {
     }
 
     /**
-     *  GET /api/v1/timelines/public
-     * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
+     * GET /api/v1/instance/domain_blocks
+     *
+     * @see https://docs.joinmastodon.org/methods/instance/
+     */
+    fun getInstanceDomainBlocks(): MastodonRequest<List<DomainBlock>> {
+        return MastodonRequest(
+            {
+                client.get("/api/v1/instance/domain_blocks")
+            },
+            {
+                client.getSerializer().fromJson(it, DomainBlock::class.java)
+            }
+        )
+    }
+
+    /**
+     * GET /api/v1/timelines/public
+     *
+     * @see https://docs.joinmastodon.org/methods/instance/
      */
     private fun getPublic(local: Boolean, range: Range): MastodonRequest<Pageable<Status>> {
         val parameter = range.toParameter()
@@ -52,7 +72,8 @@ class PublicMethod(private val client: MastodonClient) {
 
     /**
      * GET /api/v1/timelines/tag/:tag
-     * @see https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
+     *
+     * @see https://docs.joinmastodon.org/methods/instance/
      */
     private fun getTagTimeline(tag: String, local: Boolean, range: Range): MastodonRequest<Pageable<Status>> {
         val parameter = range.toParameter()
