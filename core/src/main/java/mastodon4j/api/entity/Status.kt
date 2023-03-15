@@ -21,6 +21,7 @@ class Status(
     @SerializedName("favourites_count") val favouritesCount: Int = 0,
     @SerializedName("reblogged") val isReblogged: Boolean = false,
     @SerializedName("favourited") val isFavourited: Boolean = false,
+    @SerializedName("bookmarked") val isBookmarked: Boolean = false,
     @SerializedName("sensitive") val isSensitive: Boolean = false,
     @SerializedName("spoiler_text") val spoilerText: String = "",
     @SerializedName("visibility") val visibilityValue: String = Visibility.Public.value,
