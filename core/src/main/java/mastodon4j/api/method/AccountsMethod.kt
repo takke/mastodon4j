@@ -9,6 +9,7 @@ import mastodon4j.api.entity.Account
 import mastodon4j.api.entity.MstList
 import mastodon4j.api.entity.Relationship
 import mastodon4j.api.entity.Status
+import mastodon4j.api.entity.Suggestion
 import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.emptyRequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -108,6 +109,20 @@ class AccountsMethod(private val client: MastodonClient) {
                 client.getSerializer().fromJson(it, Account::class.java)
             }
         ).toPageable()
+    }
+
+    // GET /api/v2/suggestions
+    fun getSuggestions(): MastodonRequest<List<Suggestion>> {
+        return MastodonRequest(
+            {
+                client.get(
+                    "/api/v2/suggestions"
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, Suggestion::class.java)
+            }
+        )
     }
 
     //  GET /api/v1/accounts/:id/statuses
