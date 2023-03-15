@@ -258,4 +258,18 @@ class StatusesMethod(private val client: MastodonClient) {
         ).toPageable()
     }
 
+    // GET /api/v1/emoji_reactions
+    @JvmOverloads
+    @Throws(MastodonException::class)
+    fun getEmojiReactions(range: Range): MastodonRequest<Pageable<Status>> {
+        return MastodonRequest<Pageable<Status>>(
+            {
+                client.get("/api/v1/emoji_reactions", range.toParameter())
+            },
+            {
+                client.getSerializer().fromJson(it, Status::class.java)
+            }
+        ).toPageable()
+    }
+
 }
