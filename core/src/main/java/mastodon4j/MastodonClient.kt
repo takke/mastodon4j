@@ -2,6 +2,24 @@ package mastodon4j
 
 import com.google.gson.Gson
 import mastodon4j.api.exception.MastodonException
+import mastodon4j.api.method.AccountsMethod
+import mastodon4j.api.method.AppsMethod
+import mastodon4j.api.method.BlocksMethod
+import mastodon4j.api.method.BookmarksMethod
+import mastodon4j.api.method.FavouritesMethod
+import mastodon4j.api.method.FollowRequestsMethod
+import mastodon4j.api.method.FollowsMethod
+import mastodon4j.api.method.ListsMethod
+import mastodon4j.api.method.MediaMethod
+import mastodon4j.api.method.MutesMethod
+import mastodon4j.api.method.NotificationsMethod
+import mastodon4j.api.method.PublicMethod
+import mastodon4j.api.method.ReportsMethod
+import mastodon4j.api.method.SearchMethod
+import mastodon4j.api.method.StatusesMethod
+import mastodon4j.api.method.StreamingMethod
+import mastodon4j.api.method.TimelinesMethod
+import mastodon4j.api.method.TrendsMethod
 import okhttp3.*
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -163,4 +181,28 @@ private constructor(
             throw MastodonException(e)
         }
     }
+
+    //--------------------------------------------------
+    // Methods
+    //--------------------------------------------------
+
+    val accounts get() = AccountsMethod(this)
+    val apps get() = AppsMethod(this)
+    val blocks get() = BlocksMethod(this)
+    val bookmarks get() = BookmarksMethod(this)
+    val favourites get() = FavouritesMethod(this)
+    val followRequests get() = FollowRequestsMethod(this)
+    val follows get() = FollowsMethod(this)
+    val lists get() = ListsMethod(this)
+    val media get() = MediaMethod(this)
+    val mutes get() = MutesMethod(this)
+    val notifications get() = NotificationsMethod(this)
+    val public get() = PublicMethod(this)
+    val reports get() = ReportsMethod(this)
+    val search get() = SearchMethod(this)
+    val statuses get() = StatusesMethod(this)
+    val streaming get() = StreamingMethod(this)
+    val timelines get() = TimelinesMethod(this)
+    val trends get() = TrendsMethod(this)
+
 }
