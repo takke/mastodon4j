@@ -201,6 +201,32 @@ class StatusesMethod(private val client: MastodonClient) {
         )
     }
 
+    // POST /api/v1/statuses/:id/bookmark
+    @Throws(MastodonException::class)
+    fun postBookmark(statusId: Long): MastodonRequest<Status> {
+        return MastodonRequest<Status>(
+            {
+                client.post("/api/v1/statuses/$statusId/bookmark", emptyRequestBody())
+            },
+            {
+                client.getSerializer().fromJson(it, Status::class.java)
+            }
+        )
+    }
+
+    // POST /api/v1/statuses/:id/unbookmark
+    @Throws(MastodonException::class)
+    fun postUnbookmark(statusId: Long): MastodonRequest<Status> {
+        return MastodonRequest<Status>(
+            {
+                client.post("/api/v1/statuses/$statusId/unbookmark", emptyRequestBody())
+            },
+            {
+                client.getSerializer().fromJson(it, Status::class.java)
+            }
+        )
+    }
+
     // PUT /api/v1/statuses/:id/emoji_reactions/:emojiName
     @Throws(MastodonException::class)
     fun putEmojiReaction(statusId: Long, emojiName: String) {
