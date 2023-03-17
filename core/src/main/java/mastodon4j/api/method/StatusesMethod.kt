@@ -259,7 +259,6 @@ class StatusesMethod(private val client: MastodonClient) {
     }
 
     // GET /api/v1/emoji_reactions
-    @JvmOverloads
     @Throws(MastodonException::class)
     fun getEmojiReactions(range: Range): MastodonRequest<Pageable<Status>> {
         return MastodonRequest<Pageable<Status>>(
@@ -270,6 +269,29 @@ class StatusesMethod(private val client: MastodonClient) {
                 client.getSerializer().fromJson(it, Status::class.java)
             }
         ).toPageable()
+    }
+
+    // POST /api/v1/polls/:id/votes
+    @Throws(MastodonException::class)
+    fun postPollsVotes(pollId: Long, choices: List<Int>): MastodonRequest<Poll> {
+        val parameters = Parameter().apply {
+            append("choices", choices)
+        }.build()
+
+        return MastodonRequest<Poll>(
+            {
+                client.post(
+                    "/api/v1/polls/$pollId/votes",
+                    RequestBody.create(
+                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
+                        parameters
+                    )
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, Poll::class.java)
+            }
+        )
     }
 
 }
