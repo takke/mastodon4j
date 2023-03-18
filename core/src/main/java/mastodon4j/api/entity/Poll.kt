@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 class Poll(
 
     @SerializedName("id") val id: Long = 0L,
-    @SerializedName("expires_at") val expiresAt: String = "",
+    @SerializedName("expires_at") val expiresAt: String? = "",
     @SerializedName("expired") val expired: Boolean = false,
     @SerializedName("multiple") val multiple: Boolean = false,
     @SerializedName("votes_count") val votesCount: Int = 0,
