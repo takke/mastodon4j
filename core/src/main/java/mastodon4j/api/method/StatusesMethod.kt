@@ -107,7 +107,8 @@ class StatusesMethod(private val client: MastodonClient) {
         mediaIds: List<Long>?,
         sensitive: Boolean,
         spoilerText: String?,
-        visibility: Status.Visibility = Status.Visibility.Public
+        visibility: Status.Visibility = Status.Visibility.Public,
+        quoteId: Long?
     ): MastodonRequest<Status> {
         val parameters = Parameter().apply {
             append("status", status)
@@ -122,6 +123,9 @@ class StatusesMethod(private val client: MastodonClient) {
                 append("spoiler_text", it)
             }
             append("visibility", visibility.value)
+            quoteId?.let {
+                append("quote_id", it)
+            }
         }.build()
 
         return MastodonRequest<Status>(
