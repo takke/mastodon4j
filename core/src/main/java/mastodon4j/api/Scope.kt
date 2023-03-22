@@ -5,7 +5,7 @@ package mastodon4j.api
  */
 class Scope
 @JvmOverloads
-constructor(vararg private val scopes: Name = arrayOf(Name.ALL)) {
+constructor(private vararg val scopes: Name = arrayOf(Name.ALL)) {
     enum class Name(val scopeName: String) {
         READ("read"),
         WRITE("write"),
