@@ -66,15 +66,18 @@ class AppsMethod(private val client: MastodonClient) {
         clientSecret: String,
         redirectUri: String = "urn:ietf:wg:oauth:2.0:oob",
         code: String,
-        grantType: String = "authorization_code"
+        grantType: String = "authorization_code",
+        scope: Scope = Scope(Scope.Name.ALL)
     ): MastodonRequest<AccessToken> {
-        val parameters = listOf(
-            "client_id=$clientId",
-            "client_secret=$clientSecret",
-            "redirect_uri=$redirectUri",
-            "code=$code",
-            "grant_type=$grantType"
-        ).joinToString(separator = "&")
+        val parameters = Parameter().apply {
+            append("client_id", clientId)
+            append("client_secret", clientSecret)
+            append("scope", scope.toString())
+            append("redirect_uri", redirectUri)
+            append("code", code)
+            append("grant_type", grantType)
+        }.build()
+
         return MastodonRequest(
             {
                 client.post(
