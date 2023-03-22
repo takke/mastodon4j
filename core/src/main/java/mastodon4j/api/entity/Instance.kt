@@ -42,6 +42,9 @@ data class Instance(
     @SerializedName("configuration")
     val configuration: Configuration? = null,
 
+    @SerializedName("feature_quote")
+    val featureQuote: Boolean = false,
+
     @SerializedName("fedibird_capabilities")
     val fedibirdCapabilitiesList: List<String> = emptyList(),
 ) {
