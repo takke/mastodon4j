@@ -10,6 +10,7 @@ import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.emptyRequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#statuses
@@ -91,13 +92,7 @@ class StatusesMethod(private val client: MastodonClient) {
     }
 
     /**
-     * POST /api/v1/status
-     * status: The text of the status
-     * in_reply_to_id (optional): local ID of the status you want to reply to
-     * media_ids (optional): array of media IDs to attach to the status (maximum 4)
-     * sensitive (optional): set this to mark the media of the status as NSFW
-     * spoiler_text (optional): text to be shown as a warning before the actual content
-     * visibility (optional): either "direct", "private", "unlisted" or "public"
+     * POST /api/v1/statuses
      */
     @JvmOverloads
     @Throws(MastodonException::class)
@@ -136,6 +131,44 @@ class StatusesMethod(private val client: MastodonClient) {
                         "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
                         parameters
                     )
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, Status::class.java)
+            }
+        )
+    }
+
+    /**
+     * PUT /api/v1/statuses/:id
+     *
+     * @see "https://docs.joinmastodon.org/methods/statuses/#edit"
+     */
+    @Throws(MastodonException::class)
+    fun editStatus(
+        statusId: Long,
+        status: String,
+        spoilerText: String?,
+        sensitive: Boolean,
+        mediaIds: List<Long>?,
+    ): MastodonRequest<Status> {
+        val parameters = Parameter().apply {
+            append("status", status)
+            mediaIds?.let {
+                append("media_ids", it)
+            }
+            append("sensitive", sensitive)
+            spoilerText?.let {
+                append("spoiler_text", it)
+            }
+        }.build()
+
+        return MastodonRequest(
+            {
+                client.put(
+                    "/api/v1/statuses/$statusId",
+                    parameters
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
                 )
             },
             {
