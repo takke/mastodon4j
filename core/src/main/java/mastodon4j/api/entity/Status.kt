@@ -58,4 +58,6 @@ class Status(
     val visibility: Visibility by lazy {
         Visibility.fromString(visibilityValue)
     }
+
+    val isEdited: Boolean get() = editedAt?.isNotEmpty() == true
 }
