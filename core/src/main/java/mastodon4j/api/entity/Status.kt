@@ -30,6 +30,7 @@ class Status(
     @SerializedName("tags") val tags: List<Tag> = emptyList(),
     @SerializedName("application") val application: Application? = null,
     @SerializedName("language") val language: String? = null,
+    @SerializedName("edited_at") val editedAt: String = "",
     @SerializedName("pinned") val pinned: Boolean? = null,
     @SerializedName("card") val card: PreviewCard? = null,
     @SerializedName("poll") val poll: Poll? = null,
