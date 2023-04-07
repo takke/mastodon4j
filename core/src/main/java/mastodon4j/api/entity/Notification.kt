@@ -41,6 +41,7 @@ data class Notification(
         Poll("poll"),
         Update("update"),
         EmojiReaction("emoji_reaction"),
+        StatusReference("status_reference"),
         AdminSignup("admin.sign_up"),
         AdminReport("admin.report"),
         Unknown("unknown"),
