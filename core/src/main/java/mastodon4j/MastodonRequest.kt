@@ -15,6 +15,7 @@ open class MastodonRequest<T>(
     }
 
     private var action: (json: String, value: Any) -> Unit = { _, _ -> }
+    private var arrayAction: ((jsonArray: String) -> Unit)? = null
 
     private var isPageable: Boolean = false
 
@@ -25,6 +26,10 @@ open class MastodonRequest<T>(
     @JvmSynthetic
     fun doOnJson(action: (json: String, value: Any) -> Unit) = apply {
         this.action = action
+    }
+
+    fun doOnJsonArray(arrayAction: (jsonArray: String) -> Unit) = apply {
+        this.arrayAction = arrayAction
     }
 
     fun doOnJson(action: Action1<String>) = apply {
@@ -52,6 +57,9 @@ open class MastodonRequest<T>(
                         action(json, v)
                         list.add(v)
                     }
+
+                    arrayAction?.invoke(body)
+
                     if (isPageable) {
                         list.toPageable(response) as T
                     } else {
