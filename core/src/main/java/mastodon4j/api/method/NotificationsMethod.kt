@@ -14,10 +14,13 @@ import mastodon4j.extension.emptyRequestBody
 class NotificationsMethod(private val client: MastodonClient) {
     // GET /api/v1/notifications
     @JvmOverloads
-    fun getNotifications(range: Range = Range(), excludeTypes: List<Notification.Type>? = null): MastodonRequest<Pageable<Notification>> {
+    fun getNotifications(range: Range = Range(), types: List<Notification.Type>? = null, excludeTypes: List<Notification.Type>? = null): MastodonRequest<Pageable<Notification>> {
         val parameter = range.toParameter()
         if (excludeTypes != null) {
             parameter.append("exclude_types", excludeTypes.map { it.value })
+        }
+        if (types != null) {
+            parameter.append("types", types.map { it.value })
         }
         return MastodonRequest<Pageable<Notification>>(
             {
