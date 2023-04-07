@@ -3,6 +3,7 @@ package mastodon4j
 import com.google.gson.Gson
 import mastodon4j.api.exception.MastodonException
 import mastodon4j.api.method.AccountsMethod
+import mastodon4j.api.method.AnnouncementsMethod
 import mastodon4j.api.method.AppsMethod
 import mastodon4j.api.method.BlocksMethod
 import mastodon4j.api.method.BookmarksMethod
@@ -204,5 +205,6 @@ private constructor(
     val streaming get() = StreamingMethod(this)
     val timelines get() = TimelinesMethod(this)
     val trends get() = TrendsMethod(this)
+    val announcements get() = AnnouncementsMethod(this)
 
 }
