@@ -31,6 +31,15 @@ class AnnouncementsMethod(private val client: MastodonClient) {
         )
     }
 
+    // POST /api/v1/announcements/:id/dismiss
+    @Throws(MastodonException::class)
+    fun dismissAnnouncement(announcementId: Long) {
+        val response = client.post("/api/v1/announcements/$announcementId/dismiss", emptyRequestBody())
+        if (!response.isSuccessful) {
+            throw MastodonException(response)
+        }
+    }
+
     // PUT /api/v1/announcements/:id/reactions/:name
     @Throws(MastodonException::class)
     fun putAnnouncementReaction(announcementId: Long, emojiName: String) {
