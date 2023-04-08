@@ -12,8 +12,12 @@ import mastodon4j.api.entity.Status
 import mastodon4j.api.entity.Suggestion
 import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.emptyRequestBody
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#accounts
@@ -47,22 +51,14 @@ class AccountsMethod(private val client: MastodonClient) {
      * PATCH /api/v1/accounts/update_credentials
      * display_name: The name to display in the user's profile
      * note: A new biography for the user
-     * avatar: A base64 encoded image to display as the user's avatar (e.g. data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAADrCAYAAAA...)
-     * header: A base64 encoded image to display as the user's header image (e.g. data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUoAAADrCAYAAAA...)
      */
-    fun updateCredential(displayName: String?, note: String?, avatar: String?, header: String?): MastodonRequest<Account> {
+    fun updateCredential(displayName: String?, note: String?): MastodonRequest<Account> {
         val parameters = Parameter().apply {
             displayName?.let {
                 append("display_name", it)
             }
             note?.let {
                 append("note", it)
-            }
-            avatar?.let {
-                append("avatar", it)
-            }
-            header?.let {
-                append("header", it)
             }
         }.build()
         return MastodonRequest(
@@ -71,6 +67,46 @@ class AccountsMethod(private val client: MastodonClient) {
                     "/api/v1/accounts/update_credentials",
                     parameters
                         .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, Account::class.java)
+            }
+        )
+    }
+
+    fun updateAvatar(avatarFile: File, mimeType: String): MastodonRequest<Account> {
+        return MastodonRequest(
+            {
+                client.patch(
+                    "/api/v1/accounts/update_credentials",
+                    MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart(
+                            "avatar", avatarFile.name,
+                            avatarFile.asRequestBody(mimeType.toMediaType())
+                        )
+                        .build()
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, Account::class.java)
+            }
+        )
+    }
+
+    fun updateHeader(headerFile: File, mimeType: String): MastodonRequest<Account> {
+        return MastodonRequest(
+            {
+                client.patch(
+                    "/api/v1/accounts/update_credentials",
+                    MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart(
+                            "header", headerFile.name,
+                            headerFile.asRequestBody(mimeType.toMediaType())
+                        )
+                        .build()
                 )
             },
             {
