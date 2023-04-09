@@ -19,7 +19,7 @@ class CredentialAccount(
     @SerializedName("emojis") val emojis: List<Emoji> = emptyList(),
     @SerializedName("fields") val fields: List<Field> = emptyList(),
     // same as Account above
-    @SerializedName("source") val source: Source,
+    @SerializedName("source") val source: Source? = null,
 ) {
     class Source(
         @SerializedName("note") val note: String = "",
