@@ -6,6 +6,7 @@ import mastodon4j.Parameter
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.Account
+import mastodon4j.api.entity.CredentialAccount
 import mastodon4j.api.entity.MstList
 import mastodon4j.api.entity.Relationship
 import mastodon4j.api.entity.Status
@@ -40,10 +41,10 @@ class AccountsMethod(private val client: MastodonClient) {
     }
 
     //  GET /api/v1/accounts/verify_credentials
-    fun getVerifyCredentials(): MastodonRequest<Account> {
+    fun getVerifyCredentials(): MastodonRequest<CredentialAccount> {
         return MastodonRequest(
             { client.get("/api/v1/accounts/verify_credentials") },
-            { client.getSerializer().fromJson(it, Account::class.java) }
+            { client.getSerializer().fromJson(it, CredentialAccount::class.java) }
         )
     }
 
