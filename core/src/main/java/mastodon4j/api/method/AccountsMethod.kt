@@ -53,13 +53,31 @@ class AccountsMethod(private val client: MastodonClient) {
      * display_name: The name to display in the user's profile
      * note: A new biography for the user
      */
-    fun updateCredential(displayName: String?, note: String?): MastodonRequest<Account> {
+    fun updateCredential(
+        displayName: String?,
+        note: String?,
+        fieldsAttributesNames: List<String>? = null,
+        fieldsAttributesValues: List<String>? = null
+    ): MastodonRequest<Account> {
         val parameters = Parameter().apply {
             displayName?.let {
                 append("display_name", it)
             }
             note?.let {
                 append("note", it)
+            }
+
+            // fields_attributes
+            if (fieldsAttributesNames != null && fieldsAttributesValues != null) {
+
+                if (fieldsAttributesNames.size != fieldsAttributesValues.size) {
+                    throw MastodonException("fieldsAttributesNames.size != fieldsAttributesValues.size")
+                }
+
+                for (i in fieldsAttributesNames.indices) {
+                    append("fields_attributes[$i][name]", fieldsAttributesNames[i])
+                    append("fields_attributes[$i][value]", fieldsAttributesValues[i])
+                }
             }
         }.build()
         return MastodonRequest(
