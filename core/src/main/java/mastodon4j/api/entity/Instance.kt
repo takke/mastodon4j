@@ -65,10 +65,18 @@ data class Instance(
     data class Configuration(
         @SerializedName("statuses")
         val statuses: Statuses? = null,
+
+        @SerializedName("accounts")
+        val accounts: Accounts? = null,
     ) {
         data class Statuses(
             @SerializedName("max_characters")
             val maxCharacters: Int? = null,
+        )
+
+        data class Accounts(
+            @SerializedName("max_profile_fields")
+            val maxProfileFields: Int? = null,
         )
     }
 
