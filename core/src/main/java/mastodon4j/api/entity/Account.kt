@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import mastodon4j.api.entity.util.CalckeyCompatUtil
 
 class Account(
-    @SerializedName("id") val id_: String = "",
+    @SerializedName("id") val id: String = "",
     @SerializedName("username") val userName: String = "",
     @SerializedName("acct") val acct: String = "",
     @SerializedName("display_name") val displayName_: String? = "", // null when calckey.jp
@@ -20,7 +20,7 @@ class Account(
     @SerializedName("emojis") val emojis: List<Emoji> = emptyList(),
     @SerializedName("fields") val fields: List<Field> = emptyList(),
 ) {
-    val id: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id_, createdAt) }
+    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id, createdAt) }
 
     val displayName: String get() = displayName_ ?: ""
     val note: String get() = note_ ?: ""

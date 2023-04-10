@@ -25,7 +25,7 @@ import java.io.File
  */
 class AccountsMethod(private val client: MastodonClient) {
     // GET /api/v1/accounts/:id
-    fun getAccount(accountId: Long): MastodonRequest<Account> {
+    fun getAccount(accountId: String): MastodonRequest<Account> {
         return MastodonRequest(
             { client.get("/api/v1/accounts/$accountId") },
             { client.getSerializer().fromJson(it, Account::class.java) }
@@ -213,7 +213,7 @@ class AccountsMethod(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/follow
-    fun postFollow(accountId: Long, reblogs: Boolean? = null, notify: Boolean? = null): MastodonRequest<Relationship> {
+    fun postFollow(accountId: String, reblogs: Boolean? = null, notify: Boolean? = null): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
                 val parameter = Parameter().apply {
@@ -238,7 +238,7 @@ class AccountsMethod(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/unfollow
-    fun postUnFollow(accountId: Long): MastodonRequest<Relationship> {
+    fun postUnFollow(accountId: String): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
                 client.post("/api/v1/accounts/$accountId/unfollow", emptyRequestBody())
@@ -298,7 +298,7 @@ class AccountsMethod(private val client: MastodonClient) {
     }
 
     //  GET /api/v1/accounts/relationships
-    fun getRelationships(accountIds: List<Long>): MastodonRequest<List<Relationship>> {
+    fun getRelationships(accountIds: List<String>): MastodonRequest<List<Relationship>> {
         return MastodonRequest(
             {
                 client.get(
