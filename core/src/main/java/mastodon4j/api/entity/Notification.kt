@@ -1,6 +1,7 @@
 package mastodon4j.api.entity
 
 import com.google.gson.annotations.SerializedName
+import mastodon4j.api.entity.util.CalckeyCompatUtil
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#notification
@@ -8,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 data class Notification(
     // The notification ID
     @SerializedName("id")
-    val id: Long = 0L,
+    val id_: String = "",
 
     // The type of event that resulted in the notification.
     @SerializedName("type")
@@ -46,6 +47,8 @@ data class Notification(
         AdminReport("admin.report"),
         Unknown("unknown"),
     }
+
+    val id: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id_, createdAt) }
 
     val type: Type get() = Type.values().firstOrNull { it.value == this.typeValue } ?: Type.Unknown
 }

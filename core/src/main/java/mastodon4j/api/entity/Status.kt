@@ -1,17 +1,18 @@
 package mastodon4j.api.entity
 
 import com.google.gson.annotations.SerializedName
+import mastodon4j.api.entity.util.CalckeyCompatUtil
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#status
  */
 class Status(
-    @SerializedName("id") val id: Long = 0L,
+    @SerializedName("id") val id_: String = "",
     @SerializedName("uri") val uri: String = "",
     @SerializedName("url") val url: String = "",
     @SerializedName("account") val account: Account? = null,
-    @SerializedName("in_reply_to_id") val inReplyToId: Long? = null,
-    @SerializedName("in_reply_to_account_id") val inReplyToAccountId: Long? = null,
+    @SerializedName("in_reply_to_id") val inReplyToId_: String? = null,
+    @SerializedName("in_reply_to_account_id") val inReplyToAccountId_: String? = null,
     @SerializedName("reblog") val reblog: Status? = null,
     @SerializedName("content") val content: String = "",
     @SerializedName("created_at") val createdAt: String = "",
@@ -42,6 +43,10 @@ class Status(
     // quote of fedibird.com
     @SerializedName("quote") val quote: Status? = null,
 ) {
+    val id: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id_, createdAt) }
+    val inReplyToId: Long? by lazy { CalckeyCompatUtil.toLongOrNull(inReplyToId_) }
+    val inReplyToAccountId: Long? by lazy { CalckeyCompatUtil.toLongOrNull(inReplyToAccountId_) }
+
     enum class Visibility(val value: String) {
         Public("public"),
         Unlisted("unlisted"),
