@@ -12,7 +12,7 @@ class Status(
     @SerializedName("url") val url: String = "",
     @SerializedName("account") val account: Account? = null,
     @SerializedName("in_reply_to_id") val inReplyToId_: String? = null,
-    @SerializedName("in_reply_to_account_id") val inReplyToAccountId_: String? = null,
+    @SerializedName("in_reply_to_account_id") val inReplyToAccountId: String? = null,
     @SerializedName("reblog") val reblog: Status? = null,
     @SerializedName("content") val content: String = "",
     @SerializedName("created_at") val createdAt: String = "",
@@ -45,7 +45,6 @@ class Status(
 ) {
     val id: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id_, createdAt) }
     val inReplyToId: Long? by lazy { CalckeyCompatUtil.toLongOrNull(inReplyToId_) }
-    val inReplyToAccountId: Long? by lazy { CalckeyCompatUtil.toLongOrNull(inReplyToAccountId_) }
 
     enum class Visibility(val value: String) {
         Public("public"),
