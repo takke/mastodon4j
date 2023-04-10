@@ -99,7 +99,7 @@ class StatusesMethod(private val client: MastodonClient) {
     fun postStatus(
         status: String,
         inReplyToId: Long?,
-        mediaIds: List<Long>?,
+        mediaIds: List<String>?,
         sensitive: Boolean,
         spoilerText: String?,
         visibility: Status.Visibility = Status.Visibility.Public,
@@ -150,7 +150,7 @@ class StatusesMethod(private val client: MastodonClient) {
         status: String,
         spoilerText: String?,
         sensitive: Boolean,
-        mediaIds: List<Long>?,
+        mediaIds: List<String>?,
     ): MastodonRequest<Status> {
         val parameters = Parameter().apply {
             append("status", status)
