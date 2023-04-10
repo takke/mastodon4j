@@ -6,7 +6,7 @@ class Account(
     @SerializedName("id") val id: Long = 0L,
     @SerializedName("username") val userName: String = "",
     @SerializedName("acct") val acct: String = "",
-    @SerializedName("display_name") val displayName: String = "",
+    @SerializedName("display_name") val displayName: String? = "",  // null when calckey.jp
     @SerializedName("note") val note: String = "",
     @SerializedName("url") val url: String = "",
     @SerializedName("avatar") val avatar: String = "",
