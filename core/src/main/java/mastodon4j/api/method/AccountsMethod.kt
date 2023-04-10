@@ -136,7 +136,7 @@ class AccountsMethod(private val client: MastodonClient) {
 
     //  GET /api/v1/accounts/:id/followers
     @JvmOverloads
-    fun getFollowers(accountId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
+    fun getFollowers(accountId: String, range: Range = Range()): MastodonRequest<Pageable<Account>> {
         return MastodonRequest<Pageable<Account>>(
             {
                 client.get(
@@ -152,7 +152,7 @@ class AccountsMethod(private val client: MastodonClient) {
 
     //  GET /api/v1/accounts/:id/following
     @JvmOverloads
-    fun getFollowing(accountId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
+    fun getFollowing(accountId: String, range: Range = Range()): MastodonRequest<Pageable<Account>> {
         return MastodonRequest<Pageable<Account>>(
             {
                 client.get(
@@ -183,7 +183,7 @@ class AccountsMethod(private val client: MastodonClient) {
     //  GET /api/v1/accounts/:id/statuses
     @JvmOverloads
     fun getStatuses(
-        accountId: Long,
+        accountId: String,
         onlyMedia: Boolean = false,
         excludeReplies: Boolean = false,
         pinned: Boolean = false,
@@ -250,7 +250,7 @@ class AccountsMethod(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/block
-    fun postBlock(accountId: Long): MastodonRequest<Relationship> {
+    fun postBlock(accountId: String): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
                 client.post("/api/v1/accounts/$accountId/block", emptyRequestBody())
@@ -262,7 +262,7 @@ class AccountsMethod(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/unblock
-    fun postUnblock(accountId: Long): MastodonRequest<Relationship> {
+    fun postUnblock(accountId: String): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
                 client.post("/api/v1/accounts/$accountId/unblock", emptyRequestBody())
@@ -274,7 +274,7 @@ class AccountsMethod(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/mute
-    fun postMute(accountId: Long): MastodonRequest<Relationship> {
+    fun postMute(accountId: String): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
                 client.post("/api/v1/accounts/$accountId/mute", emptyRequestBody())
@@ -286,7 +286,7 @@ class AccountsMethod(private val client: MastodonClient) {
     }
 
     //  POST /api/v1/accounts/:id/unmute
-    fun postUnmute(accountId: Long): MastodonRequest<Relationship> {
+    fun postUnmute(accountId: String): MastodonRequest<Relationship> {
         return MastodonRequest(
             {
                 client.post("/api/v1/accounts/$accountId/unmute", emptyRequestBody())
@@ -342,7 +342,7 @@ class AccountsMethod(private val client: MastodonClient) {
      * GET /api/v1/accounts/:id/lists
      */
     @Throws(MastodonException::class)
-    fun getListsContainingThisAccount(accountId: Long): MastodonRequest<Pageable<MstList>> {
+    fun getListsContainingThisAccount(accountId: String): MastodonRequest<Pageable<MstList>> {
         return MastodonRequest<Pageable<MstList>>(
             {
                 client.get("/api/v1/accounts/${accountId}/lists")
