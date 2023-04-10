@@ -9,7 +9,6 @@ import mastodon4j.api.entity.*
 import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.emptyRequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
@@ -127,10 +126,8 @@ class StatusesMethod(private val client: MastodonClient) {
             {
                 client.post(
                     "/api/v1/statuses",
-                    RequestBody.create(
-                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
-                        parameters
-                    )
+                    parameters
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
                 )
             },
             {
@@ -327,10 +324,8 @@ class StatusesMethod(private val client: MastodonClient) {
             {
                 client.post(
                     "/api/v1/polls/$pollId/votes",
-                    RequestBody.create(
-                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
-                        parameters
-                    )
+                    parameters
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
                 )
             },
             {

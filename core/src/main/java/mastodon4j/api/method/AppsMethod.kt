@@ -7,7 +7,7 @@ import mastodon4j.api.Scope
 import mastodon4j.api.entity.auth.AccessToken
 import mastodon4j.api.entity.auth.AppRegistration
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps
@@ -26,18 +26,16 @@ class AppsMethod(private val client: MastodonClient) {
             {
                 client.post(
                     "/api/v1/apps",
-                    RequestBody.create(
-                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
-                        arrayListOf(
-                            "client_name=$clientName",
-                            "scopes=$scope",
-                            "redirect_uris=$redirectUris"
-                        ).apply {
-                            website?.let {
-                                add("website=${it}")
-                            }
-                        }.joinToString(separator = "&")
-                    )
+                    arrayListOf(
+                        "client_name=$clientName",
+                        "scopes=$scope",
+                        "redirect_uris=$redirectUris"
+                    ).apply {
+                        website?.let {
+                            add("website=${it}")
+                        }
+                    }.joinToString(separator = "&")
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
                 )
             },
             {
@@ -82,10 +80,8 @@ class AppsMethod(private val client: MastodonClient) {
             {
                 client.post(
                     "/oauth/token",
-                    RequestBody.create(
-                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
-                        parameters
-                    )
+                    parameters
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
                 )
             },
             {
@@ -115,10 +111,8 @@ class AppsMethod(private val client: MastodonClient) {
             {
                 client.post(
                     "/oauth/token",
-                    RequestBody.create(
-                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
-                        parameters
-                    )
+                    parameters
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
                 )
             },
             {

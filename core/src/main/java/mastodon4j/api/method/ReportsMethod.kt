@@ -8,7 +8,7 @@ import mastodon4j.api.Range
 import mastodon4j.api.entity.Report
 import mastodon4j.api.exception.MastodonException
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#reports
@@ -48,10 +48,8 @@ class ReportsMethod(private val client: MastodonClient) {
             {
                 client.post(
                     "/api/v1/reports",
-                    RequestBody.create(
-                        "application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull(),
-                        parameters
-                    )
+                    parameters
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
                 )
             },
             {
