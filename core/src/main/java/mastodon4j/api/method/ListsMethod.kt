@@ -145,11 +145,11 @@ class ListsMethod(private val client: MastodonClient) {
      * POST /api/v1/lists/:id/accounts
      */
     @Throws(MastodonException::class)
-    fun addAccountsToList(listId: Long, accountIds: LongArray) {
+    fun addAccountsToList(listId: Long, accountIds: Array<String>) {
 
         val parameters = Parameter().apply {
             accountIds.forEach {
-                append("account_ids[]", it.toString())
+                append("account_ids[]", it)
             }
         }.build()
 
@@ -166,11 +166,11 @@ class ListsMethod(private val client: MastodonClient) {
      * DELETE /api/v1/lists/:id/accounts
      */
     @Throws(MastodonException::class)
-    fun removeAccountsFromList(listId: Long, accountIds: LongArray) {
+    fun removeAccountsFromList(listId: Long, accountIds: Array<String>) {
 
         val parameters = Parameter().apply {
             accountIds.forEach {
-                append("account_ids[]", it.toString())
+                append("account_ids[]", it)
             }
         }.build()
 
