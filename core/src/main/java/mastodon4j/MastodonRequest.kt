@@ -46,6 +46,7 @@ open class MastodonRequest<T>(
                 val element = JsonParser().parse(body)
 
                 val result = if (element.isJsonObject) {
+//                    println("body: $body")
                     val v = mapper(body)
                     action(body, v)
                     v as T
@@ -53,6 +54,7 @@ open class MastodonRequest<T>(
                     val list = arrayListOf<Any>()
                     element.asJsonArray.forEach {
                         val json = it.toString()
+//                        println("json: $json")
                         val v = mapper(json)
                         action(json, v)
                         list.add(v)
