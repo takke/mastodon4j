@@ -3,7 +3,7 @@ package mastodon4j.api.entity
 import com.google.gson.annotations.SerializedName
 
 class CredentialAccount(
-    @SerializedName("id") val id: Long = 0L,
+    @SerializedName("id") val id: String = "",
     @SerializedName("username") val userName: String = "",
     @SerializedName("acct") val acct: String = "",
     @SerializedName("display_name") val displayName: String = "",
