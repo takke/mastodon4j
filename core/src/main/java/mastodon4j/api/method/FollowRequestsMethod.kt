@@ -25,7 +25,7 @@ class FollowRequestsMethod(private val client: MastodonClient) {
 
     //  POST /api/v1/follow_requests/:id/authorize
     @Throws(MastodonException::class)
-    fun postAuthorize(accountId: Long) {
+    fun postAuthorize(accountId: String) {
         val response = client.post("/api/v1/follow_requests/$accountId/authorize", emptyRequestBody())
         if (!response.isSuccessful) {
             throw MastodonException(response)
@@ -34,7 +34,7 @@ class FollowRequestsMethod(private val client: MastodonClient) {
 
     //  POST /api/v1/follow_requests/:id/reject
     @Throws(MastodonException::class)
-    fun postReject(accountId: Long) {
+    fun postReject(accountId: String) {
         val response = client.post("/api/v1/follow_requests/$accountId/reject", emptyRequestBody())
         if (!response.isSuccessful) {
             throw MastodonException(response)
