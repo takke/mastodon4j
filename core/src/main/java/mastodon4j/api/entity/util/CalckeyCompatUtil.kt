@@ -33,7 +33,7 @@ object CalckeyCompatUtil {
         }
     }
 
-    private fun parseDate(dateString: String): Date? {
+    fun parseDate(dateString: String): Date? {
         if (dateString.isEmpty()) {
             return null
         }

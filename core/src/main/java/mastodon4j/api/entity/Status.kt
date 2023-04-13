@@ -2,6 +2,7 @@ package mastodon4j.api.entity
 
 import com.google.gson.annotations.SerializedName
 import mastodon4j.api.entity.util.CalckeyCompatUtil
+import java.util.Date
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#status
@@ -56,6 +57,10 @@ class Status(
                 return Visibility.values().firstOrNull { it.value == value } ?: Public
             }
         }
+    }
+
+    val createdAtAsDate: Date? by lazy {
+        CalckeyCompatUtil.parseDate(createdAt)
     }
 
     val visibility: Visibility by lazy {
