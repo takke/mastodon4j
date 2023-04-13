@@ -46,6 +46,9 @@ class Status(
 ) {
     val id: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id_, createdAt) }
 
+    // compat for calckey
+    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id_, createdAt) }
+
     enum class Visibility(val value: String) {
         Public("public"),
         Unlisted("unlisted"),
