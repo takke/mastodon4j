@@ -8,7 +8,7 @@ import java.util.Date
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#status
  */
 class Status(
-    @SerializedName("id") val id_: String = "",
+    @SerializedName("id") val id: String = "",
     @SerializedName("uri") val uri: String = "",
     @SerializedName("url") val url: String = "",
     @SerializedName("account") val account: Account? = null,
@@ -44,10 +44,8 @@ class Status(
     // quote of fedibird.com
     @SerializedName("quote") val quote: Status? = null,
 ) {
-    val id: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id_, createdAt) }
-
     // compat for calckey
-    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id_, createdAt) }
+    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id, createdAt) }
 
     enum class Visibility(val value: String) {
         Public("public"),
