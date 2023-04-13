@@ -53,4 +53,9 @@ class MastodonException : Exception {
     fun resourceNotFound(): Boolean {
         return code == 404
     }
+
+    override fun toString(): String {
+        val responseBody = responseBody ?: ""
+        return "${responseBody}\n" + "code=${code}, url=${requestUrl}, protocol=${protocol}, message=${statusMessage}"
+    }
 }
