@@ -18,7 +18,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
     //  GET /api/v1/statuses/:id
     @Throws(MastodonException::class)
-    fun getStatus(statusId: Long): MastodonRequest<Status> {
+    fun getStatus(statusId: String): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
                 client.get("/api/v1/statuses/$statusId")
@@ -31,7 +31,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
     //  GET /api/v1/statuses/:id/context
     @Throws(MastodonException::class)
-    fun getContext(statusId: Long): MastodonRequest<Context> {
+    fun getContext(statusId: String): MastodonRequest<Context> {
         return MastodonRequest<Context>(
             {
                 client.get("/api/v1/statuses/$statusId/context")
@@ -45,7 +45,7 @@ class StatusesMethod(private val client: MastodonClient) {
 //    //  GET /api/v1/statuses/:id/card =>
 //    //  2.6.0 - deprecated in favor of card property inlined on Status entity
 //    @Throws(MastodonException::class)
-//    fun getCard(statusId: Long): MastodonRequest<Card> {
+//    fun getCard(statusId: String): MastodonRequest<Card> {
 //        return MastodonRequest<Card>(
 //            {
 //                client.get("statuses/$statusId/card")
@@ -59,7 +59,7 @@ class StatusesMethod(private val client: MastodonClient) {
     //  GET /api/v1/reblogged_by
     @JvmOverloads
     @Throws(MastodonException::class)
-    fun getRebloggedBy(statusId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
+    fun getRebloggedBy(statusId: String, range: Range = Range()): MastodonRequest<Pageable<Account>> {
         return MastodonRequest<Pageable<Account>>(
             {
                 client.get(
@@ -76,7 +76,7 @@ class StatusesMethod(private val client: MastodonClient) {
     //  GET /api/v1/favourited_by
     @JvmOverloads
     @Throws(MastodonException::class)
-    fun getFavouritedBy(statusId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
+    fun getFavouritedBy(statusId: String, range: Range = Range()): MastodonRequest<Pageable<Account>> {
         return MastodonRequest<Pageable<Account>>(
             {
                 client.get(
@@ -143,7 +143,7 @@ class StatusesMethod(private val client: MastodonClient) {
      */
     @Throws(MastodonException::class)
     fun editStatus(
-        statusId: Long,
+        statusId: String,
         status: String,
         spoilerText: String?,
         sensitive: Boolean,
@@ -176,7 +176,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
     //  DELETE /api/v1/statuses/:id
     @Throws(MastodonException::class)
-    fun deleteStatus(statusId: Long) {
+    fun deleteStatus(statusId: String) {
         val response = client.delete("/api/v1/statuses/$statusId")
         if (!response.isSuccessful) {
             throw MastodonException(response)
@@ -185,7 +185,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
     //  POST /api/v1/statuses/:id/reblog
     @Throws(MastodonException::class)
-    fun postReblog(statusId: Long): MastodonRequest<Status> {
+    fun postReblog(statusId: String): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
                 client.post("/api/v1/statuses/$statusId/reblog", emptyRequestBody())
@@ -198,7 +198,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
     //  POST /api/v1/statuses/:id/unreblog
     @Throws(MastodonException::class)
-    fun postUnreblog(statusId: Long): MastodonRequest<Status> {
+    fun postUnreblog(statusId: String): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
                 client.post("/api/v1/statuses/$statusId/unreblog", emptyRequestBody())
@@ -211,7 +211,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
     //  POST /api/v1/statuses/:id/favourite
     @Throws(MastodonException::class)
-    fun postFavourite(statusId: Long): MastodonRequest<Status> {
+    fun postFavourite(statusId: String): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
                 client.post("/api/v1/statuses/$statusId/favourite", emptyRequestBody())
@@ -224,7 +224,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
     //  POST /api/v1/statuses/:id/unfavourite
     @Throws(MastodonException::class)
-    fun postUnfavourite(statusId: Long): MastodonRequest<Status> {
+    fun postUnfavourite(statusId: String): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
                 client.post("/api/v1/statuses/$statusId/unfavourite", emptyRequestBody())
@@ -237,7 +237,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
     // POST /api/v1/statuses/:id/bookmark
     @Throws(MastodonException::class)
-    fun postBookmark(statusId: Long): MastodonRequest<Status> {
+    fun postBookmark(statusId: String): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
                 client.post("/api/v1/statuses/$statusId/bookmark", emptyRequestBody())
@@ -250,7 +250,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
     // POST /api/v1/statuses/:id/unbookmark
     @Throws(MastodonException::class)
-    fun postUnbookmark(statusId: Long): MastodonRequest<Status> {
+    fun postUnbookmark(statusId: String): MastodonRequest<Status> {
         return MastodonRequest<Status>(
             {
                 client.post("/api/v1/statuses/$statusId/unbookmark", emptyRequestBody())
@@ -263,7 +263,7 @@ class StatusesMethod(private val client: MastodonClient) {
 
     // PUT /api/v1/statuses/:id/emoji_reactions/:emojiName
     @Throws(MastodonException::class)
-    fun putEmojiReaction(statusId: Long, emojiName: String) {
+    fun putEmojiReaction(statusId: String, emojiName: String) {
         val response = client.put("/api/v1/statuses/$statusId/emoji_reactions/$emojiName", emptyRequestBody())
         if (!response.isSuccessful) {
             throw MastodonException(response)
@@ -271,7 +271,7 @@ class StatusesMethod(private val client: MastodonClient) {
     }
 
     // POST /api/v1/statuses/:id/emoji_unreactions
-    fun deleteAllEmojiReactions(statusId: Long) {
+    fun deleteAllEmojiReactions(statusId: String) {
         val response = client.post("/api/v1/statuses/$statusId/emoji_unreactions", emptyRequestBody())
         if (!response.isSuccessful) {
             throw MastodonException(response)
@@ -279,7 +279,7 @@ class StatusesMethod(private val client: MastodonClient) {
     }
 
     // DELETE /api/v1/statuses/:id/emoji_reaction/:emojiName
-    fun deleteEmojiReaction(statusId: Long, emojiName: String) {
+    fun deleteEmojiReaction(statusId: String, emojiName: String) {
         val response = client.delete("/api/v1/statuses/$statusId/emoji_reactions/$emojiName")
         if (!response.isSuccessful) {
             throw MastodonException(response)
@@ -287,7 +287,7 @@ class StatusesMethod(private val client: MastodonClient) {
     }
 
     // GET /api/v1/statuses/:id/emoji_reactioned_by
-    fun getEmojiReactionedByUsers(statusId: Long): MastodonRequest<Pageable<EmojiReactionedAccount>> {
+    fun getEmojiReactionedByUsers(statusId: String): MastodonRequest<Pageable<EmojiReactionedAccount>> {
         return MastodonRequest<Pageable<EmojiReactionedAccount>>(
             {
                 client.get(
