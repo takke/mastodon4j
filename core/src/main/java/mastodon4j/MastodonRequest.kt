@@ -54,7 +54,13 @@ open class MastodonRequest<T>(
                     val list = arrayListOf<Any>()
                     element.asJsonArray.forEach {
                         val json = it.toString()
+
 //                        println("json: $json")
+//                        println("json: ----------------------------------------")
+//                        json.chunked(1000).forEach { chunk ->
+//                            println("json: $chunk")
+//                        }
+
                         val v = mapper(json)
                         action(json, v)
                         list.add(v)
