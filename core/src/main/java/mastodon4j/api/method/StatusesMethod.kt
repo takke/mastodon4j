@@ -102,7 +102,7 @@ class StatusesMethod(private val client: MastodonClient) {
         sensitive: Boolean,
         spoilerText: String?,
         visibility: Status.Visibility = Status.Visibility.Public,
-        quoteId: Long?
+        quoteId: String?
     ): MastodonRequest<Status> {
         val parameters = Parameter().apply {
             append("status", status)
