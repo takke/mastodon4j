@@ -9,7 +9,7 @@ import mastodon4j.api.entity.util.CalckeyCompatUtil
 data class Notification(
     // The notification ID
     @SerializedName("id")
-    val id_: String = "",
+    val id: String = "",
 
     // The type of event that resulted in the notification.
     @SerializedName("type")
@@ -48,10 +48,8 @@ data class Notification(
         Unknown("unknown"),
     }
 
-    val id: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id_, createdAt) }
-
     // compat for calckey
-    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id_, createdAt) }
+    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id, createdAt) }
 
     val type: Type get() = Type.values().firstOrNull { it.value == this.typeValue } ?: Type.Unknown
 }
