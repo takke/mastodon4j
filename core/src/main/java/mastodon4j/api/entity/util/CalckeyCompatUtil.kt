@@ -8,13 +8,17 @@ import java.util.TimeZone
 
 object CalckeyCompatUtil {
 
-    // In calckey, id is a String, so convert time to id
-    // TODO id to string
-    fun toLongOrFakeTimeId(id_: String, timeString: String): Long {
+    // In calckey, id is a String, so convert to calckey id, or convert time to id
+    fun toLongOrCalckeyIdOrFakeTimeId(id_: String, timeString: String): Long {
         return try {
             id_.toLong()
         } catch (e: NumberFormatException) {
-            parseDate(timeString)?.time ?: System.currentTimeMillis()
+            val calckeyId = aidToCalckeyId(id_)
+            if (calckeyId == 0L) {
+                parseDate(timeString)?.time ?: System.currentTimeMillis()
+            } else {
+                calckeyId
+            }
         }
     }
 
@@ -43,6 +47,16 @@ object CalckeyCompatUtil {
         } catch (e: ParseException) {
             null
         }
+    }
+
+    /**
+     * aid to calckey id
+     *
+     * `aid` is one of the ids used in Misskey.
+     * `calckey id` is the id for some apis in Calckey.
+     */
+    fun aidToCalckeyId(aid: String): Long {
+        return aid.toLongOrNull(36) ?: 0L
     }
 
 }

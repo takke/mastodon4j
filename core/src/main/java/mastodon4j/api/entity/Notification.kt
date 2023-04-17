@@ -49,7 +49,7 @@ data class Notification(
     }
 
     // compat for calckey
-    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id, createdAt) }
+    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrCalckeyIdOrFakeTimeId(id, createdAt) }
 
     val type: Type get() = Type.values().firstOrNull { it.value == this.typeValue } ?: Type.Unknown
 }

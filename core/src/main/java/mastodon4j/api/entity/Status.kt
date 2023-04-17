@@ -45,7 +45,7 @@ class Status(
     @SerializedName("quote") val quote: Status? = null,
 ) {
     // compat for calckey
-    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id, createdAt) }
+    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrCalckeyIdOrFakeTimeId(id, createdAt) }
 
     enum class Visibility(val value: String) {
         Public("public"),

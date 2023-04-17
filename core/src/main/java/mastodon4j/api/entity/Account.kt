@@ -20,7 +20,7 @@ class Account(
     @SerializedName("emojis") val emojis: List<Emoji> = emptyList(),
     @SerializedName("fields") val fields: List<Field> = emptyList(),
 ) {
-    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrFakeTimeId(id, createdAt) }
+    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrCalckeyIdOrFakeTimeId(id, createdAt) }
 
     val displayName: String get() = displayName_ ?: ""
     val note: String get() = note_ ?: ""
