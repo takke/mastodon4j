@@ -71,6 +71,7 @@ class Status(
         Visibility.fromString(visibilityValue)
     }
     val visibilityEx: Visibility by lazy {
+        if (visibilityExValue.isEmpty()) return@lazy visibility
         Visibility.fromString(visibilityExValue)
     }
 
