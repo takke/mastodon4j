@@ -27,6 +27,7 @@ class Status(
     @SerializedName("sensitive") val isSensitive: Boolean = false,
     @SerializedName("spoiler_text") val spoilerText: String = "",
     @SerializedName("visibility") val visibilityValue: String = Visibility.Public.value,
+    @SerializedName("visibility_ex") val visibilityExValue: String = "",    // for kmy.blue
     @SerializedName("media_attachments") val mediaAttachments: List<MediaAttachment> = emptyList(),
     @SerializedName("mentions") val mentions: List<Mention> = emptyList(),
     @SerializedName("tags") val tags: List<Tag> = emptyList(),
@@ -51,7 +52,9 @@ class Status(
         Public("public"),
         Unlisted("unlisted"),
         Private("private"),
-        Direct("direct");
+        Direct("direct"),
+        PublicUnlisted("public_unlisted"),  // visibility_ex only (for kmy.blue)
+        ;
 
         companion object {
             fun fromString(value: String): Visibility {
@@ -66,6 +69,9 @@ class Status(
 
     val visibility: Visibility by lazy {
         Visibility.fromString(visibilityValue)
+    }
+    val visibilityEx: Visibility by lazy {
+        Visibility.fromString(visibilityExValue)
     }
 
     val isEdited: Boolean get() = editedAt?.isNotEmpty() == true
