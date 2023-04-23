@@ -68,6 +68,9 @@ data class Instance(
 
         @SerializedName("accounts")
         val accounts: Accounts? = null,
+
+        @SerializedName("emoji_reactions")
+        val emojiReactions: EmojiReactions? = null,
     ) {
         data class Statuses(
             @SerializedName("max_characters")
@@ -77,6 +80,14 @@ data class Instance(
         data class Accounts(
             @SerializedName("max_profile_fields")
             val maxProfileFields: Int? = null,
+        )
+
+        data class EmojiReactions(
+            @SerializedName("max_reactions")
+            val maxReactions: Int? = null,
+
+            @SerializedName("max_reactions_per_account")
+            val maxReactionsPerAccount: Int? = null,
         )
     }
 
