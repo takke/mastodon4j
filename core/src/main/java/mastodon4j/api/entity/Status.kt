@@ -27,7 +27,7 @@ class Status(
     @SerializedName("sensitive") val isSensitive: Boolean = false,
     @SerializedName("spoiler_text") val spoilerText: String = "",
     @SerializedName("visibility") val visibilityValue: String = Visibility.Public.value,
-    @SerializedName("visibility_ex") val visibilityExValue: String = "",    // for kmy.blue
+    @SerializedName("visibility_ex") val visibilityExValue: String = "",    // for kmy.blue, fedibird
     @SerializedName("media_attachments") val mediaAttachments: List<MediaAttachment> = emptyList(),
     @SerializedName("mentions") val mentions: List<Mention> = emptyList(),
     @SerializedName("tags") val tags: List<Tag> = emptyList(),
@@ -54,6 +54,7 @@ class Status(
         Private("private"),
         Direct("direct"),
         PublicUnlisted("public_unlisted"),  // visibility_ex only (for kmy.blue)
+        Personal("personal"),               // visibility_ex only (for fedibird)
         ;
 
         companion object {
