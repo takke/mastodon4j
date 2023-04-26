@@ -124,6 +124,7 @@ data class Instance(
         val timelineFavouriteMediaOption: Boolean get() = capabilities.contains("timeline_favourite_media_option")
         val timelineEmojiReactionMediaOption: Boolean get() = capabilities.contains("timeline_emoji_reaction_media_option")
         val timelinePersonalMediaOption: Boolean get() = capabilities.contains("timeline_personal_media_option")
+        val kmyblueVisibilityPublicUnlisted: Boolean get() = capabilities.contains("kmyblue_visibility_public_unlisted")
     }
 }
 
