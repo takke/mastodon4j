@@ -60,6 +60,10 @@ class Status(
             fun fromString(value: String): Visibility {
                 return Visibility.values().firstOrNull { it.value == value } ?: Public
             }
+
+            fun fromStringOrNull(value: String): Visibility? {
+                return Visibility.values().firstOrNull { it.value == value }
+            }
         }
     }
 
@@ -70,9 +74,11 @@ class Status(
     val visibility: Visibility by lazy {
         Visibility.fromString(visibilityValue)
     }
+
     val visibilityEx: Visibility by lazy {
         if (visibilityExValue.isEmpty()) return@lazy visibility
-        Visibility.fromString(visibilityExValue)
+
+        Visibility.fromStringOrNull(visibilityExValue) ?: visibility
     }
 
     val isEdited: Boolean get() = editedAt?.isNotEmpty() == true
