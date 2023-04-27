@@ -13,6 +13,7 @@ class MediaAttachment(
     @SerializedName("preview_url") val previewUrl: String? = null,
     @SerializedName("text_url") val textUrl: String? = null,
     @SerializedName("description") val description: String? = null,
+    @SerializedName("blurhash") val blurHash: String? = null,
 ) {
 
     enum class Type(val value: String) {
