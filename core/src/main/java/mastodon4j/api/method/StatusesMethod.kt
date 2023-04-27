@@ -235,6 +235,32 @@ class StatusesMethod(private val client: MastodonClient) {
         )
     }
 
+    // POST /api/v1/statuses/:id/pin
+    @Throws(MastodonException::class)
+    fun postPin(statusId: String): MastodonRequest<Status> {
+        return MastodonRequest<Status>(
+            {
+                client.post("/api/v1/statuses/$statusId/pin", emptyRequestBody())
+            },
+            {
+                client.getSerializer().fromJson(it, Status::class.java)
+            }
+        )
+    }
+
+    // POST /api/v1/statuses/:id/unpin
+    @Throws(MastodonException::class)
+    fun postUnpin(statusId: String): MastodonRequest<Status> {
+        return MastodonRequest<Status>(
+            {
+                client.post("/api/v1/statuses/$statusId/unpin", emptyRequestBody())
+            },
+            {
+                client.getSerializer().fromJson(it, Status::class.java)
+            }
+        )
+    }
+
     // POST /api/v1/statuses/:id/bookmark
     @Throws(MastodonException::class)
     fun postBookmark(statusId: String): MastodonRequest<Status> {
