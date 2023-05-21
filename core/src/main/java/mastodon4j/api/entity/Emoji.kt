@@ -27,4 +27,6 @@ data class Emoji(
     @SerializedName("category")
     val category: String? = null,
 
+    @SerializedName("aliases")
+    val aliases: List<String> = emptyList()
 )
