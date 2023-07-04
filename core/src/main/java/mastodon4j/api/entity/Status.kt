@@ -2,7 +2,7 @@ package mastodon4j.api.entity
 
 import com.google.gson.annotations.SerializedName
 import mastodon4j.api.entity.util.CalckeyCompatUtil
-import java.util.Date
+import java.util.*
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#status
@@ -41,6 +41,9 @@ class Status(
     // emoji_reactions of fedibird.com
     @SerializedName("emoji_reactions") val emojiReactions: List<EmojiReaction> = emptyList(),
     @SerializedName("emoji_reactioned") val emojiReactioned: Boolean = false,
+
+    // for fedibird.com
+    @SerializedName("status_referred_by_count") val statusReferredByCount: Long = 0,
 
     // quote of fedibird.com
     @SerializedName("quote") val quote: Status? = null,
