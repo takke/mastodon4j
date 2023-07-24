@@ -40,4 +40,17 @@ class TimelinesMethod(private val client: MastodonClient) {
             }
         ).toPageable()
     }
+
+    // GET /api/v1/timelines/personal (fedibird only)
+    @Throws(MastodonException::class)
+    fun getPersonalTimelines(range: Range): MastodonRequest<Pageable<Status>> {
+        return MastodonRequest<Pageable<Status>>(
+            {
+                client.get("/api/v1/timelines/personal", range.toParameter())
+            },
+            {
+                client.getSerializer().fromJson(it, Status::class.java)
+            }
+        ).toPageable()
+    }
 }
