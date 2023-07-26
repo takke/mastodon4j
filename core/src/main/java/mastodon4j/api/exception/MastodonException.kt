@@ -56,6 +56,8 @@ class MastodonException : Exception {
 
     override fun toString(): String {
         val responseBody = responseBody ?: ""
-        return "${responseBody}\n" + "code=${code}, url=${requestUrl}, protocol=${protocol}, message=${statusMessage}"
+        return "${responseBody}\n" + additionalErrorInfo
     }
+
+    val additionalErrorInfo: String get() = "code=${code}, url=${requestUrl}, protocol=${protocol}, message=${statusMessage}"
 }
