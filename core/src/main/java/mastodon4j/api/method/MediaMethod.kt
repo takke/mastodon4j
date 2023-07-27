@@ -10,10 +10,14 @@ import okhttp3.MultipartBody
  */
 class MediaMethod(private val client: MastodonClient) {
     //  POST /api/v1/media
-    fun postMedia(file: MultipartBody.Part): MastodonRequest<MediaAttachment> {
+    fun postMedia(parts: List<MultipartBody.Part>): MastodonRequest<MediaAttachment> {
         val requestBody = MultipartBody.Builder()
             .setType(MultipartBody.FORM)
-            .addPart(file)
+            .also {
+                parts.forEach { part ->
+                    it.addPart(part)
+                }
+            }
             .build()
         return MastodonRequest<MediaAttachment>(
             {
