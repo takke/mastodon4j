@@ -14,7 +14,7 @@ class SearchMethod(private val client: MastodonClient) {
 
     //  GET /api/v2/search
     @Throws(MastodonException::class)
-    fun getSearch2(query: String, resolve: Boolean = false, range: Range? = null): MastodonRequest<Results> {
+    fun getSearch2(query: String, resolve: Boolean = false, range: Range? = null, type: String? = null): MastodonRequest<Results> {
 
         return MastodonRequest(
             {
@@ -22,6 +22,9 @@ class SearchMethod(private val client: MastodonClient) {
                     append("q", query)
                     if (resolve) {
                         append("resolve", true)
+                    }
+                    if (type != null) {
+                        append("type", type)
                     }
                 })
             },
