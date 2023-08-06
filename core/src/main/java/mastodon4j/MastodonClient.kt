@@ -9,6 +9,7 @@ import mastodon4j.api.method.BlocksMethod
 import mastodon4j.api.method.BookmarksMethod
 import mastodon4j.api.method.FavouritesMethod
 import mastodon4j.api.method.FollowRequestsMethod
+import mastodon4j.api.method.FollowedTagsMethod
 import mastodon4j.api.method.FollowsMethod
 import mastodon4j.api.method.ListsMethod
 import mastodon4j.api.method.MediaMethod
@@ -194,6 +195,7 @@ private constructor(
     val favourites get() = FavouritesMethod(this)
     val followRequests get() = FollowRequestsMethod(this)
     val follows get() = FollowsMethod(this)
+    val followedTags get() = FollowedTagsMethod(this)
     val lists get() = ListsMethod(this)
     val media get() = MediaMethod(this)
     val mutes get() = MutesMethod(this)
