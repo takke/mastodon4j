@@ -20,6 +20,7 @@ import mastodon4j.api.method.ReportsMethod
 import mastodon4j.api.method.SearchMethod
 import mastodon4j.api.method.StatusesMethod
 import mastodon4j.api.method.StreamingMethod
+import mastodon4j.api.method.TagsMethod
 import mastodon4j.api.method.TimelinesMethod
 import mastodon4j.api.method.TrendsMethod
 import okhttp3.*
@@ -205,6 +206,7 @@ private constructor(
     val search get() = SearchMethod(this)
     val statuses get() = StatusesMethod(this)
     val streaming get() = StreamingMethod(this)
+    val tags get() = TagsMethod(this)
     val timelines get() = TimelinesMethod(this)
     val trends get() = TrendsMethod(this)
     val announcements get() = AnnouncementsMethod(this)
