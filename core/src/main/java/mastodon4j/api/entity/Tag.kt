@@ -10,7 +10,10 @@ data class Tag(
     val name: String = "",
 
     @SerializedName("url")
-    val url: String = ""
+    val url: String = "",
+
+    @SerializedName("following")
+    val following: Boolean = false,
 
     // TODO support history
 )
