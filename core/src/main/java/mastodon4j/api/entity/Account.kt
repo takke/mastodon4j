@@ -19,6 +19,9 @@ class Account(
     @SerializedName("statuses_count") val statusesCount: Long = 0,
     @SerializedName("emojis") val emojis: List<Emoji> = emptyList(),
     @SerializedName("fields") val fields: List<Field> = emptyList(),
+
+    // for fedibird.com
+    @SerializedName("other_settings") val otherSettings: AccountOtherSettings? = null,
 ) {
     val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrCalckeyIdOrFakeTimeId(id, createdAt) }
 
