@@ -360,4 +360,16 @@ class StatusesMethod(private val client: MastodonClient) {
         )
     }
 
+    //  GET /api/v1/statuses/:id
+    @Throws(MastodonException::class)
+    fun getStatusSource(statusId: String): MastodonRequest<StatusSource> {
+        return MastodonRequest<StatusSource>(
+            {
+                client.get("/api/v1/statuses/$statusId/source")
+            },
+            {
+                client.getSerializer().fromJson(it, StatusSource::class.java)
+            }
+        )
+    }
 }
