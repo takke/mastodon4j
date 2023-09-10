@@ -26,6 +26,8 @@ class Status(
     @SerializedName("bookmarked") val isBookmarked: Boolean = false,
     @SerializedName("sensitive") val isSensitive: Boolean = false,
     @SerializedName("spoiler_text") val spoilerText: String = "",
+    // only for delete
+    @SerializedName("text") val text: String? = null,
     @SerializedName("visibility") val visibilityValue: String = Visibility.Public.value,
     @SerializedName("visibility_ex") val visibilityExValue: String = "",    // for kmy.blue, fedibird
     @SerializedName("media_attachments") val mediaAttachments: List<MediaAttachment> = emptyList(),

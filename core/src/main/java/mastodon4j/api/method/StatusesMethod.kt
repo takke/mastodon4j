@@ -176,11 +176,19 @@ class StatusesMethod(private val client: MastodonClient) {
 
     //  DELETE /api/v1/statuses/:id
     @Throws(MastodonException::class)
-    fun deleteStatus(statusId: String) {
+    fun deleteStatus(statusId: String): MastodonRequest<Status> {
         val response = client.delete("/api/v1/statuses/$statusId")
         if (!response.isSuccessful) {
             throw MastodonException(response)
         }
+        return MastodonRequest(
+            {
+                response
+            },
+            {
+                client.getSerializer().fromJson(it, Status::class.java)
+            }
+        )
     }
 
     //  POST /api/v1/statuses/:id/reblog
