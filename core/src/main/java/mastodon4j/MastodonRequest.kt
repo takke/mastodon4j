@@ -2,6 +2,7 @@ package mastodon4j
 
 import com.google.gson.JsonParser
 import mastodon4j.api.MastodonResponse
+import mastodon4j.api.MastodonResponseWrapper
 import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.toPageable
 import okhttp3.Response
@@ -36,9 +37,14 @@ open class MastodonRequest<T>(
         this.action = { json, value -> action.invoke(json, value) }
     }
 
-    @Suppress("UNCHECKED_CAST")
     @Throws(MastodonException::class)
     fun execute(): T {
+        return executeWithWrap().result
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @Throws(MastodonException::class)
+    fun executeWithWrap(): MastodonResponseWrapper<T> {
         val response = executor()
         if (response.isSuccessful) {
             try {
@@ -75,13 +81,16 @@ open class MastodonRequest<T>(
                     }
                 }
 
-                // collect info
-                // TODO とりあえず Pageable だけ MastodonResponse を実装するけど全てのレスポンスが実装すること
+                // collect info for Pageable
+                // TODO Pageable も MastodonResponse を直接持たないように変更すること
                 if (result is MastodonResponse) {
                     result.collectResponse(response)
                 }
 
-                return result
+                return MastodonResponseWrapper(result).also {
+                    // collect info
+                    it.collectResponse(response)
+                }
             } catch (e: Exception) {
                 throw MastodonException(e)
             }
