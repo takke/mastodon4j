@@ -3,13 +3,43 @@ package mastodon4j.api
 import okhttp3.Response
 
 // TODO interface/impl に分離すること
-// TODO headers ではなく rateLimit にすること
 abstract class MastodonResponse {
 
     var code: Int = -1
 
     var headers: Map<String, String> = emptyMap()
 
+    val rateLimit: RateLimit?
+        get() {
+
+            var limit: Long? = null
+            var remaining: Long? = null
+            var reset: String? = null
+
+            for (key in headers.keys) {
+
+                when {
+                    key.equals("X-RateLimit-Limit", true) -> {
+                        limit = headers[key]?.toLongOrNull()
+                    }
+
+                    key.equals("X-RateLimit-Remaining", true) -> {
+                        remaining = headers[key]?.toLongOrNull()
+                    }
+
+                    key.equals("X-RateLimit-Reset", true) -> {
+                        // 2023-09-22T13:45:00.694552Z
+                        reset = headers[key]
+                    }
+                }
+            }
+
+            return if (limit == null || remaining == null || reset == null) {
+                null
+            } else {
+                RateLimit(limit, remaining, reset)
+            }
+        }
 
     fun collectResponse(response: Response) {
         this.code = response.code
