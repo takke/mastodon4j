@@ -1,7 +1,6 @@
 package mastodon4j
 
 import com.google.gson.JsonParser
-import mastodon4j.api.MastodonResponse
 import mastodon4j.api.MastodonResponseWrapper
 import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.toPageable
@@ -79,12 +78,6 @@ open class MastodonRequest<T>(
                     } else {
                         list as T
                     }
-                }
-
-                // collect info for Pageable
-                // TODO Pageable も MastodonResponse を直接持たないように変更すること
-                if (result is MastodonResponse) {
-                    result.collectResponse(response)
                 }
 
                 return MastodonResponseWrapper(result).also {

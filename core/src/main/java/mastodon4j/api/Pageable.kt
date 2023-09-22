@@ -1,6 +1,6 @@
 package mastodon4j.api
 
-class Pageable<T>(val part: List<T>, val link: Link?) : MastodonResponse() {
+class Pageable<T>(val part: List<T>, val link: Link?) {
 
     fun nextRange(limit: Int = 20): Range = Range(link?.maxId, limit = limit)
     fun prevRange(limit: Int = 20): Range = Range(sinceId = link?.sinceId.toString(), limit = limit)
