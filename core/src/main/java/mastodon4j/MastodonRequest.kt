@@ -38,7 +38,7 @@ open class MastodonRequest<T>(
     }
 
     @Throws(MastodonException::class)
-    fun execute(): T {
+    fun executeAndGetValue(): T {
         return executeWithWrap().value
     }
 
