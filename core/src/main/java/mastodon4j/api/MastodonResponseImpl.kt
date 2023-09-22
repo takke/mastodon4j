@@ -3,7 +3,7 @@ package mastodon4j.api
 import okhttp3.Response
 
 class MastodonResponseImpl<T>(
-    override val result: T,
+    override val value: T,
 ) : MastodonResponse<T> {
 
     override var code: Int = -1

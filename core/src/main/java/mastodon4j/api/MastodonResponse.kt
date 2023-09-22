@@ -2,7 +2,7 @@ package mastodon4j.api
 
 interface MastodonResponse<T> {
 
-    val result: T
+    val value: T
 
     val code: Int
 

@@ -39,7 +39,7 @@ open class MastodonRequest<T>(
 
     @Throws(MastodonException::class)
     fun execute(): T {
-        return executeWithWrap().result
+        return executeWithWrap().value
     }
 
     @Suppress("UNCHECKED_CAST")
