@@ -1,6 +1,5 @@
 package mastodon4j.api.exception
 
-import okhttp3.Headers
 import okhttp3.HttpUrl
 import okhttp3.Protocol
 import okhttp3.Response
@@ -9,7 +8,7 @@ class MastodonException : Exception {
 
     val requestUrl: HttpUrl?
     val protocol: Protocol?
-    val headers: Headers?
+    val headers: Map<String, String>?
 
     // Http Status
     val code: Int
@@ -24,7 +23,7 @@ class MastodonException : Exception {
 
         this.requestUrl = response.request.url
         this.protocol = response.protocol
-        this.headers = response.headers
+        this.headers = response.headers.toMap()
         this.code = response.code
         this.statusMessage = response.message
         this.responseBody = response.body?.string()
