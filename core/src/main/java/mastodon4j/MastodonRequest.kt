@@ -37,14 +37,9 @@ open class MastodonRequest<T>(
         this.action = { json, value -> action.invoke(json, value) }
     }
 
-    @Throws(MastodonException::class)
-    fun executeAndGetValue(): T {
-        return executeWithWrap().value
-    }
-
     @Suppress("UNCHECKED_CAST")
     @Throws(MastodonException::class)
-    fun executeWithWrap(): MastodonResponse<T> {
+    fun execute(): MastodonResponse<T> {
         val response = executor()
         if (response.isSuccessful) {
             try {
@@ -92,4 +87,15 @@ open class MastodonRequest<T>(
             throw MastodonException(response)
         }
     }
+
+    /**
+     * Execute request and return value
+     *
+     * If you want to get response code, headers or RateLimit, use [execute]
+     */
+    @Throws(MastodonException::class)
+    fun executeAndGetValue(): T {
+        return execute().value
+    }
+
 }
