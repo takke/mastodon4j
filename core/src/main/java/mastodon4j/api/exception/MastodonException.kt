@@ -1,5 +1,7 @@
 package mastodon4j.api.exception
 
+import mastodon4j.api.MastodonResponseImpl
+import mastodon4j.api.RateLimit
 import okhttp3.HttpUrl
 import okhttp3.Protocol
 import okhttp3.Response
@@ -9,6 +11,7 @@ class MastodonException : Exception {
     val requestUrl: HttpUrl?
     val protocol: Protocol?
     val headers: Map<String, String>?
+    val rateLimit: RateLimit?
 
     // Http Status
     val code: Int
@@ -24,6 +27,7 @@ class MastodonException : Exception {
         this.requestUrl = response.request.url
         this.protocol = response.protocol
         this.headers = response.headers.toMap()
+        this.rateLimit = MastodonResponseImpl.collectRateLimit(headers)
         this.code = response.code
         this.statusMessage = response.message
         this.responseBody = response.body?.string()
@@ -33,6 +37,7 @@ class MastodonException : Exception {
         this.requestUrl = null
         this.protocol = null
         this.headers = null
+        this.rateLimit = null
         this.code = 0
         this.statusMessage = null
         this.responseBody = null
@@ -42,6 +47,7 @@ class MastodonException : Exception {
         this.requestUrl = null
         this.protocol = null
         this.headers = null
+        this.rateLimit = null
         this.code = 0
         this.statusMessage = null
         this.responseBody = null
@@ -58,5 +64,5 @@ class MastodonException : Exception {
         return "${responseBody}\n" + additionalErrorInfo
     }
 
-    val additionalErrorInfo: String get() = "code=${code}, url=${requestUrl}, protocol=${protocol}, message=${statusMessage}"
+    val additionalErrorInfo: String get() = "code=${code}, url=${requestUrl}, rateLimit=${rateLimit} protocol=${protocol}, message=${statusMessage}"
 }
