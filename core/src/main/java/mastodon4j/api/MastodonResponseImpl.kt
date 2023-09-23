@@ -12,6 +12,17 @@ class MastodonResponseImpl<T>(
 
     override val rateLimit: RateLimit?
         get() {
+            return collectRateLimit(headers)
+        }
+
+    fun collectResponse(response: Response) {
+        this.code = response.code
+        this.headers = response.headers.toMap()
+    }
+
+    companion object {
+
+        fun collectRateLimit(headers: Map<String, String>): RateLimit? {
             var limit: Long? = null
             var remaining: Long? = null
             var reset: String? = null
@@ -40,10 +51,6 @@ class MastodonResponseImpl<T>(
                 RateLimit(limit, remaining, reset)
             }
         }
-
-    fun collectResponse(response: Response) {
-        this.code = response.code
-        this.headers = response.headers.toMap()
     }
 
 }
