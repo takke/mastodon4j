@@ -77,11 +77,15 @@ class ListsMethod(private val client: MastodonClient) {
     fun createList(
         title: String,
         repliesPolicy: MstListRepliesPolicy? = null,
+        exclusive: Boolean? = null,
     ): MastodonRequest<MstList> {
         val parameters = Parameter().apply {
             append("title", title)
             repliesPolicy?.let {
                 append("replies_policy", it.value)
+            }
+            exclusive?.let {
+                append("exclusive", it)
             }
         }.build()
 
@@ -107,11 +111,15 @@ class ListsMethod(private val client: MastodonClient) {
         listId: Long,
         title: String,
         repliesPolicy: MstListRepliesPolicy? = null,
+        exclusive: Boolean? = null,
     ): MastodonRequest<MstList> {
         val parameters = Parameter().apply {
             append("title", title)
             repliesPolicy?.let {
                 append("replies_policy", it.value)
+            }
+            exclusive?.let {
+                append("exclusive", it)
             }
         }.build()
 

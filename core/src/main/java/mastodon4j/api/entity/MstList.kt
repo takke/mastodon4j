@@ -6,6 +6,7 @@ class MstList(
     @SerializedName("id") val id: Long = 0L,
     @SerializedName("title") val title: String = "",
     @SerializedName("replies_policy") val repliesPolicyValue: String? = MstListRepliesPolicy.List.value,
+    @SerializedName("exclusive") val exclusive: Boolean = false,
 ) {
     val repliesPolicy: MstListRepliesPolicy
         get() = MstListRepliesPolicy.fromString(repliesPolicyValue)
