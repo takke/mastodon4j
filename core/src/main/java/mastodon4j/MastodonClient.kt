@@ -117,7 +117,7 @@ private constructor(
         }
     }
 
-    open fun post(path: String, body: RequestBody): Response {
+    open fun post(path: String, body: RequestBody, headers: Map<String, String>? = null): Response {
         try {
             val url = "$baseUrl$path"
             debugPrint(url)
@@ -125,6 +125,11 @@ private constructor(
                 Request.Builder()
                     .url(url)
                     .post(body)
+                    .apply {
+                        headers?.forEach { (key, value) ->
+                            header(key, value)
+                        }
+                    }
                     .build()
             )
             return call.execute()

@@ -102,7 +102,8 @@ class StatusesMethod(private val client: MastodonClient) {
         sensitive: Boolean,
         spoilerText: String?,
         visibility: Status.Visibility = Status.Visibility.Public,
-        quoteId: String?
+        quoteId: String?,
+        idempotencyKey: String? = null
     ): MastodonRequest<Status> {
         val parameters = Parameter().apply {
             append("status", status)
@@ -127,7 +128,8 @@ class StatusesMethod(private val client: MastodonClient) {
                 client.post(
                     "/api/v1/statuses",
                     parameters
-                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull()),
+                    idempotencyKey?.let { mapOf("Idempotency-Key" to idempotencyKey) }
                 )
             },
             {
