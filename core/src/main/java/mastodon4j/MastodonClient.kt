@@ -19,7 +19,7 @@ import mastodon4j.api.method.PublicMethod
 import mastodon4j.api.method.ReportsMethod
 import mastodon4j.api.method.SearchMethod
 import mastodon4j.api.method.StatusesMethod
-import mastodon4j.api.method.StreamingMethod
+import mastodon4j.api.method.Streaming
 import mastodon4j.api.method.TagsMethod
 import mastodon4j.api.method.TimelinesMethod
 import mastodon4j.api.method.TrendsMethod
@@ -210,7 +210,7 @@ private constructor(
     val reports get() = ReportsMethod(this)
     val search get() = SearchMethod(this)
     val statuses get() = StatusesMethod(this)
-    val streaming get() = StreamingMethod(this)
+    val streaming get() = Streaming(this)
     val tags get() = TagsMethod(this)
     val timelines get() = TimelinesMethod(this)
     val trends get() = TrendsMethod(this)

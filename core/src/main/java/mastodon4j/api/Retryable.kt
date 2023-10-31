@@ -1,8 +1,8 @@
 package mastodon4j.api
 
-import com.sys1yagi.mastodon4j.api.exception.Mastodon4jRequestException
+import mastodon4j.api.exception.MastodonException
 
 interface Retryable {
-    @Throws(Mastodon4jRequestException::class)
+    @Throws(MastodonException::class)
     fun retry()
 }
