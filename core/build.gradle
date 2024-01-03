@@ -17,8 +17,16 @@ version = '1.7.0'
 //    }
 //}
 
-sourceCompatibility = 11
-targetCompatibility = 11
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "11"
+    }
+}
+
+java {
+    sourceCompatibility = 11
+    targetCompatibility = 11
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
