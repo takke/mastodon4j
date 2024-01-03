@@ -17,10 +17,8 @@ version = '1.7.0'
 //    }
 //}
 
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "11"
-    }
+kotlin {
+    jvmToolchain(11)
 }
 
 java {
