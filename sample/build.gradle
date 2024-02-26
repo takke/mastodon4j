@@ -8,6 +8,6 @@ repositories {
 }
 
 dependencies {
-    implementation project(':mastodon4j')
+    implementation project(':core')
     testImplementation 'junit:junit:4.12'
 }
