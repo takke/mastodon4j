@@ -34,25 +34,27 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${libs.versions.kotlin.get()}"
 }
 
-//subprojects {
-//    apply plugin: 'java'
-//    apply plugin: 'maven'
+subprojects {
+    apply plugin: 'java'
+//    apply plugin: 'maven-publish'
 
-//    sourceCompatibility = 1.8
-//    targetCompatibility = 1.8
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
-//    task sourcesJar(type: Jar, dependsOn: classes) {
-//        classifier 'sources'
-//        from sourceSets.main.allSource
-//    }
-//
-//    task javadocJar(type: Jar, dependsOn: javadoc) {
-//        classifier 'javadoc'
-//        from javadoc.destinationDir
-//    }
-//
-//    artifacts {
-//        archives sourcesJar
-//        archives javadocJar
-//    }
-//}
+    tasks.register('sourcesJar', Jar) {
+        dependsOn classes
+        archiveClassifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    tasks.register('javadocJar', Jar) {
+        dependsOn javadoc
+        archiveClassifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives tasks.sourcesJar
+        archives tasks.javadocJar
+    }
+}
