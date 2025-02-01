@@ -61,7 +61,16 @@ publishing {
             groupId = 'com.sys1yagi'
             artifactId = 'mastodon4j-core'
             version = '2.0.0-SNAPSHOT'
+
             from components.java
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name.set("mastodon4j-core")
+                description.set("Mastodon4j Core Library")
+                url.set("https://github.com/sys1yagi/mastodon4j")
+            }
         }
     }
 }

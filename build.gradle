@@ -38,23 +38,23 @@ subprojects {
     apply plugin: 'java'
 //    apply plugin: 'maven-publish'
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 11
+    targetCompatibility = 11
 
-    tasks.register('sourcesJar', Jar) {
+    def sourcesJar = tasks.register('sourcesJar', Jar) {
         dependsOn classes
         archiveClassifier = 'sources'
         from sourceSets.main.allSource
     }
 
-    tasks.register('javadocJar', Jar) {
+    def javadocJar = tasks.register('javadocJar', Jar) {
         dependsOn javadoc
         archiveClassifier = 'javadoc'
         from javadoc.destinationDir
     }
 
     artifacts {
-        archives tasks.sourcesJar
-        archives tasks.javadocJar
+        archives sourcesJar
+        archives javadocJar
     }
 }
