@@ -50,12 +50,10 @@ repositories {
 
 publishing {
     publications {
-        create<MavenPublication>("maven") {
+        named<MavenPublication>("android") {
             groupId = "com.sys1yagi"
             artifactId = "mastodon4j-core"
             version = "3.0.0-SNAPSHOT"
-
-            from(components["kotlin"])
 
             pom {
                 name.set("mastodon4j-core")
