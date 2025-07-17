@@ -1,6 +1,6 @@
 [versions]
 # Kotlin
-kotlin = "2.0.0"
+kotlin = "2.1.0"
 # OkHttp
 okhttpVersion = "4.12.0"
 # Ktor
