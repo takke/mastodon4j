@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
     `maven-publish`
 }
 
@@ -9,12 +10,24 @@ kotlin {
     jvm("android")
     
     sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.core)
+                implementation(libs.ktor.client.content.negotiation)
+                implementation(libs.ktor.serialization.kotlinx.json)
+                implementation(libs.kotlinx.serialization.json)
+            }
+        }
+        
         val androidMain by getting {
             dependencies {
                 implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${libs.versions.kotlin.get()}")
+                // 既存の依存関係（段階的移行のため保持）
                 implementation(libs.com.squareup.okhttp3.okhttp)
                 implementation(libs.com.google.code.gson)
+                // プラットフォーム固有のKtorエンジン
+                implementation(libs.ktor.client.okhttp)
             }
         }
         

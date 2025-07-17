@@ -3,6 +3,10 @@
 kotlin = "2.0.0"
 # OkHttp
 okhttpVersion = "4.12.0"
+# Ktor
+ktorVersion = "3.2.2"
+# kotlinx.serialization
+serializationVersion = "1.6.2"
 [libraries]
 # OkHttp
 #com-squareup-okhttp3-okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.3"
@@ -10,6 +14,15 @@ com-squareup-okhttp3-okhttp = "com.squareup.okhttp3:okhttp:4.12.0"
 com-squareup-okhttp3-mockwebserver = "com.squareup.okhttp3:mockwebserver:4.12.0"
 # Gson
 com-google-code-gson = "com.google.code.gson:gson:2.10"
+# Ktor
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorVersion" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorVersion" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorVersion" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktorVersion" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktorVersion" }
+ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktorVersion" }
+# kotlinx.serialization
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationVersion" }
 #--------------------------------------------------
 # Test Libraries
 #--------------------------------------------------
