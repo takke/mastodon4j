@@ -27,5 +27,11 @@ local.properties
 
 *.iml
 
-// for sample
+# for sample
 credential.properties
+
+# for private files
+/CLAUDE.md
+/fix_mv.sh
+/publish_to_maven_local.sh
+/docs
