@@ -55,9 +55,7 @@ publishing {
             artifactId = "mastodon4j-core"
             version = "3.0.0-SNAPSHOT"
 
-            from(components["java"])
-            artifact(tasks["sourcesJar"])
-            artifact(tasks["javadocJar"])
+            from(components["kotlin"])
 
             pom {
                 name.set("mastodon4j-core")
