@@ -1,13 +1,18 @@
 [versions]
 # Kotlin
 kotlin = "2.0.0"
+# OkHttp
+okhttpVersion = "4.12.0"
 [libraries]
 # OkHttp
 #com-squareup-okhttp3-okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.3"
 com-squareup-okhttp3-okhttp = "com.squareup.okhttp3:okhttp:4.12.0"
+com-squareup-okhttp3-mockwebserver = "com.squareup.okhttp3:mockwebserver:4.12.0"
 # Gson
 com-google-code-gson = "com.google.code.gson:gson:2.10"
 #--------------------------------------------------
 # Test Libraries
 #--------------------------------------------------
 junit = "junit:junit:4.13.2"
+kluent = "org.amshove.kluent:kluent:1.73"
+mockito-kotlin = "org.mockito.kotlin:mockito-kotlin:5.2.1"

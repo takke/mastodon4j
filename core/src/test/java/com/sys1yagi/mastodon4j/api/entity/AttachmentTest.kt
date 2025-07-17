@@ -2,6 +2,7 @@ package com.sys1yagi.mastodon4j.api.entity
 
 import com.google.gson.Gson
 import com.sys1yagi.mastodon4j.testtool.AssetsUtil
+import mastodon4j.api.entity.MediaAttachment
 import org.amshove.kluent.shouldEqualTo
 import org.amshove.kluent.shouldNotBe
 import org.junit.Test

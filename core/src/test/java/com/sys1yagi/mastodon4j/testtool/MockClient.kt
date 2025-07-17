@@ -1,9 +1,9 @@
 package com.sys1yagi.mastodon4j.testtool
 
 import com.google.gson.Gson
-import com.nhaarman.mockito_kotlin.eq
-import com.sys1yagi.kmockito.any
-import com.sys1yagi.kmockito.invoked
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.any
+import org.mockito.Mockito.`when`
 import mastodon4j.MastodonClient
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
