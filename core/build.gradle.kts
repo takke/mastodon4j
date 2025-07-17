@@ -1,33 +1,38 @@
 plugins {
-    java
-    kotlin("jvm")
+    kotlin("multiplatform")
     `maven-publish`
 }
 
 kotlin {
     jvmToolchain(11)
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    
+    jvm("android")
+    
+    sourceSets {
+        val androidMain by getting {
+            dependencies {
+                implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+                implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${libs.versions.kotlin.get()}")
+                implementation(libs.com.squareup.okhttp3.okhttp)
+                implementation(libs.com.google.code.gson)
+            }
+        }
+        
+        val androidTest by getting {
+            dependencies {
+                implementation(libs.junit)
+                implementation(libs.kluent)
+                implementation(libs.mockito.kotlin)
+                implementation(libs.com.squareup.okhttp3.mockwebserver)
+                implementation("org.mockito:mockito-core:2.7.22")
+            }
+        }
+    }
 }
 
 repositories {
+    google()
     mavenCentral()
-}
-
-dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:${libs.versions.kotlin.get()}")
-    implementation(libs.com.squareup.okhttp3.okhttp)
-    implementation(libs.com.google.code.gson)
-
-    testImplementation(libs.junit)
-    testImplementation(libs.kluent)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.com.squareup.okhttp3.mockwebserver)
-    testImplementation("org.mockito:mockito-core:2.7.22")
 }
 
 publishing {
