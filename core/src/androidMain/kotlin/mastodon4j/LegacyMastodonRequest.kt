@@ -2,12 +2,12 @@ package mastodon4j
 
 import com.google.gson.JsonParser
 import mastodon4j.api.MastodonResponse
-import mastodon4j.api.MastodonResponseImpl
-import mastodon4j.api.exception.MastodonException
+import mastodon4j.api.LegacyMastodonResponseImpl
+import mastodon4j.api.exception.LegacyMastodonException
 import mastodon4j.extension.toPageable
 import okhttp3.Response
 
-open class MastodonRequest<T>(
+open class LegacyMastodonRequest<T>(
     private val executor: () -> Response,
     private val mapper: (String) -> Any
 ) {
@@ -38,12 +38,12 @@ open class MastodonRequest<T>(
     }
 
     @Suppress("UNCHECKED_CAST")
-    @Throws(MastodonException::class)
+    @Throws(LegacyMastodonException::class)
     fun execute(): MastodonResponse<T> {
         val response = executor()
         if (response.isSuccessful) {
             try {
-                val body = response.body?.string() ?: throw MastodonException(response)
+                val body = response.body?.string() ?: throw LegacyMastodonException(response)
                 val element = JsonParser().parse(body)
 
                 val result = if (element.isJsonObject) {
@@ -76,15 +76,15 @@ open class MastodonRequest<T>(
                     }
                 }
 
-                return MastodonResponseImpl(result).also {
+                return LegacyMastodonResponseImpl(result).also {
                     // collect info
                     it.collectResponse(response)
                 }
             } catch (e: Exception) {
-                throw MastodonException(e)
+                throw LegacyMastodonException(e)
             }
         } else {
-            throw MastodonException(response)
+            throw LegacyMastodonException(response)
         }
     }
 
@@ -93,7 +93,7 @@ open class MastodonRequest<T>(
      *
      * If you want to get response code, headers or RateLimit, use [execute]
      */
-    @Throws(MastodonException::class)
+    @Throws(LegacyMastodonException::class)
     fun executeAndGetValue(): T {
         return execute().value
     }

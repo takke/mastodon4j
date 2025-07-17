@@ -1,12 +1,12 @@
 package mastodon4j.api.exception
 
-import mastodon4j.api.MastodonResponseImpl
+import mastodon4j.api.LegacyMastodonResponseImpl
 import mastodon4j.api.RateLimit
 import okhttp3.HttpUrl
 import okhttp3.Protocol
 import okhttp3.Response
 
-class MastodonException : Exception {
+class LegacyMastodonException : Exception {
 
     val requestUrl: HttpUrl?
     val protocol: Protocol?
@@ -27,7 +27,7 @@ class MastodonException : Exception {
         this.requestUrl = response.request.url
         this.protocol = response.protocol
         this.headers = response.headers.toMap()
-        this.rateLimit = MastodonResponseImpl.collectRateLimit(headers)
+        this.rateLimit = LegacyMastodonResponseImpl.collectRateLimit(headers)
         this.code = response.code
         this.statusMessage = response.message
         this.responseBody = response.body?.string()

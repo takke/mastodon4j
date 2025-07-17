@@ -1,7 +1,7 @@
 package mastodon4j
 
 import com.google.gson.Gson
-import mastodon4j.api.exception.MastodonException
+import mastodon4j.api.exception.LegacyMastodonException
 import mastodon4j.api.method.AccountsMethod
 import mastodon4j.api.method.AnnouncementsMethod
 import mastodon4j.api.method.AppsMethod
@@ -28,7 +28,7 @@ import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 
-open class MastodonClient
+open class LegacyMastodonClient
 private constructor(
     private val instanceName: String,
     private val client: OkHttpClient,
@@ -56,8 +56,8 @@ private constructor(
             this.debug = true
         }
 
-        fun build(): MastodonClient {
-            return MastodonClient(
+        fun build(): LegacyMastodonClient {
+            return LegacyMastodonClient(
                 instanceName,
                 okHttpClientBuilder.addNetworkInterceptor(AuthorizationInterceptor(accessToken)).build(),
                 gson
@@ -98,7 +98,7 @@ private constructor(
 
     open fun getInstanceName() = instanceName
 
-    open fun get(path: String, parameter: Parameter? = null): Response {
+    open fun get(path: String, parameter: LegacyParameter? = null): Response {
         try {
             val url = "$baseUrl$path"
             debugPrint(url)
@@ -113,7 +113,7 @@ private constructor(
             )
             return call.execute()
         } catch (e: IOException) {
-            throw MastodonException(e)
+            throw LegacyMastodonException(e)
         }
     }
 
@@ -134,9 +134,9 @@ private constructor(
             )
             return call.execute()
         } catch (e: IllegalArgumentException) {
-            throw MastodonException(e)
+            throw LegacyMastodonException(e)
         } catch (e: IOException) {
-            throw MastodonException(e)
+            throw LegacyMastodonException(e)
         }
     }
 
@@ -152,9 +152,9 @@ private constructor(
             )
             return call.execute()
         } catch (e: IllegalArgumentException) {
-            throw MastodonException(e)
+            throw LegacyMastodonException(e)
         } catch (e: IOException) {
-            throw MastodonException(e)
+            throw LegacyMastodonException(e)
         }
     }
 
@@ -170,7 +170,7 @@ private constructor(
             )
             return call.execute()
         } catch (e: IOException) {
-            throw MastodonException(e)
+            throw LegacyMastodonException(e)
         }
     }
 
@@ -186,7 +186,7 @@ private constructor(
             )
             return call.execute()
         } catch (e: IOException) {
-            throw MastodonException(e)
+            throw LegacyMastodonException(e)
         }
     }
 

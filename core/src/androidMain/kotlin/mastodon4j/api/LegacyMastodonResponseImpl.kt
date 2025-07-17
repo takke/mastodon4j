@@ -2,7 +2,7 @@ package mastodon4j.api
 
 import okhttp3.Response
 
-class MastodonResponseImpl<T>(
+class LegacyMastodonResponseImpl<T>(
     override val value: T,
 ) : MastodonResponse<T> {
 
@@ -20,7 +20,7 @@ class MastodonResponseImpl<T>(
         this.headers = response.headers.toMap()
     }
 
-    companion object {
+    companion object Companion {
 
         fun collectRateLimit(headers: Map<String, String>): RateLimit? {
             var limit: Long? = null
