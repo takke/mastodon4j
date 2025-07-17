@@ -35,7 +35,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.sys1yagi"
             artifactId = "mastodon4j-core"
-            version = "2.0.0-SNAPSHOT"
+            version = "3.0.0-SNAPSHOT"
 
             from(components["java"])
             artifact(tasks["sourcesJar"])
