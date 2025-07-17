@@ -33,7 +33,6 @@ allprojects {
 
 ```groovy
 compile 'com.github.sys1yagi.mastodon4j:mastodon4j:$version'
-compile 'com.github.sys1yagi.mastodon4j:mastodon4j-rx:$version'
 ```
 
 Check latest version on Jitpack [![](https://jitpack.io/v/sys1yagi/mastodon4j.svg)](https://jitpack.io/#sys1yagi/mastodon4j)
@@ -297,34 +296,6 @@ v1.0.0 or later
 - [x] POST password authorize `/oauth/token` v0.0.2 or later
 - [x] POST `/oauth/token`
 
-## Rx
-
-v0.0.2 or later
-
-- [x] RxAccounts
-- [x] RxApps
-- [x] RxBlocks
-- [x] RxFavourites
-- [x] RxFollowRequests
-- [x] RxFollows
-- [x] RxInstances
-- [x] RxMedia
-- [x] RxMutes
-- [x] RxNotifications
-- [x] RxReports
-- [x] RxSearch
-- [x] RxStatuses
-- [x] RxTimelines
-
-## Rx Streaming
-
-v1.0.0 or later
-
-- [ ] `GET /api/v1/streaming/user`
-- [x] `GET /api/v1/streaming/public`
-- [x] `GET /api/v1/streaming/public/local`
-- [x] `GET /api/v1/streaming/hashtag`
-- [x] `GET /api/v1/streaming/hashtag/local`
 
 # Contribution
 
