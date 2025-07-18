@@ -181,7 +181,7 @@ class AccountsMethod(private val client: MastodonClient) {
      * アカウントを検索
      * GET /api/v1/accounts/search
      */
-    fun getAccountsSearch(
+    fun search(
         query: String,
         limit: Int = 40,
         resolve: Boolean? = null,
