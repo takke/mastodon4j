@@ -3,54 +3,41 @@ package mastodon4j.api.method
 import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.api.entity.Tag
-import mastodon4j.extension.emptyRequestBody
 
 /**
+ * タグに関するAPIメソッドクラス（KMP対応版）
+ * 
  * See more https://docs.joinmastodon.org/methods/tags
  */
 class TagsMethod(private val client: MastodonClient) {
 
-    // POST /api/v1/tags/:id/follow
+    /**
+     * タグをフォロー
+     * POST /api/v1/tags/:id/follow
+     * 
+     * @param id フォローするタグのID
+     */
     fun followTag(id: String): MastodonRequest<Tag> {
-
-        return MastodonRequest(
-            {
-                client.post(
-                    "/api/v1/tags/$id/follow", emptyRequestBody()
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Tag::class.java)
-            }
-        )
+        return client.createPostRequest<Tag>("/api/v1/tags/$id/follow")
     }
 
-    // POST /api/v1/tags/:id/unfollow
+    /**
+     * タグのフォローを解除
+     * POST /api/v1/tags/:id/unfollow
+     * 
+     * @param id フォロー解除するタグのID
+     */
     fun unfollowTag(id: String): MastodonRequest<Tag> {
-
-        return MastodonRequest(
-            {
-                client.post(
-                    "/api/v1/tags/$id/unfollow", emptyRequestBody()
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Tag::class.java)
-            }
-        )
+        return client.createPostRequest<Tag>("/api/v1/tags/$id/unfollow")
     }
 
-    // GET /api/v1/tags/:id
+    /**
+     * タグの詳細情報を取得
+     * GET /api/v1/tags/:id
+     * 
+     * @param id 取得するタグのID
+     */
     fun getTag(id: String): MastodonRequest<Tag> {
-
-        return MastodonRequest(
-            {
-                client.get("/api/v1/tags/$id")
-            },
-            {
-                client.getSerializer().fromJson(it, Tag::class.java)
-            }
-        )
+        return client.createGetRequest<Tag>("/api/v1/tags/$id")
     }
-
 }
