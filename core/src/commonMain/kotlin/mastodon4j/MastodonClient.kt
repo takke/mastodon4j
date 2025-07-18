@@ -114,10 +114,13 @@ class MastodonClient private constructor(
     /**
      * POSTリクエストを作成
      */
-    suspend fun post(path: String, parameters: Parameter? = null): HttpResponse {
+    suspend fun post(path: String, parameters: Parameter? = null, headers: Map<String, String>? = null): HttpResponse {
         return client.post(path) {
             parameters?.let {
                 setBody(it.toParameters())
+            }
+            headers?.forEach { (key, value) ->
+                header(key, value)
             }
         }
     }
@@ -177,9 +180,9 @@ class MastodonClient private constructor(
     /**
      * 型安全なPOSTリクエストを作成
      */
-    inline fun <reified T> createPostRequest(path: String, parameters: Parameter? = null): MastodonRequest<T> {
+    inline fun <reified T> createPostRequest(path: String, parameters: Parameter? = null, headers: Map<String, String>? = null): MastodonRequest<T> {
         return MastodonRequest(
-            executor = { post(path, parameters) },
+            executor = { post(path, parameters, headers) },
             serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any },
             json = json
         )
