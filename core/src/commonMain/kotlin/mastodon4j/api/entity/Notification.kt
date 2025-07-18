@@ -2,6 +2,8 @@ package mastodon4j.api.entity
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import mastodon4j.api.entity.util.CalckeyCompatUtil
+
 // import mastodon4j.api.entity.util.CalckeyCompatUtil
 
 /**
@@ -51,7 +53,7 @@ data class Notification(
     }
 
     // compat for calckey
-    // val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrCalckeyIdOrFakeTimeId(id, createdAt) }
+    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrCalckeyIdOrFakeTimeId(id, createdAt) }
 
     val type: Type get() = Type.values().firstOrNull { it.value == this.typeValue } ?: Type.Unknown
 }

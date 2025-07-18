@@ -1,7 +1,9 @@
 package mastodon4j.api.entity
 
+import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import mastodon4j.api.entity.util.CalckeyCompatUtil
 // import mastodon4j.api.entity.util.CalckeyCompatUtil
 import java.util.*
 
@@ -52,9 +54,6 @@ data class Status(
     // quote of fedibird.com
     @SerialName("quote") val quote: Status? = null,
 ) {
-    // compat for calckey
-    // val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrCalckeyIdOrFakeTimeId(id, createdAt) }
-
     enum class Visibility(val value: String) {
         Public("public"),
         Unlisted("unlisted"),
@@ -75,10 +74,6 @@ data class Status(
         }
     }
 
-    // val createdAtAsDate: Date? by lazy {
-    //     CalckeyCompatUtil.parseDate(createdAt)
-    // }
-
     val visibility: Visibility by lazy {
         Visibility.fromString(visibilityValue)
     }
@@ -87,6 +82,13 @@ data class Status(
         if (visibilityExValue.isEmpty()) return@lazy visibility
 
         Visibility.fromStringOrNull(visibilityExValue) ?: visibility
+    }
+
+    // compat for calckey
+    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrCalckeyIdOrFakeTimeId(id, createdAt) }
+
+    val createdAtAsInstant: Instant? by lazy {
+        CalckeyCompatUtil.parseInstant(createdAt)
     }
 
     val isEdited: Boolean get() = editedAt?.isNotEmpty() == true

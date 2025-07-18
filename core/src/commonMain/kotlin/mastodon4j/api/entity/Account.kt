@@ -2,6 +2,8 @@ package mastodon4j.api.entity
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import mastodon4j.api.entity.util.CalckeyCompatUtil
+
 // import mastodon4j.api.entity.util.CalckeyCompatUtil
 
 @Serializable
@@ -25,8 +27,7 @@ data class Account(
     // for fedibird.com
     @SerialName("other_settings") val otherSettings: AccountOtherSettings? = null,
 ) {
-    // TODO 対応すること
-    // val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrCalckeyIdOrFakeTimeId(id, createdAt) }
+    val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrCalckeyIdOrFakeTimeId(id, createdAt) }
 
     val displayName: String get() = displayName_ ?: ""
     val note: String get() = note_ ?: ""
