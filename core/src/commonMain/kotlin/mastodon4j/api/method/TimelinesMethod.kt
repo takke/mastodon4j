@@ -25,7 +25,7 @@ class TimelinesMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/timelines/home"
         }
-        return client.createGetRequest<Pageable<Status>>(path).toPageable()
+        return client.createGetRequest<List<Status>>(path).toPageableRequest()
     }
 
     /**
@@ -38,7 +38,7 @@ class TimelinesMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/conversations"
         }
-        return client.createGetRequest<Pageable<Conversation>>(path).toPageable()
+        return client.createGetRequest<List<Conversation>>(path).toPageable()
     }
 
     /**
@@ -47,7 +47,7 @@ class TimelinesMethod(private val client: MastodonClient) {
      */
     fun getPersonalTimelines(range: Range): MastodonRequest<Pageable<Status>> {
         val path = "/api/v1/timelines/personal?${range.toParameter().build()}"
-        return client.createGetRequest<Pageable<Status>>(path).toPageable()
+        return client.createGetRequest<List<Status>>(path).toPageable()
     }
 
     /**
@@ -67,7 +67,7 @@ class TimelinesMethod(private val client: MastodonClient) {
         onlyMedia?.let { params.append("only_media", it) }
         
         val path = "/api/v1/timelines/public?${params.build()}"
-        return client.createGetRequest<Pageable<Status>>(path).toPageable()
+        return client.createGetRequest<List<Status>>(path).toPageable()
     }
 
     /**
@@ -86,7 +86,7 @@ class TimelinesMethod(private val client: MastodonClient) {
         onlyMedia?.let { params.append("only_media", it) }
         
         val path = "/api/v1/timelines/tag/$hashtag?${params.build()}"
-        return client.createGetRequest<Pageable<Status>>(path).toPageable()
+        return client.createGetRequest<List<Status>>(path).toPageable()
     }
 
     /**
@@ -99,6 +99,6 @@ class TimelinesMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/timelines/list/$listId"
         }
-        return client.createGetRequest<Pageable<Status>>(path).toPageable()
+        return client.createGetRequest<List<Status>>(path).toPageable()
     }
 }

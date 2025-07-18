@@ -26,7 +26,7 @@ class ReportsMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/reports"
         }
-        return client.createGetRequest<Pageable<Report>>(path).toPageable()
+        return client.createGetRequest<List<Report>>(path).toPageable()
     }
 
     /**

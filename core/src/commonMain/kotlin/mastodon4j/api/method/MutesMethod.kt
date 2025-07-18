@@ -25,6 +25,6 @@ class MutesMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/mutes"
         }
-        return client.createGetRequest<Pageable<Account>>(path).toPageable()
+        return client.createGetRequest<List<Account>>(path).toPageable()
     }
 }

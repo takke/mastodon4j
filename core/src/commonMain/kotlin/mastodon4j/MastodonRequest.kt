@@ -7,6 +7,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.*
 import mastodon4j.api.MastodonResponse
 import mastodon4j.api.MastodonResponseImpl
+import mastodon4j.api.Pageable
 import mastodon4j.api.exception.MastodonException
 import mastodon4j.extension.toPageable
 
@@ -30,9 +31,13 @@ class MastodonRequest<T>(
 
     private var isPageable: Boolean = false
 
-    internal fun toPageable() = apply {
+    /**
+     * List<T>のリクエストをPageable<T>のリクエストに変換
+     */
+    @Suppress("UNCHECKED_CAST")
+    internal fun <T> toPageable(): MastodonRequest<Pageable<T>> = apply {
         isPageable = true
-    }
+    } as MastodonRequest<Pageable<T>>
 
     @JvmSynthetic
     fun doOnJson(action: (json: String, value: Any) -> Unit) = apply {

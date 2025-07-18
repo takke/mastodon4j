@@ -25,6 +25,6 @@ class BookmarksMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/bookmarks"
         }
-        return client.createGetRequest<Pageable<Status>>(path).toPageable()
+        return client.createGetRequest<List<Status>>(path).toPageable()
     }
 }

@@ -44,7 +44,7 @@ class PublicMethod(private val client: MastodonClient) {
         }
         
         val path = "/api/v1/timelines/public?${params.build()}"
-        return client.createGetRequest<Pageable<Status>>(path).toPageable()
+        return client.createGetRequest<List<Status>>(path).toPageable()
     }
 
     /**
@@ -73,7 +73,7 @@ class PublicMethod(private val client: MastodonClient) {
         }
         
         val path = "/api/v1/timelines/tag/$tag?${params.build()}"
-        return client.createGetRequest<Pageable<Status>>(path).toPageable()
+        return client.createGetRequest<List<Status>>(path).toPageable()
     }
 
     /**

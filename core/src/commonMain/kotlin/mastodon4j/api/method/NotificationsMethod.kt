@@ -35,7 +35,7 @@ class NotificationsMethod(private val client: MastodonClient) {
         }
         
         val path = "/api/v1/notifications?${params.build()}"
-        return client.createGetRequest<Pageable<Notification>>(path).toPageable()
+        return client.createGetRequest<List<Notification>>(path).toPageable()
     }
 
     /**

@@ -25,7 +25,7 @@ class FollowRequestsMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/follow_requests"
         }
-        return client.createGetRequest<Pageable<Account>>(path).toPageable()
+        return client.createGetRequest<List<Account>>(path).toPageable()
     }
 
     /**

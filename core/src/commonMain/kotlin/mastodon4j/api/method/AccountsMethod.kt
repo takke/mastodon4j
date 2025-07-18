@@ -71,7 +71,7 @@ class AccountsMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/accounts/$accountId/followers"
         }
-        return client.createGetRequest<Pageable<Account>>(path).toPageable()
+        return client.createGetRequest<List<Account>>(path).toPageable()
     }
 
     /**
@@ -84,7 +84,7 @@ class AccountsMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/accounts/$accountId/following"
         }
-        return client.createGetRequest<Pageable<Account>>(path).toPageable()
+        return client.createGetRequest<List<Account>>(path).toPageable()
     }
 
     /**
@@ -110,7 +110,7 @@ class AccountsMethod(private val client: MastodonClient) {
         }
         
         val path = "/api/v1/accounts/$accountId/statuses?${params.build()}"
-        return client.createGetRequest<Pageable<Status>>(path).toPageable()
+        return client.createGetRequest<List<Status>>(path).toPageable()
     }
 
     /**
