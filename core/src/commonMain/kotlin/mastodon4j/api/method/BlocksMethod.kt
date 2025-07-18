@@ -7,20 +7,24 @@ import mastodon4j.api.Range
 import mastodon4j.api.entity.Account
 
 /**
+ * ブロックに関するAPIメソッドクラス（KMP対応版）
+ * 
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#blocks
  */
 class BlocksMethod(private val client: MastodonClient) {
 
-    //  GET /api/v1/blocks
-    @JvmOverloads
-    fun getBlocks(range: Range = Range()): MastodonRequest<Pageable<Account>> {
-        return MastodonRequest<Pageable<Account>>(
-            {
-                client.get("/api/v1/blocks", range.toParameter())
-            },
-            {
-                client.getSerializer().fromJson(it, Account::class.java)
-            }
-        ).toPageable()
+    /**
+     * ブロックしたアカウント一覧を取得
+     * GET /api/v1/blocks
+     * 
+     * @param range ページング用のレンジパラメータ
+     */
+    fun getBlocks(range: Range? = null): MastodonRequest<Pageable<Account>> {
+        val path = if (range != null) {
+            "/api/v1/blocks?${range.toParameter().build()}"
+        } else {
+            "/api/v1/blocks"
+        }
+        return client.createListGetRequest<Account>(path).toPageable()
     }
 }

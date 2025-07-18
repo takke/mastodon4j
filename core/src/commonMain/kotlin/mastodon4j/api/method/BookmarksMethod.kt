@@ -7,20 +7,24 @@ import mastodon4j.api.Range
 import mastodon4j.api.entity.Status
 
 /**
+ * ブックマークに関するAPIメソッドクラス（KMP対応版）
+ * 
  * See more https://docs.joinmastodon.org/methods/bookmarks/
  */
 class BookmarksMethod(private val client: MastodonClient) {
 
-    // GET /api/v1/bookmarks
-    @JvmOverloads
-    fun getBookmarks(range: Range = Range()): MastodonRequest<Pageable<Status>> {
-        return MastodonRequest<Pageable<Status>>(
-            {
-                client.get("/api/v1/bookmarks", range.toParameter())
-            },
-            {
-                client.getSerializer().fromJson(it, Status::class.java)
-            }
-        ).toPageable()
+    /**
+     * ブックマークした投稿一覧を取得
+     * GET /api/v1/bookmarks
+     * 
+     * @param range ページング用のレンジパラメータ
+     */
+    fun getBookmarks(range: Range? = null): MastodonRequest<Pageable<Status>> {
+        val path = if (range != null) {
+            "/api/v1/bookmarks?${range.toParameter().build()}"
+        } else {
+            "/api/v1/bookmarks"
+        }
+        return client.createListGetRequest<Status>(path).toPageable()
     }
 }
