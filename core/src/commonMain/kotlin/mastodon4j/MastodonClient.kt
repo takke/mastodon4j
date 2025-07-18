@@ -28,6 +28,7 @@ class MastodonClient private constructor(
         private val json: Json = Json {
             ignoreUnknownKeys = true
             coerceInputValues = true
+            isLenient = true
         }
     ) {
         private var accessToken: String? = null

@@ -24,7 +24,11 @@ class MastodonRequest<T>(
     private val executor: suspend () -> HttpResponse,
     private val serializer: suspend (String) -> Any,
     private val elementSerializer: (suspend (String) -> Any)? = null,
-    private val json: Json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
+    private val json: Json = Json {
+        ignoreUnknownKeys = true
+        coerceInputValues = true
+        isLenient = true
+    }
 ) {
     interface Action1<T> {
         fun invoke(arg1: T, arg2: Any)
