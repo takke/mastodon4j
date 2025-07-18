@@ -2,27 +2,6 @@ package mastodon4j
 
 import com.google.gson.Gson
 import mastodon4j.api.exception.LegacyMastodonException
-import mastodon4j.api.method.AccountsMethod
-import mastodon4j.api.method.AnnouncementsMethod
-import mastodon4j.api.method.AppsMethod
-import mastodon4j.api.method.BlocksMethod
-import mastodon4j.api.method.BookmarksMethod
-import mastodon4j.api.method.FavouritesMethod
-import mastodon4j.api.method.FollowRequestsMethod
-import mastodon4j.api.method.FollowedTagsMethod
-import mastodon4j.api.method.FollowsMethod
-import mastodon4j.api.method.ListsMethod
-import mastodon4j.api.method.MediaMethod
-import mastodon4j.api.method.MutesMethod
-import mastodon4j.api.method.NotificationsMethod
-import mastodon4j.api.method.PublicMethod
-import mastodon4j.api.method.ReportsMethod
-import mastodon4j.api.method.SearchMethod
-import mastodon4j.api.method.StatusesMethod
-import mastodon4j.api.method.Streaming
-import mastodon4j.api.method.TagsMethod
-import mastodon4j.api.method.TimelinesMethod
-import mastodon4j.api.method.TrendsMethod
 import okhttp3.*
 import java.io.IOException
 import java.util.concurrent.TimeUnit
