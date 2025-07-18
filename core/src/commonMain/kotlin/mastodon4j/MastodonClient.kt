@@ -205,69 +205,27 @@ class MastodonClient private constructor(
     }
 
     // メソッドの作成（KMP対応版）
-    @Suppress("FunctionName")
     fun StatusesMethod() = mastodon4j.api.method.StatusesMethod(this)
-
-    @Suppress("FunctionName")
     fun AccountsMethod() = mastodon4j.api.method.AccountsMethod(this)
-
-    @Suppress("FunctionName")
     fun TimelinesMethod() = mastodon4j.api.method.TimelinesMethod(this)
-
-    @Suppress("FunctionName")
     fun NotificationsMethod() = mastodon4j.api.method.NotificationsMethod(this)
-
-    @Suppress("FunctionName")
     fun SearchMethod() = mastodon4j.api.method.SearchMethod(this)
-
-    @Suppress("FunctionName")
     fun PublicMethod() = mastodon4j.api.method.PublicMethod(this)
-
-    @Suppress("FunctionName")
     fun AppsMethod() = mastodon4j.api.method.AppsMethod(this)
-
-    @Suppress("FunctionName")
     fun FollowsMethod() = mastodon4j.api.method.FollowsMethod(this)
-
-    @Suppress("FunctionName")
     fun TagsMethod() = mastodon4j.api.method.TagsMethod(this)
-
-    @Suppress("FunctionName")
     fun TrendsMethod() = mastodon4j.api.method.TrendsMethod(this)
-
-    @Suppress("FunctionName")
     fun FollowedTagsMethod() = mastodon4j.api.method.FollowedTagsMethod(this)
-
-    @Suppress("FunctionName")
     fun MediaMethod() = mastodon4j.api.method.MediaMethod(this)
-
-    @Suppress("FunctionName")
     fun MutesMethod() = mastodon4j.api.method.MutesMethod(this)
-
-    @Suppress("FunctionName")
     fun BlocksMethod() = mastodon4j.api.method.BlocksMethod(this)
-
-    @Suppress("FunctionName")
     fun FavouritesMethod() = mastodon4j.api.method.FavouritesMethod(this)
-
-    @Suppress("FunctionName")
     fun BookmarksMethod() = mastodon4j.api.method.BookmarksMethod(this)
-
-    @Suppress("FunctionName")
     fun ListsMethod() = mastodon4j.api.method.ListsMethod(this)
-
-    @Suppress("FunctionName")
     fun FollowRequestsMethod() = mastodon4j.api.method.FollowRequestsMethod(this)
-
-    @Suppress("FunctionName")
     fun ReportsMethod() = mastodon4j.api.method.ReportsMethod(this)
-
-    @Suppress("FunctionName")
     fun AnnouncementsMethod() = mastodon4j.api.method.AnnouncementsMethod(this)
 
     // TODO: Streamingの実装（WebSocket対応）
-    /*
-    @Suppress("FunctionName")
-    fun Streaming() = Streaming(this)
-    */
+//    fun Streaming() = Streaming(this)
 }
