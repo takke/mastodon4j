@@ -25,7 +25,7 @@ class TimelinesMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/timelines/home"
         }
-        return client.createGetRequest<List<Status>>(path).toPageableRequest()
+        return client.createGetRequest<List<Status>>(path).toPageable()
     }
 
     /**
