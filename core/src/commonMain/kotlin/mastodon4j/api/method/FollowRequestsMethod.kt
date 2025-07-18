@@ -1,0 +1,50 @@
+package mastodon4j.api.method
+
+import mastodon4j.MastodonClient
+import mastodon4j.MastodonRequest
+import mastodon4j.api.Pageable
+import mastodon4j.api.Range
+import mastodon4j.api.entity.Account
+
+/**
+ * フォローリクエストに関するAPIメソッドクラス（KMP対応版）
+ * 
+ * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#follow-requests
+ */
+class FollowRequestsMethod(private val client: MastodonClient) {
+    
+    /**
+     * フォローリクエスト一覧を取得
+     * GET /api/v1/follow_requests
+     * 
+     * @param range ページング用のレンジパラメータ
+     */
+    fun getFollowRequests(range: Range? = null): MastodonRequest<Pageable<Account>> {
+        val path = if (range != null) {
+            "/api/v1/follow_requests?${range.toParameter().build()}"
+        } else {
+            "/api/v1/follow_requests"
+        }
+        return client.createGetRequest<Pageable<Account>>(path).toPageable()
+    }
+
+    /**
+     * フォローリクエストを承認
+     * POST /api/v1/follow_requests/:id/authorize
+     * 
+     * @param accountId 承認するアカウントのID
+     */
+    fun postAuthorize(accountId: String): MastodonRequest<Unit> {
+        return client.createPostRequest<Unit>("/api/v1/follow_requests/$accountId/authorize")
+    }
+
+    /**
+     * フォローリクエストを拒否
+     * POST /api/v1/follow_requests/:id/reject
+     * 
+     * @param accountId 拒否するアカウントのID
+     */
+    fun postReject(accountId: String): MastodonRequest<Unit> {
+        return client.createPostRequest<Unit>("/api/v1/follow_requests/$accountId/reject")
+    }
+}

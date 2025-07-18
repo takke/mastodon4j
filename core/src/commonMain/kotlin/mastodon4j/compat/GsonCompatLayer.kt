@@ -27,6 +27,20 @@ class GsonCompatLayer(private val json: Json) {
             "Relationship" -> json.decodeFromString<mastodon4j.api.entity.Relationship>(jsonString) as T
             "CredentialAccount" -> json.decodeFromString<mastodon4j.api.entity.CredentialAccount>(jsonString) as T
             "Announcement" -> json.decodeFromString<mastodon4j.api.entity.Announcement>(jsonString) as T
+            "MstList" -> json.decodeFromString<mastodon4j.api.entity.MstList>(jsonString) as T
+            "Suggestion" -> json.decodeFromString<mastodon4j.api.entity.Suggestion>(jsonString) as T
+            "Tag" -> json.decodeFromString<mastodon4j.api.entity.Tag>(jsonString) as T
+            "MediaAttachment" -> json.decodeFromString<mastodon4j.api.entity.MediaAttachment>(jsonString) as T
+            "Poll" -> json.decodeFromString<mastodon4j.api.entity.Poll>(jsonString) as T
+            "Emoji" -> json.decodeFromString<mastodon4j.api.entity.Emoji>(jsonString) as T
+            "Conversation" -> json.decodeFromString<mastodon4j.api.entity.Conversation>(jsonString) as T
+            "Instance" -> json.decodeFromString<mastodon4j.api.entity.Instance>(jsonString) as T
+            "DomainBlock" -> json.decodeFromString<mastodon4j.api.entity.DomainBlock>(jsonString) as T
+            "Results" -> json.decodeFromString<mastodon4j.api.entity.Results>(jsonString) as T
+            "ResultsV1" -> json.decodeFromString<mastodon4j.api.entity.ResultsV1>(jsonString) as T
+            "Report" -> json.decodeFromString<mastodon4j.api.entity.Report>(jsonString) as T
+            "AccessToken" -> json.decodeFromString<mastodon4j.api.entity.auth.AccessToken>(jsonString) as T
+            "AppRegistration" -> json.decodeFromString<mastodon4j.api.entity.auth.AppRegistration>(jsonString) as T
             else -> throw IllegalArgumentException("Unsupported type: ${clazz.simpleName}")
         }
     }
