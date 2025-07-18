@@ -33,14 +33,7 @@ class AppsMethod(private val client: MastodonClient) {
             website?.let { append("website", it) }
         }
         
-        return MastodonRequest(
-            executor = { client.post("/api/v1/apps", params) },
-            serializer = { jsonString ->
-                client.getSerializer().fromJson(jsonString, AppRegistration::class.java).apply {
-                    this.instanceName = client.getInstanceName()
-                }
-            }
-        )
+        return client.createPostRequest<AppRegistration>("/api/v1/apps", params)
     }
 
     /**

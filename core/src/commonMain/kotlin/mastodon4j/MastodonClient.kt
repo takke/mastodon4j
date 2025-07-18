@@ -8,7 +8,6 @@ import io.ktor.client.statement.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import mastodon4j.api.method.*
-import mastodon4j.compat.GsonCompatLayer
 
 /**
  * Mastodon APIクライアント
@@ -99,8 +98,6 @@ class MastodonClient private constructor(
     }
 
     val baseUrl = "https://$instanceName"
-
-    fun getSerializer() = GsonCompatLayer(json)
 
     fun getInstanceName() = instanceName
 
