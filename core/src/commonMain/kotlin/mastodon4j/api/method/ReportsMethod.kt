@@ -6,47 +6,55 @@ import mastodon4j.Parameter
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.Report
+import mastodon4j.api.exception.MastodonException
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
- * レポート（通報）に関するAPIメソッドクラス（KMP対応版）
- * 
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#reports
  */
 class ReportsMethod(private val client: MastodonClient) {
-    
-    /**
-     * 提出済みレポート一覧を取得
-     * GET /api/v1/reports
-     * 
-     * @param range ページング用のレンジパラメータ
-     */
-    fun getReports(range: Range? = null): MastodonRequest<Pageable<Report>> {
-        val path = if (range != null) {
-            "/api/v1/reports?${range.toParameter().build()}"
-        } else {
-            "/api/v1/reports"
-        }
-        return client.createListGetRequest<Report>(path).toPageable()
+    // GET /api/v1/reports
+    @JvmOverloads
+    @Throws(MastodonException::class)
+    fun getReports(range: Range = Range()): MastodonRequest<Pageable<Report>> {
+        return MastodonRequest<Pageable<Report>>(
+            {
+                client.get(
+                    "/api/v1/reports",
+                    range.toParameter()
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, Report::class.java)
+            }
+        ).toPageable()
     }
 
     /**
-     * 新しいレポートを提出
      * POST /api/v1/reports
-     * 
-     * @param accountId 通報対象のアカウントID
-     * @param statusId 通報対象の投稿ID
-     * @param comment 通報に関するコメント
+     * account_id: The ID of the account to report
+     * status_ids: The IDs of statuses to report (can be an array)
+     * comment: A comment to associate with the report.
      */
-    fun postReport(
-        accountId: Long,
-        statusId: Long,
-        comment: String
-    ): MastodonRequest<Report> {
-        val params = Parameter().apply {
+    @Throws(MastodonException::class)
+    fun postReport(accountId: Long, statusId: Long, comment: String): MastodonRequest<Report> {
+        val parameters = Parameter().apply {
             append("account_id", accountId)
             append("status_ids", statusId)
             append("comment", comment)
-        }
-        return client.createPostRequest<Report>("/api/v1/reports", params)
+        }.build()
+        return MastodonRequest<Report>(
+            {
+                client.post(
+                    "/api/v1/reports",
+                    parameters
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, Report::class.java)
+            }
+        )
     }
 }

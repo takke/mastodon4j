@@ -6,18 +6,15 @@ import mastodon4j.Parameter
 import mastodon4j.api.Scope
 import mastodon4j.api.entity.auth.AccessToken
 import mastodon4j.api.entity.auth.AppRegistration
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 
 /**
- * アプリケーション関連のAPIメソッドクラス（KMP対応版）
- * 
- * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps
+ * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps
  */
 class AppsMethod(private val client: MastodonClient) {
-
-    /**
-     * アプリケーションを作成
-     * POST /api/v1/apps
-     */
+    // POST /api/v1/apps
+    @JvmOverloads
     fun createApp(
         clientName: String,
         redirectUris: String = "urn:ietf:wg:oauth:2.0:oob",
@@ -25,20 +22,30 @@ class AppsMethod(private val client: MastodonClient) {
         website: String? = null
     ): MastodonRequest<AppRegistration> {
         scope.validate()
-        
-        val params = Parameter().apply {
-            append("client_name", clientName)
-            append("scopes", scope.toString())
-            append("redirect_uris", redirectUris)
-            website?.let { append("website", it) }
-        }
-        
-        return client.createPostRequest<AppRegistration>("/api/v1/apps", params)
+        return MastodonRequest(
+            {
+                client.post(
+                    "/api/v1/apps",
+                    arrayListOf(
+                        "client_name=$clientName",
+                        "scopes=$scope",
+                        "redirect_uris=$redirectUris"
+                    ).apply {
+                        website?.let {
+                            add("website=${it}")
+                        }
+                    }.joinToString(separator = "&")
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, AppRegistration::class.java).apply {
+                    this.instanceName = client.getInstanceName()
+                }
+            }
+        )
     }
 
-    /**
-     * OAuth認証URLを生成
-     */
     fun getOAuthUrl(clientId: String, scope: Scope, redirectUri: String = "urn:ietf:wg:oauth:2.0:oob"): String {
         val endpoint = "/oauth/authorize"
         val parameters = listOf(
@@ -50,10 +57,8 @@ class AppsMethod(private val client: MastodonClient) {
         return "https://${client.getInstanceName()}$endpoint?$parameters"
     }
 
-    /**
-     * アクセストークンを取得
-     * POST /oauth/token
-     */
+    // POST /oauth/token
+    @JvmOverloads
     fun getAccessToken(
         clientId: String,
         clientSecret: String,
@@ -62,22 +67,30 @@ class AppsMethod(private val client: MastodonClient) {
         grantType: String = "authorization_code",
         scope: Scope = Scope(Scope.Name.ALL)
     ): MastodonRequest<AccessToken> {
-        val params = Parameter().apply {
+        val parameters = Parameter().apply {
             append("client_id", clientId)
             append("client_secret", clientSecret)
             append("scope", scope.toString())
             append("redirect_uri", redirectUri)
             append("code", code)
             append("grant_type", grantType)
-        }
+        }.build()
 
-        return client.createPostRequest<AccessToken>("/oauth/token", params)
+        return MastodonRequest(
+            {
+                client.post(
+                    "/oauth/token",
+                    parameters
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, AccessToken::class.java)
+            }
+        )
     }
 
-    /**
-     * ユーザー名とパスワードでアクセストークンを取得
-     * POST /oauth/token
-     */
+    // POST /oauth/token
     fun postUserNameAndPassword(
         clientId: String,
         clientSecret: String,
@@ -85,15 +98,26 @@ class AppsMethod(private val client: MastodonClient) {
         userName: String,
         password: String
     ): MastodonRequest<AccessToken> {
-        val params = Parameter().apply {
+        val parameters = Parameter().apply {
             append("client_id", clientId)
             append("client_secret", clientSecret)
             append("scope", scope.toString())
             append("username", userName)
             append("password", password)
             append("grant_type", "password")
-        }
+        }.build()
 
-        return client.createPostRequest<AccessToken>("/oauth/token", params)
+        return MastodonRequest(
+            {
+                client.post(
+                    "/oauth/token",
+                    parameters
+                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
+                )
+            },
+            {
+                client.getSerializer().fromJson(it, AccessToken::class.java)
+            }
+        )
     }
 }

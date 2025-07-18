@@ -9,96 +9,48 @@ import mastodon4j.api.entity.Status
 import mastodon4j.api.exception.MastodonException
 
 /**
- * タイムラインに関するAPIメソッドクラス（KMP対応版）
- * 
- * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
+ * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#timelines
  */
 class TimelinesMethod(private val client: MastodonClient) {
 
-    /**
-     * ホームタイムラインを取得
-     * GET /api/v1/timelines/home
-     */
-    fun getHome(range: Range? = null): MastodonRequest<Pageable<Status>> {
-        val path = if (range != null) {
-            "/api/v1/timelines/home?${range.toParameter().build()}"
-        } else {
-            "/api/v1/timelines/home"
-        }
-        return client.createListGetRequest<Status>(path).toPageable()
+    // GET /api/v1/timelines/home
+    @JvmOverloads
+    @Throws(MastodonException::class)
+    fun getHome(range: Range = Range()): MastodonRequest<Pageable<Status>> {
+        return MastodonRequest<Pageable<Status>>(
+            {
+                client.get("/api/v1/timelines/home", range.toParameter())
+            },
+            {
+                client.getSerializer().fromJson(it, Status::class.java)
+            }
+        ).toPageable()
     }
 
-    /**
-     * 会話リストを取得
-     * GET /api/v1/conversations
-     */
-    fun getConversations(range: Range? = null): MastodonRequest<Pageable<Conversation>> {
-        val path = if (range != null) {
-            "/api/v1/conversations?${range.toParameter().build()}"
-        } else {
-            "/api/v1/conversations"
-        }
-        return client.createListGetRequest<Conversation>(path).toPageable()
+    // GET /api/v1/conversations
+    @JvmOverloads
+    @Throws(MastodonException::class)
+    fun getConversations(range: Range = Range()): MastodonRequest<Pageable<Conversation>> {
+        return MastodonRequest<Pageable<Conversation>>(
+            {
+                client.get("/api/v1/conversations", range.toParameter())
+            },
+            {
+                client.getSerializer().fromJson(it, Conversation::class.java)
+            }
+        ).toPageable()
     }
 
-    /**
-     * パーソナルタイムラインを取得（fedibird専用）
-     * GET /api/v1/timelines/personal
-     */
+    // GET /api/v1/timelines/personal (fedibird only)
+    @Throws(MastodonException::class)
     fun getPersonalTimelines(range: Range): MastodonRequest<Pageable<Status>> {
-        val path = "/api/v1/timelines/personal?${range.toParameter().build()}"
-        return client.createListGetRequest<Status>(path).toPageable()
-    }
-
-    /**
-     * 公開タイムラインを取得
-     * GET /api/v1/timelines/public
-     */
-    fun getPublic(
-        local: Boolean? = null,
-        remote: Boolean? = null,
-        onlyMedia: Boolean? = null,
-        range: Range? = null
-    ): MastodonRequest<Pageable<Status>> {
-        val params = range?.toParameter() ?: mastodon4j.Parameter()
-        
-        local?.let { params.append("local", it) }
-        remote?.let { params.append("remote", it) }
-        onlyMedia?.let { params.append("only_media", it) }
-        
-        val path = "/api/v1/timelines/public?${params.build()}"
-        return client.createListGetRequest<Status>(path).toPageable()
-    }
-
-    /**
-     * ハッシュタグタイムラインを取得
-     * GET /api/v1/timelines/tag/:hashtag
-     */
-    fun getTag(
-        hashtag: String,
-        local: Boolean? = null,
-        onlyMedia: Boolean? = null,
-        range: Range? = null
-    ): MastodonRequest<Pageable<Status>> {
-        val params = range?.toParameter() ?: mastodon4j.Parameter()
-        
-        local?.let { params.append("local", it) }
-        onlyMedia?.let { params.append("only_media", it) }
-        
-        val path = "/api/v1/timelines/tag/$hashtag?${params.build()}"
-        return client.createListGetRequest<Status>(path).toPageable()
-    }
-
-    /**
-     * リストタイムラインを取得
-     * GET /api/v1/timelines/list/:list_id
-     */
-    fun getList(listId: String, range: Range? = null): MastodonRequest<Pageable<Status>> {
-        val path = if (range != null) {
-            "/api/v1/timelines/list/$listId?${range.toParameter().build()}"
-        } else {
-            "/api/v1/timelines/list/$listId"
-        }
-        return client.createListGetRequest<Status>(path).toPageable()
+        return MastodonRequest<Pageable<Status>>(
+            {
+                client.get("/api/v1/timelines/personal", range.toParameter())
+            },
+            {
+                client.getSerializer().fromJson(it, Status::class.java)
+            }
+        ).toPageable()
     }
 }
