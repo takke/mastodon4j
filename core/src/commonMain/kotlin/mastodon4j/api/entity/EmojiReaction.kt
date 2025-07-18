@@ -6,19 +6,19 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class EmojiReaction(
     @SerialName("name")
-    val name: String,
+    val name: String = "",
 
     @SerialName("count")
-    val count: Int,
+    val count: Int = 0,
 
     @SerialName("me")
-    val me: Boolean?,
+    val me: Boolean? = null,
 
     @SerialName("url")
-    val url: String?,
+    val url: String? = null,
 
     @SerialName("static_url")
-    val staticUrl: String?,
+    val staticUrl: String? = null,
 
     @SerialName("width")
     val width: Int? = null,
@@ -27,7 +27,7 @@ data class EmojiReaction(
     val height: Int? = null,
 
     @SerialName("domain")
-    val domain: String?,
+    val domain: String? = null,
 ) {
     val toEmoji: Emoji get() = Emoji(name, staticUrl ?: "", url ?: "", false, width, height, null)
 }

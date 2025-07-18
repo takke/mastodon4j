@@ -6,16 +6,16 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class EmojiReactionedAccount(
     @SerialName("name")
-    val name: String,
+    val name: String = "",
 
     @SerialName("url")
-    val url: String?,
+    val url: String? = null,
 
     @SerialName("static_url")
-    val staticUrl: String?,
+    val staticUrl: String? = null,
 
     @SerialName("domain")
-    val domain: String?,
+    val domain: String? = null,
 
     @SerialName("width")
     val width: Int? = null,

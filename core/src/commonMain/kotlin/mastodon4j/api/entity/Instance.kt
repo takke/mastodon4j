@@ -100,7 +100,7 @@ data class Instance(
 
     @Serializable
     data class FedibirdCapabilities(
-        private val capabilities: List<String>,
+        private val capabilities: List<String> = emptyList(),
     ) {
         val favouriteHashtag: Boolean get() = capabilities.contains("favourite_hashtag")
         val favouriteDomain: Boolean get() = capabilities.contains("favourite_domain")
