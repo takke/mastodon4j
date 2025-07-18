@@ -124,4 +124,17 @@ class MastodonRequest<T>(
      * 同期でリクエストを実行
      */
     fun execute(): MastodonResponse<T> = runBlocking { executeAsync() }
+
+    /**
+     * Execute request and return value
+     *
+     * If you want to get response code, headers or RateLimit, use [execute]
+     */
+    suspend fun executeAsyncAndGetValue(): T {
+        return executeAsync().value
+    }
+
+    fun executeAndGetValue(): T {
+        return execute().value
+    }
 }
