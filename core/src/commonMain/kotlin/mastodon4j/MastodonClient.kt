@@ -156,7 +156,8 @@ class MastodonClient private constructor(
     inline fun <reified T> createGetRequest(path: String): MastodonRequest<T> {
         return MastodonRequest(
             executor = { get(path) },
-            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any }
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any },
+            json = json
         )
     }
     
@@ -167,7 +168,8 @@ class MastodonClient private constructor(
         return MastodonRequest(
             executor = { get(path) },
             serializer = { jsonString -> json.decodeFromString<List<E>>(jsonString) as Any },
-            elementSerializer = { elementJson -> json.decodeFromString<E>(elementJson) as Any }
+            elementSerializer = { elementJson -> json.decodeFromString<E>(elementJson) as Any },
+            json = json
         )
     }
 
@@ -177,7 +179,8 @@ class MastodonClient private constructor(
     inline fun <reified T> createPostRequest(path: String, parameters: Parameter? = null): MastodonRequest<T> {
         return MastodonRequest(
             executor = { post(path, parameters) },
-            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any }
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any },
+            json = json
         )
     }
 
@@ -187,7 +190,8 @@ class MastodonClient private constructor(
     inline fun <reified T> createPutRequest(path: String, parameters: Parameter? = null): MastodonRequest<T> {
         return MastodonRequest(
             executor = { put(path, parameters) },
-            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any }
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any },
+            json = json
         )
     }
 
@@ -197,7 +201,8 @@ class MastodonClient private constructor(
     inline fun <reified T> createDeleteRequest(path: String): MastodonRequest<T> {
         return MastodonRequest(
             executor = { delete(path) },
-            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any }
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any },
+            json = json
         )
     }
 
@@ -207,7 +212,8 @@ class MastodonClient private constructor(
     inline fun <reified T> createPatchRequest(path: String, parameters: Parameter? = null): MastodonRequest<T> {
         return MastodonRequest(
             executor = { patch(path, parameters) },
-            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any }
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any },
+            json = json
         )
     }
 

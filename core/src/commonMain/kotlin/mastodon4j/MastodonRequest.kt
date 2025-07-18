@@ -18,11 +18,13 @@ import mastodon4j.extension.toPageable
  * @param executor HTTPリクエストを実行する関数
  * @param serializer JSONをオブジェクトに変換するシリアライザー
  * @param elementSerializer 配列要素用のシリアライザー（オプション）
+ * @param json JSONシリアライザー設定
  */
 class MastodonRequest<T>(
     private val executor: suspend () -> HttpResponse,
     private val serializer: suspend (String) -> Any,
-    private val elementSerializer: (suspend (String) -> Any)? = null
+    private val elementSerializer: (suspend (String) -> Any)? = null,
+    private val json: Json = Json { ignoreUnknownKeys = true; coerceInputValues = true }
 ) {
     interface Action1<T> {
         fun invoke(arg1: T, arg2: Any)
@@ -67,7 +69,7 @@ class MastodonRequest<T>(
         if (response.status.isSuccess()) {
             try {
                 val body = response.bodyAsText()
-                val element = Json.parseToJsonElement(body)
+                val element = json.parseToJsonElement(body)
 
                 val result = when {
                     element is JsonObject -> {
