@@ -9,6 +9,7 @@ import mastodon4j.api.entity.Account
 import mastodon4j.api.entity.MstList
 import mastodon4j.api.entity.MstListRepliesPolicy
 import mastodon4j.api.entity.Status
+import mastodon4j.api.exception.MastodonException
 
 /**
  * リストに関するAPIメソッドクラス（KMP対応版）
@@ -146,6 +147,6 @@ class ListsMethod(private val client: MastodonClient) {
         val params = Parameter().apply {
             accountIds.forEach { append("account_ids[]", it) }
         }
-        return client.createDeleteRequest<Unit>("/api/v1/lists/$listId/accounts", params)
+        return client.createDeleteRequest<Unit>("/api/v1/lists/$listId/accounts")
     }
 }

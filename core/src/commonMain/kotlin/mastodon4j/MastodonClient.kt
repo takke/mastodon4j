@@ -160,7 +160,7 @@ class MastodonClient private constructor(
     inline fun <reified T> createGetRequest(path: String): MastodonRequest<T> {
         return MastodonRequest(
             executor = { get(path) },
-            serializer = { jsonString -> json.decodeFromString<T>(jsonString) }
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any }
         )
     }
 
@@ -170,7 +170,7 @@ class MastodonClient private constructor(
     inline fun <reified T> createPostRequest(path: String, parameters: Parameter? = null): MastodonRequest<T> {
         return MastodonRequest(
             executor = { post(path, parameters) },
-            serializer = { jsonString -> json.decodeFromString<T>(jsonString) }
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any }
         )
     }
 
@@ -180,7 +180,7 @@ class MastodonClient private constructor(
     inline fun <reified T> createPutRequest(path: String, parameters: Parameter? = null): MastodonRequest<T> {
         return MastodonRequest(
             executor = { put(path, parameters) },
-            serializer = { jsonString -> json.decodeFromString<T>(jsonString) }
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any }
         )
     }
 
@@ -190,7 +190,7 @@ class MastodonClient private constructor(
     inline fun <reified T> createDeleteRequest(path: String): MastodonRequest<T> {
         return MastodonRequest(
             executor = { delete(path) },
-            serializer = { jsonString -> json.decodeFromString<T>(jsonString) }
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any }
         )
     }
 
@@ -200,7 +200,7 @@ class MastodonClient private constructor(
     inline fun <reified T> createPatchRequest(path: String, parameters: Parameter? = null): MastodonRequest<T> {
         return MastodonRequest(
             executor = { patch(path, parameters) },
-            serializer = { jsonString -> json.decodeFromString<T>(jsonString) }
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any }
         )
     }
 
