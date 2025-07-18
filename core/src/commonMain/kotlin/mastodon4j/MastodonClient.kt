@@ -204,8 +204,8 @@ class MastodonClient private constructor(
     }
 
     // メソッド
-    fun accounts() = AccountsMethod(this)
-    fun apps() = AppsMethod(this)
+    val accounts = AccountsMethod(this)
+    val apps = AppsMethod(this)
     val announcements get() = AnnouncementsMethod(this)
     val blocks get() = BlocksMethod(this)
     val bookmarks get() = BookmarksMethod(this)
