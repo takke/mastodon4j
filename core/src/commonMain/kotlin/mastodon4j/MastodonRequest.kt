@@ -17,10 +17,12 @@ import mastodon4j.extension.toPageable
  * @param T レスポンスの型
  * @param executor HTTPリクエストを実行する関数
  * @param serializer JSONをオブジェクトに変換するシリアライザー
+ * @param elementSerializer 配列要素用のシリアライザー（オプション）
  */
 class MastodonRequest<T>(
     private val executor: suspend () -> HttpResponse,
-    private val serializer: suspend (String) -> Any
+    private val serializer: suspend (String) -> Any,
+    private val elementSerializer: (suspend (String) -> Any)? = null
 ) {
     interface Action1<T> {
         fun invoke(arg1: T, arg2: Any)
@@ -69,17 +71,23 @@ class MastodonRequest<T>(
 
                 val result = when {
                     element is JsonObject -> {
-                        // 単一オブジェクトの場合
-                        val v = serializer(body)
-                        action(body, v)
-                        v as T
+                        if (isPageable) {
+                            // Pageableリクエストでオブジェクトが返された場合はエラー
+                            throw MastodonException("Expected JSON array for pageable request, but got object. This might be an API error or single item response.")
+                        } else {
+                            // 単一オブジェクトの場合
+                            val v = serializer(body)
+                            action(body, v)
+                            v as T
+                        }
                     }
                     element is JsonArray -> {
                         // 配列の場合
                         val list = mutableListOf<Any>()
                         element.forEach { jsonElement ->
                             val json = jsonElement.toString()
-                            val v = serializer(json)
+                            // 配列の場合は要素用のシリアライザーを使用、なければ通常のシリアライザー
+                            val v = elementSerializer?.invoke(json) ?: serializer(json)
                             action(json, v)
                             list.add(v)
                         }
