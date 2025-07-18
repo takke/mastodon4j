@@ -7,6 +7,8 @@ okhttpVersion = "4.12.0"
 ktorVersion = "3.2.2"
 # kotlinx.serialization
 serializationVersion = "1.9.0"
+# kotlinx.datetime
+datetimeVersion = "0.6.1"
 [libraries]
 # OkHttp
 #com-squareup-okhttp3-okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.3"
@@ -23,6 +25,8 @@ ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "kto
 ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktorVersion" }
 # kotlinx.serialization
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationVersion" }
+# kotlinx.datetime
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetimeVersion" }
 #--------------------------------------------------
 # Test Libraries
 #--------------------------------------------------

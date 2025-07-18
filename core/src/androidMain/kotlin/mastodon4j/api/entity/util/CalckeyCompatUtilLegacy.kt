@@ -6,7 +6,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
-object CalckeyCompatUtil {
+object CalckeyCompatUtilLegacy {
 
     // In calckey, id is a String, so convert to calckey id, or convert time to id
     fun toLongOrCalckeyIdOrFakeTimeId(id_: String, timeString: String): Long {
