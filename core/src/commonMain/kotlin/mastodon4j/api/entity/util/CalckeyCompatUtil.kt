@@ -27,7 +27,7 @@ object CalckeyCompatUtil {
         } catch (e: NumberFormatException) {
             val calckeyId = aidToCalckeyId(id_)
             if (calckeyId == 0L) {
-                parseInstantToEpochMillis(timeString) ?: Clock.System.now().toEpochMilliseconds()
+                parseDateStringAsEpochMillis(timeString) ?: Clock.System.now().toEpochMilliseconds()
             } else {
                 calckeyId
             }
@@ -40,7 +40,7 @@ object CalckeyCompatUtil {
      * @param dateString ISO 8601形式の時刻文字列（例: "2023-01-01T12:00:00.000Z"）
      * @return エポック時刻（ミリ秒）、解析に失敗した場合はnull
      */
-    fun parseInstantToEpochMillis(dateString: String): Long? {
+    fun parseDateStringAsEpochMillis(dateString: String): Long? {
         if (dateString.isEmpty()) {
             return null
         }
@@ -85,7 +85,7 @@ object CalckeyCompatUtil {
      * @param dateString ISO 8601形式の時刻文字列
      * @return 解析されたInstant、失敗した場合はnull
      */
-    fun parseInstant(dateString: String): Instant? {
+    fun parseDateString(dateString: String): Instant? {
         if (dateString.isEmpty()) {
             return null
         }
@@ -94,25 +94,25 @@ object CalckeyCompatUtil {
             Instant.parse(dateString)
         } catch (e: Exception) {
             // フォールバック解析
-            parseInstantToEpochMillis(dateString)?.let { 
-                Instant.fromEpochMilliseconds(it) 
+            parseFlexibleDateString(dateString)?.let {
+                Instant.fromEpochMilliseconds(it)
             }
         }
     }
 
-    /**
-     * 現在時刻を取得します。
-     * 
-     * @return 現在のInstant
-     */
-    fun now(): Instant = Clock.System.now()
-
-    /**
-     * 現在時刻をエポック時刻（ミリ秒）で取得します。
-     * 
-     * @return 現在のエポック時刻（ミリ秒）
-     */
-    fun currentTimeMillis(): Long = Clock.System.now().toEpochMilliseconds()
+//    /**
+//     * 現在時刻を取得します。
+//     *
+//     * @return 現在のInstant
+//     */
+//    fun now(): Instant = Clock.System.now()
+//
+//    /**
+//     * 現在時刻をエポック時刻（ミリ秒）で取得します。
+//     *
+//     * @return 現在のエポック時刻（ミリ秒）
+//     */
+//    fun currentTimeMillis(): Long = Clock.System.now().toEpochMilliseconds()
 
     /**
      * aid（MisskeyのID形式の一つ）をCalckey IDに変換します。
@@ -127,14 +127,14 @@ object CalckeyCompatUtil {
         return aid.toLongOrNull(36) ?: 0L
     }
 
-    /**
-     * Instantを指定したタイムゾーンでの文字列表現に変換します。
-     * 
-     * @param instant 変換対象のInstant
-     * @param timeZone タイムゾーン（デフォルトはUTC）
-     * @return ISO 8601形式の文字列
-     */
-    fun formatInstant(instant: Instant, timeZone: TimeZone = TimeZone.UTC): String {
-        return instant.toLocalDateTime(timeZone).toString()
-    }
+//    /**
+//     * Instantを指定したタイムゾーンでの文字列表現に変換します。
+//     *
+//     * @param instant 変換対象のInstant
+//     * @param timeZone タイムゾーン（デフォルトはUTC）
+//     * @return ISO 8601形式の文字列
+//     */
+//    fun formatInstant(instant: Instant, timeZone: TimeZone = TimeZone.UTC): String {
+//        return instant.toLocalDateTime(timeZone).toString()
+//    }
 }

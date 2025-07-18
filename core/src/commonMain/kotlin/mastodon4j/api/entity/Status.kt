@@ -4,8 +4,6 @@ import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import mastodon4j.api.entity.util.CalckeyCompatUtil
-// import mastodon4j.api.entity.util.CalckeyCompatUtil
-import java.util.*
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#status
@@ -88,7 +86,7 @@ data class Status(
     val idAsLong: Long by lazy { CalckeyCompatUtil.toLongOrCalckeyIdOrFakeTimeId(id, createdAt) }
 
     val createdAtAsInstant: Instant? by lazy {
-        CalckeyCompatUtil.parseInstant(createdAt)
+        CalckeyCompatUtil.parseDateString(createdAt)
     }
 
     val isEdited: Boolean get() = editedAt?.isNotEmpty() == true
