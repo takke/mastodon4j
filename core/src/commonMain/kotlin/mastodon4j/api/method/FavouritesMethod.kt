@@ -7,20 +7,24 @@ import mastodon4j.api.Range
 import mastodon4j.api.entity.Status
 
 /**
+ * お気に入りに関するAPIメソッドクラス（KMP対応版）
+ * 
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#favourites
  */
 class FavouritesMethod(private val client: MastodonClient) {
 
-    //  GET /api/v1/favourites
-    @JvmOverloads
-    fun getFavourites(range: Range = Range()): MastodonRequest<Pageable<Status>> {
-        return MastodonRequest<Pageable<Status>>(
-            {
-                client.get("/api/v1/favourites", range.toParameter())
-            },
-            {
-                client.getSerializer().fromJson(it, Status::class.java)
-            }
-        ).toPageable()
+    /**
+     * お気に入りした投稿一覧を取得
+     * GET /api/v1/favourites
+     * 
+     * @param range ページング用のレンジパラメータ
+     */
+    fun getFavourites(range: Range? = null): MastodonRequest<Pageable<Status>> {
+        val path = if (range != null) {
+            "/api/v1/favourites?${range.toParameter().build()}"
+        } else {
+            "/api/v1/favourites"
+        }
+        return client.createListGetRequest<Status>(path).toPageable()
     }
 }

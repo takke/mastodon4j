@@ -5,39 +5,46 @@ import mastodon4j.MastodonRequest
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.Account
-import mastodon4j.api.exception.MastodonException
-import mastodon4j.extension.emptyRequestBody
 
 /**
+ * フォローリクエストに関するAPIメソッドクラス（KMP対応版）
+ * 
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#follow-requests
  */
 class FollowRequestsMethod(private val client: MastodonClient) {
-    // GET /api/v1/follow_requests
-    @JvmOverloads
-    fun getFollowRequests(range: Range = Range()): MastodonRequest<Pageable<Account>> {
-        return MastodonRequest<Pageable<Account>>(
-            { client.get("/api/v1/follow_requests", range.toParameter()) },
-            {
-                client.getSerializer().fromJson(it, Account::class.java)
-            }
-        ).toPageable()
+    
+    /**
+     * フォローリクエスト一覧を取得
+     * GET /api/v1/follow_requests
+     * 
+     * @param range ページング用のレンジパラメータ
+     */
+    fun getFollowRequests(range: Range? = null): MastodonRequest<Pageable<Account>> {
+        val path = if (range != null) {
+            "/api/v1/follow_requests?${range.toParameter().build()}"
+        } else {
+            "/api/v1/follow_requests"
+        }
+        return client.createListGetRequest<Account>(path).toPageable()
     }
 
-    //  POST /api/v1/follow_requests/:id/authorize
-    @Throws(MastodonException::class)
-    fun postAuthorize(accountId: String) {
-        val response = client.post("/api/v1/follow_requests/$accountId/authorize", emptyRequestBody())
-        if (!response.isSuccessful) {
-            throw MastodonException(response)
-        }
+    /**
+     * フォローリクエストを承認
+     * POST /api/v1/follow_requests/:id/authorize
+     * 
+     * @param accountId 承認するアカウントのID
+     */
+    fun postAuthorize(accountId: String): MastodonRequest<Unit> {
+        return client.createPostRequest<Unit>("/api/v1/follow_requests/$accountId/authorize")
     }
 
-    //  POST /api/v1/follow_requests/:id/reject
-    @Throws(MastodonException::class)
-    fun postReject(accountId: String) {
-        val response = client.post("/api/v1/follow_requests/$accountId/reject", emptyRequestBody())
-        if (!response.isSuccessful) {
-            throw MastodonException(response)
-        }
+    /**
+     * フォローリクエストを拒否
+     * POST /api/v1/follow_requests/:id/reject
+     * 
+     * @param accountId 拒否するアカウントのID
+     */
+    fun postReject(accountId: String): MastodonRequest<Unit> {
+        return client.createPostRequest<Unit>("/api/v1/follow_requests/$accountId/reject")
     }
 }

@@ -10,184 +10,143 @@ import mastodon4j.api.entity.MstList
 import mastodon4j.api.entity.MstListRepliesPolicy
 import mastodon4j.api.entity.Status
 import mastodon4j.api.exception.MastodonException
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
 
+/**
+ * リストに関するAPIメソッドクラス（KMP対応版）
+ * 
+ * See more https://docs.joinmastodon.org/methods/lists/
+ */
 class ListsMethod(private val client: MastodonClient) {
 
-    // GET /api/v1/lists
-    @Throws(MastodonException::class)
+    /**
+     * 作成済みリスト一覧を取得
+     * GET /api/v1/lists
+     */
     fun getLists(): MastodonRequest<Pageable<MstList>> {
-        return MastodonRequest<Pageable<MstList>>(
-            {
-                client.get("/api/v1/lists")
-            },
-            {
-                client.getSerializer().fromJson(it, MstList::class.java)
-            }
-        ).toPageable()
-    }
-
-    // GET /api/v1/lists/:id
-    @Throws(MastodonException::class)
-    fun getList(listId: Long): MastodonRequest<MstList> {
-        return MastodonRequest(
-            {
-                client.get("/api/v1/lists/$listId")
-            },
-            {
-                client.getSerializer().fromJson(it, MstList::class.java)
-            }
-        )
-    }
-
-    // GET /api/v1/timelines/list/:list_id
-    @Throws(MastodonException::class)
-    fun getListTimeLine(listId: Long, range: Range = Range()): MastodonRequest<Pageable<Status>> {
-        return MastodonRequest<Pageable<Status>>(
-            {
-                client.get("/api/v1/timelines/list/$listId", range.toParameter())
-            },
-            {
-                client.getSerializer().fromJson(it, Status::class.java)
-            }
-        ).toPageable()
-    }
-
-    // GET /api/v1/lists/:id/accounts
-    @JvmOverloads
-    fun getListAccounts(listId: Long, range: Range = Range()): MastodonRequest<Pageable<Account>> {
-        return MastodonRequest<Pageable<Account>>(
-            {
-                client.get(
-                    "/api/v1/lists/$listId/accounts",
-                    range.toParameter()
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Account::class.java)
-            }
-        ).toPageable()
+        return client.createListGetRequest<MstList>("/api/v1/lists").toPageable()
     }
 
     /**
-     * POST /api/v1/lists
+     * 指定されたIDのリスト詳細を取得
+     * GET /api/v1/lists/:id
+     * 
+     * @param listId リストのID
      */
-    @Throws(MastodonException::class)
+    fun getList(listId: Long): MastodonRequest<MstList> {
+        return client.createGetRequest<MstList>("/api/v1/lists/$listId")
+    }
+
+    /**
+     * 指定されたリストのタイムラインを取得
+     * GET /api/v1/timelines/list/:list_id
+     * 
+     * @param listId リストのID
+     * @param range ページング用のレンジパラメータ
+     */
+    fun getListTimeLine(listId: Long, range: Range? = null): MastodonRequest<Pageable<Status>> {
+        val path = if (range != null) {
+            "/api/v1/timelines/list/$listId?${range.toParameter().build()}"
+        } else {
+            "/api/v1/timelines/list/$listId"
+        }
+        return client.createListGetRequest<Status>(path).toPageable()
+    }
+
+    /**
+     * 指定されたリストのメンバーアカウント一覧を取得
+     * GET /api/v1/lists/:id/accounts
+     * 
+     * @param listId リストのID
+     * @param range ページング用のレンジパラメータ
+     */
+    fun getListAccounts(listId: Long, range: Range? = null): MastodonRequest<Pageable<Account>> {
+        val path = if (range != null) {
+            "/api/v1/lists/$listId/accounts?${range.toParameter().build()}"
+        } else {
+            "/api/v1/lists/$listId/accounts"
+        }
+        return client.createListGetRequest<Account>(path).toPageable()
+    }
+
+    /**
+     * 新しいリストを作成
+     * POST /api/v1/lists
+     * 
+     * @param title リストのタイトル
+     * @param repliesPolicy リプライポリシー（オプション）
+     * @param exclusive 排他的設定（オプション）
+     */
     fun createList(
         title: String,
         repliesPolicy: MstListRepliesPolicy? = null,
         exclusive: Boolean? = null,
     ): MastodonRequest<MstList> {
-        val parameters = Parameter().apply {
+        val params = Parameter().apply {
             append("title", title)
-            repliesPolicy?.let {
-                append("replies_policy", it.value)
-            }
-            exclusive?.let {
-                append("exclusive", it)
-            }
-        }.build()
-
-        return MastodonRequest(
-            {
-                client.post(
-                    "/api/v1/lists",
-                    parameters
-                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, MstList::class.java)
-            }
-        )
+            repliesPolicy?.let { append("replies_policy", it.value) }
+            exclusive?.let { append("exclusive", it) }
+        }
+        return client.createPostRequest<MstList>("/api/v1/lists", params)
     }
 
     /**
+     * 既存のリストを編集
      * PUT /api/v1/lists/:id
+     * 
+     * @param listId リストのID
+     * @param title リストのタイトル
+     * @param repliesPolicy リプライポリシー（オプション）
+     * @param exclusive 排他的設定（オプション）
      */
-    @Throws(MastodonException::class)
     fun editList(
         listId: Long,
         title: String,
         repliesPolicy: MstListRepliesPolicy? = null,
         exclusive: Boolean? = null,
     ): MastodonRequest<MstList> {
-        val parameters = Parameter().apply {
+        val params = Parameter().apply {
             append("title", title)
-            repliesPolicy?.let {
-                append("replies_policy", it.value)
-            }
-            exclusive?.let {
-                append("exclusive", it)
-            }
-        }.build()
-
-        return MastodonRequest(
-            {
-                client.put(
-                    "/api/v1/lists/$listId",
-                    parameters
-                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, MstList::class.java)
-            }
-        )
+            repliesPolicy?.let { append("replies_policy", it.value) }
+            exclusive?.let { append("exclusive", it) }
+        }
+        return client.createPutRequest<MstList>("/api/v1/lists/$listId", params)
     }
 
     /**
+     * リストを削除
      * DELETE /api/v1/lists/:id
+     * 
+     * @param listId 削除するリストのID
      */
-    @Throws(MastodonException::class)
-    fun deleteList(listId: Long) {
-
-        val response = client.delete("/api/v1/lists/$listId")
-        if (!response.isSuccessful) {
-            throw MastodonException(response)
-        }
+    fun deleteList(listId: Long): MastodonRequest<Unit> {
+        return client.createDeleteRequest<Unit>("/api/v1/lists/$listId")
     }
 
     /**
+     * リストにアカウントを追加
      * POST /api/v1/lists/:id/accounts
+     * 
+     * @param listId リストのID
+     * @param accountIds 追加するアカウントIDの配列
      */
-    @Throws(MastodonException::class)
-    fun addAccountsToList(listId: Long, accountIds: Array<String>) {
-
-        val parameters = Parameter().apply {
-            accountIds.forEach {
-                append("account_ids[]", it)
-            }
-        }.build()
-
-        val response = client.post(
-            "/api/v1/lists/$listId/accounts",
-            parameters.toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
-        )
-        if (!response.isSuccessful) {
-            throw MastodonException(response)
+    fun addAccountsToList(listId: Long, accountIds: Array<String>): MastodonRequest<Unit> {
+        val params = Parameter().apply {
+            accountIds.forEach { append("account_ids[]", it) }
         }
+        return client.createPostRequest<Unit>("/api/v1/lists/$listId/accounts", params)
     }
 
     /**
+     * リストからアカウントを削除
      * DELETE /api/v1/lists/:id/accounts
+     * 
+     * @param listId リストのID
+     * @param accountIds 削除するアカウントIDの配列
      */
-    @Throws(MastodonException::class)
-    fun removeAccountsFromList(listId: Long, accountIds: Array<String>) {
-
-        val parameters = Parameter().apply {
-            accountIds.forEach {
-                append("account_ids[]", it)
-            }
-        }.build()
-
-        val response = client.delete(
-            "/api/v1/lists/$listId/accounts",
-            parameters.toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
-        )
-        if (!response.isSuccessful) {
-            throw MastodonException(response)
+    fun removeAccountsFromList(listId: Long, accountIds: Array<String>): MastodonRequest<Unit> {
+        val params = Parameter().apply {
+            accountIds.forEach { append("account_ids[]", it) }
         }
+        return client.createDeleteRequest<Unit>("/api/v1/lists/$listId/accounts")
     }
 }
