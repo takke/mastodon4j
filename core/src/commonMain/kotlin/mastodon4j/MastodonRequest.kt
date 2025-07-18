@@ -14,11 +14,11 @@ import mastodon4j.extension.toPageable
  * 
  * @param T レスポンスの型
  * @param executor HTTPリクエストを実行する関数
- * @param mapper JSONをオブジェクトに変換する関数
+ * @param serializer JSONをオブジェクトに変換するシリアライザー
  */
 class MastodonRequest<T>(
     private val executor: suspend () -> HttpResponse,
-    private val mapper: suspend (String) -> Any
+    private val serializer: suspend (String) -> Any
 ) {
     interface Action1<T> {
         fun invoke(arg1: T, arg2: Any)
@@ -64,7 +64,7 @@ class MastodonRequest<T>(
                 val result = when {
                     element is JsonObject -> {
                         // 単一オブジェクトの場合
-                        val v = mapper(body)
+                        val v = serializer(body)
                         action(body, v)
                         v as T
                     }
@@ -73,7 +73,7 @@ class MastodonRequest<T>(
                         val list = mutableListOf<Any>()
                         element.forEach { jsonElement ->
                             val json = jsonElement.toString()
-                            val v = mapper(json)
+                            val v = serializer(json)
                             action(json, v)
                             list.add(v)
                         }

@@ -3,9 +3,12 @@ package mastodon4j
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import mastodon4j.api.exception.MastodonException
+import mastodon4j.compat.GsonCompatLayer
 // import mastodon4j.api.method.*
 
 /**
@@ -98,14 +101,114 @@ class MastodonClient private constructor(
 
     val baseUrl = "https://$instanceName"
 
-    fun getSerializer() = json
+    fun getSerializer() = GsonCompatLayer(json)
 
     fun getInstanceName() = instanceName
 
     fun getHttpClient() = client
 
-    // メソッドの作成
-    // TODO: 各メソッドクラスをKMP対応後に有効化
+    /**
+     * GETリクエストを作成
+     */
+    suspend fun get(path: String): HttpResponse {
+        return client.get(path)
+    }
+
+    /**
+     * POSTリクエストを作成
+     */
+    suspend fun post(path: String, parameters: Parameter? = null): HttpResponse {
+        return client.post(path) {
+            parameters?.let {
+                setBody(it.toParameters())
+            }
+        }
+    }
+
+    /**
+     * PUTリクエストを作成
+     */
+    suspend fun put(path: String, parameters: Parameter? = null): HttpResponse {
+        return client.put(path) {
+            parameters?.let {
+                setBody(it.toParameters())
+            }
+        }
+    }
+
+    /**
+     * DELETEリクエストを作成
+     */
+    suspend fun delete(path: String): HttpResponse {
+        return client.delete(path)
+    }
+
+    /**
+     * PATCHリクエストを作成
+     */
+    suspend fun patch(path: String, parameters: Parameter? = null): HttpResponse {
+        return client.patch(path) {
+            parameters?.let {
+                setBody(it.toParameters())
+            }
+        }
+    }
+
+    /**
+     * 型安全なGETリクエストを作成
+     */
+    inline fun <reified T> createGetRequest(path: String): MastodonRequest<T> {
+        return MastodonRequest(
+            executor = { get(path) },
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) }
+        )
+    }
+
+    /**
+     * 型安全なPOSTリクエストを作成
+     */
+    inline fun <reified T> createPostRequest(path: String, parameters: Parameter? = null): MastodonRequest<T> {
+        return MastodonRequest(
+            executor = { post(path, parameters) },
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) }
+        )
+    }
+
+    /**
+     * 型安全なPUTリクエストを作成
+     */
+    inline fun <reified T> createPutRequest(path: String, parameters: Parameter? = null): MastodonRequest<T> {
+        return MastodonRequest(
+            executor = { put(path, parameters) },
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) }
+        )
+    }
+
+    /**
+     * 型安全なDELETEリクエストを作成
+     */
+    inline fun <reified T> createDeleteRequest(path: String): MastodonRequest<T> {
+        return MastodonRequest(
+            executor = { delete(path) },
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) }
+        )
+    }
+
+    /**
+     * 型安全なPATCHリクエストを作成
+     */
+    inline fun <reified T> createPatchRequest(path: String, parameters: Parameter? = null): MastodonRequest<T> {
+        return MastodonRequest(
+            executor = { patch(path, parameters) },
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) }
+        )
+    }
+
+    // メソッドの作成（KMP対応版）
+    @Suppress("FunctionName")
+    fun StatusesMethod() = mastodon4j.api.method.StatusesMethod(this)
+
+    // TODO: 他のメソッドクラスも段階的にKMP対応
     /*
     @Suppress("FunctionName")
     fun AnnouncementsMethod() = AnnouncementsMethod(this)
@@ -118,9 +221,6 @@ class MastodonClient private constructor(
 
     @Suppress("FunctionName")
     fun AppsMethod() = AppsMethod(this)
-
-    @Suppress("FunctionName")
-    fun StatusesMethod() = StatusesMethod(this)
 
     @Suppress("FunctionName")
     fun AccountsMethod() = AccountsMethod(this)
