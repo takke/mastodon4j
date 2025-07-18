@@ -31,7 +31,7 @@ class PublicMethod(private val client: MastodonClient) {
      * GET /api/v1/instance/domain_blocks
      */
     fun getInstanceDomainBlocks(): MastodonRequest<List<DomainBlock>> {
-        return client.createGetRequest<List<DomainBlock>>("/api/v1/instance/domain_blocks")
+        return client.createListGetRequest<DomainBlock>("/api/v1/instance/domain_blocks")
     }
 
     /**
@@ -44,7 +44,7 @@ class PublicMethod(private val client: MastodonClient) {
         }
         
         val path = "/api/v1/timelines/public?${params.build()}"
-        return client.createGetRequest<List<Status>>(path).toPageable()
+        return client.createListGetRequest<Status>(path).toPageable()
     }
 
     /**
@@ -73,7 +73,7 @@ class PublicMethod(private val client: MastodonClient) {
         }
         
         val path = "/api/v1/timelines/tag/$tag?${params.build()}"
-        return client.createGetRequest<List<Status>>(path).toPageable()
+        return client.createListGetRequest<Status>(path).toPageable()
     }
 
     /**
@@ -97,6 +97,6 @@ class PublicMethod(private val client: MastodonClient) {
      * GET /api/v1/custom_emojis
      */
     fun getCustomEmojis(): MastodonRequest<List<Emoji>> {
-        return client.createGetRequest<List<Emoji>>("/api/v1/custom_emojis")
+        return client.createListGetRequest<Emoji>("/api/v1/custom_emojis")
     }
 }

@@ -25,6 +25,6 @@ class FavouritesMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/favourites"
         }
-        return client.createGetRequest<List<Status>>(path).toPageable()
+        return client.createListGetRequest<Status>(path).toPageable()
     }
 }

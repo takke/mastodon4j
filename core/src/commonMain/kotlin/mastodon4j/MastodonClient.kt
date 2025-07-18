@@ -159,26 +159,18 @@ class MastodonClient private constructor(
     inline fun <reified T> createGetRequest(path: String): MastodonRequest<T> {
         return MastodonRequest(
             executor = { get(path) },
-            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any },
-            elementSerializer = when {
-                // List<E>型の場合は要素型のシリアライザーを提供
-                T::class.qualifiedName?.startsWith("kotlin.collections.List") == true -> {
-                    { elementJson ->
-                        // 型引数を取得してシリアライゼーション
-                        @Suppress("UNCHECKED_CAST")
-                        when (T::class.qualifiedName) {
-                            "kotlin.collections.List<mastodon4j.api.entity.Status>" -> json.decodeFromString<mastodon4j.api.entity.Status>(elementJson)
-                            "kotlin.collections.List<mastodon4j.api.entity.Account>" -> json.decodeFromString<mastodon4j.api.entity.Account>(elementJson)
-                            "kotlin.collections.List<mastodon4j.api.entity.Notification>" -> json.decodeFromString<mastodon4j.api.entity.Notification>(elementJson)
-                            "kotlin.collections.List<mastodon4j.api.entity.Conversation>" -> json.decodeFromString<mastodon4j.api.entity.Conversation>(elementJson)
-                            "kotlin.collections.List<mastodon4j.api.entity.Report>" -> json.decodeFromString<mastodon4j.api.entity.Report>(elementJson)
-                            "kotlin.collections.List<mastodon4j.api.entity.MstList>" -> json.decodeFromString<mastodon4j.api.entity.MstList>(elementJson)
-                            else -> throw IllegalArgumentException("Unsupported List element type: ${T::class.qualifiedName}")
-                        } as Any
-                    }
-                }
-                else -> null
-            }
+            serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any }
+        )
+    }
+    
+    /**
+     * List型用のGETリクエストを作成（要素型指定）
+     */
+    inline fun <reified E> createListGetRequest(path: String): MastodonRequest<List<E>> {
+        return MastodonRequest(
+            executor = { get(path) },
+            serializer = { jsonString -> json.decodeFromString<List<E>>(jsonString) as Any },
+            elementSerializer = { elementJson -> json.decodeFromString<E>(elementJson) as Any }
         )
     }
 

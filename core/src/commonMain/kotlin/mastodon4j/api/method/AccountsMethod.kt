@@ -71,7 +71,7 @@ class AccountsMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/accounts/$accountId/followers"
         }
-        return client.createGetRequest<List<Account>>(path).toPageable()
+        return client.createListGetRequest<Account>(path).toPageable()
     }
 
     /**
@@ -84,7 +84,7 @@ class AccountsMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/accounts/$accountId/following"
         }
-        return client.createGetRequest<List<Account>>(path).toPageable()
+        return client.createListGetRequest<Account>(path).toPageable()
     }
 
     /**
@@ -110,7 +110,7 @@ class AccountsMethod(private val client: MastodonClient) {
         }
         
         val path = "/api/v1/accounts/$accountId/statuses?${params.build()}"
-        return client.createGetRequest<List<Status>>(path).toPageable()
+        return client.createListGetRequest<Status>(path).toPageable()
     }
 
     /**
@@ -174,7 +174,7 @@ class AccountsMethod(private val client: MastodonClient) {
      */
     fun getRelationships(accountIds: List<String>): MastodonRequest<List<Relationship>> {
         val params = Parameter().append("id", accountIds)
-        return client.createGetRequest<List<Relationship>>("/api/v1/accounts/relationships?${params.build()}")
+        return client.createListGetRequest<Relationship>("/api/v1/accounts/relationships?${params.build()}")
     }
 
     /**
@@ -193,6 +193,6 @@ class AccountsMethod(private val client: MastodonClient) {
             resolve?.let { append("resolve", it) }
             following?.let { append("following", it) }
         }
-        return client.createGetRequest<List<Account>>("/api/v1/accounts/search?${params.build()}")
+        return client.createListGetRequest<Account>("/api/v1/accounts/search?${params.build()}")
     }
 }

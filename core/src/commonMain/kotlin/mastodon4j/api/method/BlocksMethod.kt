@@ -25,6 +25,6 @@ class BlocksMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/blocks"
         }
-        return client.createGetRequest<List<Account>>(path).toPageable()
+        return client.createListGetRequest<Account>(path).toPageable()
     }
 }

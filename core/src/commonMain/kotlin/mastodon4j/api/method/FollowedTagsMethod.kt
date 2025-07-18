@@ -24,6 +24,6 @@ class FollowedTagsMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/followed_tags"
         }
-        return client.createGetRequest<List<Tag>>(path)
+        return client.createListGetRequest<Tag>(path)
     }
 }

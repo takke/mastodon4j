@@ -28,7 +28,7 @@ class AnnouncementsMethod(private val client: MastodonClient) {
             "/api/v1/announcements"
         }
         
-        return client.createGetRequest<List<Announcement>>(path)
+        return client.createListGetRequest<Announcement>(path)
     }
 
     /**

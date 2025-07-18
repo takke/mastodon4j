@@ -23,7 +23,7 @@ class ListsMethod(private val client: MastodonClient) {
      * GET /api/v1/lists
      */
     fun getLists(): MastodonRequest<Pageable<MstList>> {
-        return client.createGetRequest<List<MstList>>("/api/v1/lists").toPageable()
+        return client.createListGetRequest<MstList>("/api/v1/lists").toPageable()
     }
 
     /**
@@ -49,7 +49,7 @@ class ListsMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/timelines/list/$listId"
         }
-        return client.createGetRequest<List<Status>>(path).toPageable()
+        return client.createListGetRequest<Status>(path).toPageable()
     }
 
     /**
@@ -65,7 +65,7 @@ class ListsMethod(private val client: MastodonClient) {
         } else {
             "/api/v1/lists/$listId/accounts"
         }
-        return client.createGetRequest<List<Account>>(path).toPageable()
+        return client.createListGetRequest<Account>(path).toPageable()
     }
 
     /**

@@ -32,7 +32,7 @@ class TrendsMethod(private val client: MastodonClient) {
             "/api/v1/trends/tags"
         }
         
-        return client.createGetRequest<List<Tag>>(path)
+        return client.createListGetRequest<Tag>(path)
     }
 
     /**
@@ -55,6 +55,6 @@ class TrendsMethod(private val client: MastodonClient) {
             "/api/v1/trends"
         }
         
-        return client.createGetRequest<List<Tag>>(path)
+        return client.createListGetRequest<Tag>(path)
     }
 }
