@@ -7,13 +7,12 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
-import mastodon4j.api.exception.MastodonException
+import mastodon4j.api.method.*
 import mastodon4j.compat.GsonCompatLayer
-// import mastodon4j.api.method.*
 
 /**
  * Mastodon APIクライアント
- * 
+ *
  * Ktor Clientを使用してMastodon APIと通信するメインクラス
  */
 class MastodonClient private constructor(
@@ -204,28 +203,28 @@ class MastodonClient private constructor(
         )
     }
 
-    // メソッドの作成（KMP対応版）
-    fun StatusesMethod() = mastodon4j.api.method.StatusesMethod(this)
-    fun AccountsMethod() = mastodon4j.api.method.AccountsMethod(this)
-    fun TimelinesMethod() = mastodon4j.api.method.TimelinesMethod(this)
-    fun NotificationsMethod() = mastodon4j.api.method.NotificationsMethod(this)
-    fun SearchMethod() = mastodon4j.api.method.SearchMethod(this)
-    fun PublicMethod() = mastodon4j.api.method.PublicMethod(this)
-    fun AppsMethod() = mastodon4j.api.method.AppsMethod(this)
-    fun FollowsMethod() = mastodon4j.api.method.FollowsMethod(this)
-    fun TagsMethod() = mastodon4j.api.method.TagsMethod(this)
-    fun TrendsMethod() = mastodon4j.api.method.TrendsMethod(this)
-    fun FollowedTagsMethod() = mastodon4j.api.method.FollowedTagsMethod(this)
-    fun MediaMethod() = mastodon4j.api.method.MediaMethod(this)
-    fun MutesMethod() = mastodon4j.api.method.MutesMethod(this)
-    fun BlocksMethod() = mastodon4j.api.method.BlocksMethod(this)
-    fun FavouritesMethod() = mastodon4j.api.method.FavouritesMethod(this)
-    fun BookmarksMethod() = mastodon4j.api.method.BookmarksMethod(this)
-    fun ListsMethod() = mastodon4j.api.method.ListsMethod(this)
-    fun FollowRequestsMethod() = mastodon4j.api.method.FollowRequestsMethod(this)
-    fun ReportsMethod() = mastodon4j.api.method.ReportsMethod(this)
-    fun AnnouncementsMethod() = mastodon4j.api.method.AnnouncementsMethod(this)
+    // メソッド
+    fun accounts() = AccountsMethod(this)
+    fun apps() = AppsMethod(this)
+    val announcements get() = AnnouncementsMethod(this)
+    val blocks get() = BlocksMethod(this)
+    val bookmarks get() = BookmarksMethod(this)
+    val favourites get() = FavouritesMethod(this)
+    val followRequests get() = FollowRequestsMethod(this)
+    val followedTags get() = FollowedTagsMethod(this)
+    val follows get() = FollowsMethod(this)
+    val lists get() = ListsMethod(this)
+    val media get() = MediaMethod(this)
+    val mutes get() = MutesMethod(this)
+    val notifications get() = NotificationsMethod(this)
+    val public get() = PublicMethod(this)
+    val reports get() = ReportsMethod(this)
+    val search get() = SearchMethod(this)
+    val statuses get() = StatusesMethod(this)
+    val tags get() = TagsMethod(this)
+    val timelines get() = TimelinesMethod(this)
+    val trends get() = TrendsMethod(this)
 
     // TODO: Streamingの実装（WebSocket対応）
-//    fun Streaming() = Streaming(this)
+//   val streaming get() = Streaming(this)
 }

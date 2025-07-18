@@ -3,6 +3,7 @@ package mastodon4j
 import io.ktor.client.call.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.*
 import mastodon4j.api.MastodonResponse
 import mastodon4j.api.MastodonResponseImpl
@@ -53,7 +54,7 @@ class MastodonRequest<T>(
      * @throws MastodonException APIエラーが発生した場合
      */
     @Suppress("UNCHECKED_CAST")
-    suspend fun execute(): MastodonResponse<T> {
+    suspend fun executeAsync(): MastodonResponse<T> {
         val response = executor()
         
         if (response.status.isSuccess()) {
@@ -120,7 +121,7 @@ class MastodonRequest<T>(
     }
 
     /**
-     * 非同期でリクエストを実行（suspend関数として）
+     * 同期でリクエストを実行
      */
-    suspend fun executeAsync(): MastodonResponse<T> = execute()
+    fun execute(): MastodonResponse<T> = runBlocking { executeAsync() }
 }
