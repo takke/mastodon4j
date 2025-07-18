@@ -14,6 +14,11 @@ import mastodon4j.api.exception.MastodonException
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#accounts
  */
 class AccountsMethod(private val client: MastodonClient) {
+    
+    /**
+     * プラットフォーム固有の実装でクライアントにアクセスするためのinternal getter
+     */
+    internal fun getClient(): MastodonClient = client
 
     /**
      * 指定されたIDのアカウント情報を取得
@@ -49,14 +54,31 @@ class AccountsMethod(private val client: MastodonClient) {
         note: String? = null,
         locked: Boolean? = null,
         bot: Boolean? = null,
-        discoverable: Boolean? = null
+        discoverable: Boolean? = null,
+        fieldsAttributesNames: List<String>? = null,
+        fieldsAttributesValues: List<String>? = null
     ): MastodonRequest<CredentialAccount> {
+        // フィールド名と値のリストサイズが一致することを確認
+        if (fieldsAttributesNames != null && fieldsAttributesValues != null) {
+            if (fieldsAttributesNames.size != fieldsAttributesValues.size) {
+                throw MastodonException("fieldsAttributesNames.size != fieldsAttributesValues.size")
+            }
+        }
+        
         val params = Parameter().apply {
             displayName?.let { append("display_name", it) }
             note?.let { append("note", it) }
             locked?.let { append("locked", it) }
             bot?.let { append("bot", it) }
             discoverable?.let { append("discoverable", it) }
+            
+            // フィールド属性の設定
+            if (fieldsAttributesNames != null && fieldsAttributesValues != null) {
+                for (i in fieldsAttributesNames.indices) {
+                    append("fields_attributes[$i][name]", fieldsAttributesNames[i])
+                    append("fields_attributes[$i][value]", fieldsAttributesValues[i])
+                }
+            }
         }
         return client.createPatchRequest<CredentialAccount>("/api/v1/accounts/update_credentials", params)
     }
@@ -117,9 +139,10 @@ class AccountsMethod(private val client: MastodonClient) {
      * アカウントをフォロー
      * POST /api/v1/accounts/:id/follow
      */
-    fun postFollow(accountId: String, reblogs: Boolean? = null): MastodonRequest<Relationship> {
+    fun postFollow(accountId: String, reblogs: Boolean? = null, notify: Boolean? = null): MastodonRequest<Relationship> {
         val params = Parameter().apply {
             reblogs?.let { append("reblogs", it) }
+            notify?.let { append("notify", it) }
         }
         return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/follow", params)
     }
@@ -195,4 +218,26 @@ class AccountsMethod(private val client: MastodonClient) {
         }
         return client.createListGetRequest<Account>("/api/v1/accounts/search?${params.build()}")
     }
+
+    /**
+     * おすすめアカウントを取得
+     * GET /api/v2/suggestions
+     */
+    fun getSuggestions(): MastodonRequest<List<Suggestion>> {
+        return client.createListGetRequest<Suggestion>("/api/v2/suggestions")
+    }
+
+    /**
+     * 指定したアカウントが含まれるリストを取得
+     * GET /api/v1/accounts/:id/lists
+     */
+    fun getListsContainingThisAccount(accountId: String): MastodonRequest<Pageable<MstList>> {
+        return client.createListGetRequest<MstList>("/api/v1/accounts/$accountId/lists").toPageable()
+    }
 }
+
+/**
+ * プラットフォーム固有のファイルアップロード関連拡張関数
+ */
+expect fun AccountsMethod.updateAvatar(avatarFile: Any, mimeType: String): MastodonRequest<CredentialAccount>
+expect fun AccountsMethod.updateHeader(headerFile: Any, mimeType: String): MastodonRequest<CredentialAccount>
