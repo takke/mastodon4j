@@ -5,351 +5,241 @@ import mastodon4j.MastodonRequest
 import mastodon4j.Parameter
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
-import mastodon4j.api.entity.Account
-import mastodon4j.api.entity.CredentialAccount
-import mastodon4j.api.entity.MstList
-import mastodon4j.api.entity.Relationship
-import mastodon4j.api.entity.Status
-import mastodon4j.api.entity.Suggestion
+import mastodon4j.api.entity.*
 import mastodon4j.api.exception.MastodonException
-import mastodon4j.extension.emptyRequestBody
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import java.io.File
 
 /**
+ * Accountsに関するAPIメソッドクラス（KMP対応版）
+ * 
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#accounts
  */
 class AccountsMethod(private val client: MastodonClient) {
-    // GET /api/v1/accounts/:id
+    
+    /**
+     * プラットフォーム固有の実装でクライアントにアクセスするためのinternal getter
+     */
+    internal fun getClient(): MastodonClient = client
+
+    /**
+     * 指定されたIDのアカウント情報を取得
+     * GET /api/v1/accounts/:id
+     */
     fun getAccount(accountId: String): MastodonRequest<Account> {
-        return MastodonRequest(
-            { client.get("/api/v1/accounts/$accountId") },
-            { client.getSerializer().fromJson(it, Account::class.java) }
-        )
-    }
-
-    // GET /api/v1/accounts/lookup
-    fun lookup(acct: String): MastodonRequest<Account> {
-        return MastodonRequest(
-            { client.get("/api/v1/accounts/lookup", Parameter().append("acct", acct)) },
-            { client.getSerializer().fromJson(it, Account::class.java) }
-        )
-    }
-
-    //  GET /api/v1/accounts/verify_credentials
-    fun getVerifyCredentials(): MastodonRequest<CredentialAccount> {
-        return MastodonRequest(
-            { client.get("/api/v1/accounts/verify_credentials") },
-            { client.getSerializer().fromJson(it, CredentialAccount::class.java) }
-        )
+        return client.createGetRequest<Account>("/api/v1/accounts/$accountId")
     }
 
     /**
-     * PATCH /api/v1/accounts/update_credentials
-     * display_name: The name to display in the user's profile
-     * note: A new biography for the user
+     * acctからアカウントを検索
+     * GET /api/v1/accounts/lookup
      */
-    fun updateCredential(
-        displayName: String?,
-        note: String?,
+    fun lookup(acct: String): MastodonRequest<Account> {
+        val params = Parameter().append("acct", acct)
+        return client.createGetRequest<Account>("/api/v1/accounts/lookup?${params.build()}")
+    }
+
+    /**
+     * 認証情報を確認
+     * GET /api/v1/accounts/verify_credentials
+     */
+    fun getVerifyCredentials(): MastodonRequest<CredentialAccount> {
+        return client.createGetRequest<CredentialAccount>("/api/v1/accounts/verify_credentials")
+    }
+
+    /**
+     * アカウント情報を更新
+     * PATCH /api/v1/accounts/update_credentials
+     */
+    fun updateCredentials(
+        displayName: String? = null,
+        note: String? = null,
+        locked: Boolean? = null,
+        bot: Boolean? = null,
+        discoverable: Boolean? = null,
         fieldsAttributesNames: List<String>? = null,
         fieldsAttributesValues: List<String>? = null
-    ): MastodonRequest<Account> {
-        val parameters = Parameter().apply {
-            displayName?.let {
-                append("display_name", it)
+    ): MastodonRequest<CredentialAccount> {
+        // フィールド名と値のリストサイズが一致することを確認
+        if (fieldsAttributesNames != null && fieldsAttributesValues != null) {
+            if (fieldsAttributesNames.size != fieldsAttributesValues.size) {
+                throw MastodonException("fieldsAttributesNames.size != fieldsAttributesValues.size")
             }
-            note?.let {
-                append("note", it)
-            }
-
-            // fields_attributes
+        }
+        
+        val params = Parameter().apply {
+            displayName?.let { append("display_name", it) }
+            note?.let { append("note", it) }
+            locked?.let { append("locked", it) }
+            bot?.let { append("bot", it) }
+            discoverable?.let { append("discoverable", it) }
+            
+            // フィールド属性の設定
             if (fieldsAttributesNames != null && fieldsAttributesValues != null) {
-
-                if (fieldsAttributesNames.size != fieldsAttributesValues.size) {
-                    throw MastodonException("fieldsAttributesNames.size != fieldsAttributesValues.size")
-                }
-
                 for (i in fieldsAttributesNames.indices) {
                     append("fields_attributes[$i][name]", fieldsAttributesNames[i])
                     append("fields_attributes[$i][value]", fieldsAttributesValues[i])
                 }
             }
-        }.build()
-        return MastodonRequest(
-            {
-                client.patch(
-                    "/api/v1/accounts/update_credentials",
-                    parameters
-                        .toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Account::class.java)
-            }
-        )
+        }
+
+        // TODO "application/x-www-form-urlencoded; charset=utf-8" を指定してリクエストする必要があるかも。
+        return client.createPatchRequest<CredentialAccount>("/api/v1/accounts/update_credentials", params)
     }
 
-    fun updateAvatar(avatarFile: File, mimeType: String): MastodonRequest<Account> {
-        return MastodonRequest(
-            {
-                client.patch(
-                    "/api/v1/accounts/update_credentials",
-                    MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addFormDataPart(
-                            "avatar", avatarFile.name,
-                            avatarFile.asRequestBody(mimeType.toMediaType())
-                        )
-                        .build()
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Account::class.java)
-            }
-        )
+    /**
+     * アカウントのフォロワーリストを取得
+     * GET /api/v1/accounts/:id/followers
+     */
+    fun getFollowers(accountId: String, range: Range? = null): MastodonRequest<Pageable<Account>> {
+        val path = if (range != null) {
+            "/api/v1/accounts/$accountId/followers?${range.toParameter().build()}"
+        } else {
+            "/api/v1/accounts/$accountId/followers"
+        }
+        return client.createListGetRequest<Account>(path).toPageable()
     }
 
-    fun updateHeader(headerFile: File, mimeType: String): MastodonRequest<Account> {
-        return MastodonRequest(
-            {
-                client.patch(
-                    "/api/v1/accounts/update_credentials",
-                    MultipartBody.Builder()
-                        .setType(MultipartBody.FORM)
-                        .addFormDataPart(
-                            "header", headerFile.name,
-                            headerFile.asRequestBody(mimeType.toMediaType())
-                        )
-                        .build()
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Account::class.java)
-            }
-        )
+    /**
+     * アカウントのフォローリストを取得
+     * GET /api/v1/accounts/:id/following
+     */
+    fun getFollowing(accountId: String, range: Range? = null): MastodonRequest<Pageable<Account>> {
+        val path = if (range != null) {
+            "/api/v1/accounts/$accountId/following?${range.toParameter().build()}"
+        } else {
+            "/api/v1/accounts/$accountId/following"
+        }
+        return client.createListGetRequest<Account>(path).toPageable()
     }
 
-    //  GET /api/v1/accounts/:id/followers
-    @JvmOverloads
-    fun getFollowers(accountId: String, range: Range = Range()): MastodonRequest<Pageable<Account>> {
-        return MastodonRequest<Pageable<Account>>(
-            {
-                client.get(
-                    "/api/v1/accounts/$accountId/followers",
-                    range.toParameter()
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Account::class.java)
-            }
-        ).toPageable()
-    }
-
-    //  GET /api/v1/accounts/:id/following
-    @JvmOverloads
-    fun getFollowing(accountId: String, range: Range = Range()): MastodonRequest<Pageable<Account>> {
-        return MastodonRequest<Pageable<Account>>(
-            {
-                client.get(
-                    "/api/v1/accounts/$accountId/following",
-                    range.toParameter()
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Account::class.java)
-            }
-        ).toPageable()
-    }
-
-    // GET /api/v2/suggestions
-    fun getSuggestions(): MastodonRequest<List<Suggestion>> {
-        return MastodonRequest(
-            {
-                client.get(
-                    "/api/v2/suggestions"
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Suggestion::class.java)
-            }
-        )
-    }
-
-    //  GET /api/v1/accounts/:id/statuses
-    @JvmOverloads
+    /**
+     * アカウントのステータスリストを取得
+     * GET /api/v1/accounts/:id/statuses
+     */
     fun getStatuses(
         accountId: String,
-        onlyMedia: Boolean = false,
-        excludeReplies: Boolean = false,
-        pinned: Boolean = false,
-        range: Range = Range()
+        onlyMedia: Boolean? = false,
+        excludeReplies: Boolean? = false,
+        pinned: Boolean? = false,
+        range: Range? = Range()
     ): MastodonRequest<Pageable<Status>> {
-        val parameters = range.toParameter()
-        if (onlyMedia) {
-            parameters.append("only_media", true)
+        val params = Parameter().apply {
+            onlyMedia?.let { append("only_media", it) }
+            excludeReplies?.let { append("exclude_replies", it) }
+            pinned?.let { append("pinned", it) }
+            range?.let { 
+                append("max_id", it.maxId ?: 0L)
+                append("since_id", it.sinceId ?: "")
+                append("limit", it.limit)
+            }
         }
-        if (pinned) {
-            parameters.append("pinned", true)
-        }
-        if (excludeReplies) {
-            parameters.append("exclude_replies", true)
-        }
-        return MastodonRequest<Pageable<Status>>(
-            {
-                client.get(
-                    "/api/v1/accounts/$accountId/statuses",
-                    parameters
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Status::class.java)
-            }
-        ).toPageable()
+        
+        val path = "/api/v1/accounts/$accountId/statuses?${params.build()}"
+        return client.createListGetRequest<Status>(path).toPageable()
     }
 
-    //  POST /api/v1/accounts/:id/follow
-    fun postFollow(accountId: String, reblogs: Boolean? = null, notify: Boolean? = null): MastodonRequest<Relationship> {
-        return MastodonRequest(
-            {
-                val parameter = Parameter().apply {
-                    if (reblogs != null) {
-                        append("reblogs", reblogs)
-                    }
-                    if (notify != null) {
-                        append("notify", notify)
-                    }
-                }.build()
-
-                client.post(
-                    "/api/v1/accounts/$accountId/follow",
-                    parameter.toRequestBody("application/x-www-form-urlencoded; charset=utf-8".toMediaTypeOrNull())
-
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Relationship::class.java)
-            }
-        )
-    }
-
-    //  POST /api/v1/accounts/:id/unfollow
-    fun postUnFollow(accountId: String): MastodonRequest<Relationship> {
-        return MastodonRequest(
-            {
-                client.post("/api/v1/accounts/$accountId/unfollow", emptyRequestBody())
-            },
-            {
-                client.getSerializer().fromJson(it, Relationship::class.java)
-            }
-        )
-    }
-
-    //  POST /api/v1/accounts/:id/block
-    fun postBlock(accountId: String): MastodonRequest<Relationship> {
-        return MastodonRequest(
-            {
-                client.post("/api/v1/accounts/$accountId/block", emptyRequestBody())
-            },
-            {
-                client.getSerializer().fromJson(it, Relationship::class.java)
-            }
-        )
-    }
-
-    //  POST /api/v1/accounts/:id/unblock
-    fun postUnblock(accountId: String): MastodonRequest<Relationship> {
-        return MastodonRequest(
-            {
-                client.post("/api/v1/accounts/$accountId/unblock", emptyRequestBody())
-            },
-            {
-                client.getSerializer().fromJson(it, Relationship::class.java)
-            }
-        )
-    }
-
-    //  POST /api/v1/accounts/:id/mute
-    fun postMute(accountId: String): MastodonRequest<Relationship> {
-        return MastodonRequest(
-            {
-                client.post("/api/v1/accounts/$accountId/mute", emptyRequestBody())
-            },
-            {
-                client.getSerializer().fromJson(it, Relationship::class.java)
-            }
-        )
-    }
-
-    //  POST /api/v1/accounts/:id/unmute
-    fun postUnmute(accountId: String): MastodonRequest<Relationship> {
-        return MastodonRequest(
-            {
-                client.post("/api/v1/accounts/$accountId/unmute", emptyRequestBody())
-            },
-            {
-                client.getSerializer().fromJson(it, Relationship::class.java)
-            }
-        )
-    }
-
-    //  GET /api/v1/accounts/relationships
-    fun getRelationships(accountIds: List<String>): MastodonRequest<List<Relationship>> {
-        return MastodonRequest(
-            {
-                client.get(
-                    "/api/v1/accounts/relationships",
-                    Parameter().append("id", accountIds)
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Relationship::class.java)
-            }
-        )
-    }
-
-    // GET /api/v1/accounts/search
     /**
-     * q: What to search for
-     * limit: Maximum number of matching accounts to return (default: 40)
+     * アカウントをフォロー
+     * POST /api/v1/accounts/:id/follow
      */
-    @JvmOverloads
-    fun search(query: String, limit: Int = 40, resolve: Boolean = false): MastodonRequest<List<Account>> {
-        return MastodonRequest(
-            {
-                client.get(
-                    "/api/v1/accounts/search",
-                    Parameter().apply {
-                        append("q", query)
-                        append("limit", limit)
-                        if (resolve) {
-                            append("resolve", resolve)
-                        }
-                    }
-                )
-            },
-            {
-                client.getSerializer().fromJson(it, Account::class.java)
-            }
-        )
+    fun postFollow(accountId: String, reblogs: Boolean? = null, notify: Boolean? = null): MastodonRequest<Relationship> {
+        val params = Parameter().apply {
+            reblogs?.let { append("reblogs", it) }
+            notify?.let { append("notify", it) }
+        }
+        return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/follow", params)
     }
 
     /**
+     * アカウントのフォローを解除
+     * POST /api/v1/accounts/:id/unfollow
+     */
+    fun postUnfollow(accountId: String): MastodonRequest<Relationship> {
+        return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/unfollow")
+    }
+
+    /**
+     * アカウントをブロック
+     * POST /api/v1/accounts/:id/block
+     */
+    fun postBlock(accountId: String): MastodonRequest<Relationship> {
+        return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/block")
+    }
+
+    /**
+     * アカウントのブロックを解除
+     * POST /api/v1/accounts/:id/unblock
+     */
+    fun postUnblock(accountId: String): MastodonRequest<Relationship> {
+        return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/unblock")
+    }
+
+    /**
+     * アカウントをミュート
+     * POST /api/v1/accounts/:id/mute
+     */
+    fun postMute(accountId: String, notifications: Boolean? = null, duration: Int? = null): MastodonRequest<Relationship> {
+        val params = Parameter().apply {
+            notifications?.let { append("notifications", it) }
+            duration?.let { append("duration", it) }
+        }
+        return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/mute", params)
+    }
+
+    /**
+     * アカウントのミュートを解除
+     * POST /api/v1/accounts/:id/unmute
+     */
+    fun postUnmute(accountId: String): MastodonRequest<Relationship> {
+        return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/unmute")
+    }
+
+    /**
+     * 複数アカウントとの関係を取得
+     * GET /api/v1/accounts/relationships
+     */
+    fun getRelationships(accountIds: List<String>): MastodonRequest<List<Relationship>> {
+        val params = Parameter().append("id", accountIds)
+        return client.createListGetRequest<Relationship>("/api/v1/accounts/relationships?${params.build()}")
+    }
+
+    /**
+     * アカウントを検索
+     * GET /api/v1/accounts/search
+     */
+    fun search(
+        query: String,
+        limit: Int = 40,
+        resolve: Boolean? = null,
+        following: Boolean? = null
+    ): MastodonRequest<List<Account>> {
+        val params = Parameter().apply {
+            append("q", query)
+            append("limit", limit)
+            resolve?.let { append("resolve", it) }
+            following?.let { append("following", it) }
+        }
+        return client.createListGetRequest<Account>("/api/v1/accounts/search?${params.build()}")
+    }
+
+    /**
+     * おすすめアカウントを取得
+     * GET /api/v2/suggestions
+     */
+    fun getSuggestions(): MastodonRequest<List<Suggestion>> {
+        return client.createListGetRequest<Suggestion>("/api/v2/suggestions")
+    }
+
+    /**
+     * 指定したアカウントが含まれるリストを取得
      * GET /api/v1/accounts/:id/lists
      */
-    @Throws(MastodonException::class)
     fun getListsContainingThisAccount(accountId: String): MastodonRequest<Pageable<MstList>> {
-        return MastodonRequest<Pageable<MstList>>(
-            {
-                client.get("/api/v1/accounts/${accountId}/lists")
-            },
-            {
-                client.getSerializer().fromJson(it, MstList::class.java)
-            }
-        ).toPageable()
+        return client.createListGetRequest<MstList>("/api/v1/accounts/$accountId/lists").toPageable()
     }
 }
+
+/**
+ * プラットフォーム固有のファイルアップロード関連拡張関数
+ */
+expect fun AccountsMethod.updateAvatar(avatarFile: Any, mimeType: String): MastodonRequest<CredentialAccount>
+expect fun AccountsMethod.updateHeader(headerFile: Any, mimeType: String): MastodonRequest<CredentialAccount>
