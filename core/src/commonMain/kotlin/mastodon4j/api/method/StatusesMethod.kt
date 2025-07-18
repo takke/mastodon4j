@@ -191,4 +191,74 @@ class StatusesMethod(private val client: MastodonClient) {
     fun getStatusSource(statusId: String): MastodonRequest<StatusSource> {
         return client.createGetRequest<StatusSource>("/api/v1/statuses/$statusId/source")
     }
+
+    /**
+     * ステータスに絵文字リアクションを追加
+     * PUT /api/v1/statuses/:id/emoji_reactions/:emojiName
+     */
+    suspend fun putEmojiReaction(statusId: String, emojiName: String) {
+        val response = client.put("/api/v1/statuses/$statusId/emoji_reactions/$emojiName")
+        if (response.status.value !in 200..299) {
+            throw MastodonException("Failed to add emoji reaction: ${response.status}")
+        }
+    }
+
+    /**
+     * ステータスの特定の絵文字リアクションを削除
+     * DELETE /api/v1/statuses/:id/emoji_reactions/:emojiName
+     */
+    suspend fun deleteEmojiReaction(statusId: String, emojiName: String) {
+        val response = client.delete("/api/v1/statuses/$statusId/emoji_reactions/$emojiName")
+        if (response.status.value !in 200..299) {
+            throw MastodonException("Failed to delete emoji reaction: ${response.status}")
+        }
+    }
+
+    /**
+     * ステータスの全ての絵文字リアクションを削除
+     * POST /api/v1/statuses/:id/emoji_unreactions
+     */
+    suspend fun deleteAllEmojiReactions(statusId: String) {
+        val response = client.post("/api/v1/statuses/$statusId/emoji_unreactions")
+        if (response.status.value !in 200..299) {
+            throw MastodonException("Failed to delete all emoji reactions: ${response.status}")
+        }
+    }
+
+    /**
+     * ステータスに絵文字リアクションしたユーザーを取得
+     * GET /api/v1/statuses/:id/emoji_reactioned_by
+     */
+    fun getEmojiReactionedByUsers(statusId: String, range: Range? = null): MastodonRequest<Pageable<EmojiReactionedAccount>> {
+        val path = if (range != null) {
+            "/api/v1/statuses/$statusId/emoji_reactioned_by?${range.toParameter().build()}"
+        } else {
+            "/api/v1/statuses/$statusId/emoji_reactioned_by"
+        }
+        return client.createListGetRequest<EmojiReactionedAccount>(path).toPageable()
+    }
+
+    /**
+     * 絵文字リアクションのステータス一覧を取得
+     * GET /api/v1/emoji_reactions
+     */
+    fun getEmojiReactions(range: Range? = null): MastodonRequest<Pageable<Status>> {
+        val path = if (range != null) {
+            "/api/v1/emoji_reactions?${range.toParameter().build()}"
+        } else {
+            "/api/v1/emoji_reactions"
+        }
+        return client.createListGetRequest<Status>(path).toPageable()
+    }
+
+    /**
+     * 投票に参加
+     * POST /api/v1/polls/:id/votes
+     */
+    fun postPollsVotes(pollId: String, choices: List<Int>): MastodonRequest<Poll> {
+        val params = Parameter().apply {
+            append("choices", choices)
+        }
+        return client.createPostRequest<Poll>("/api/v1/polls/$pollId/votes", params)
+    }
 }
