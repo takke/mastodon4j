@@ -15,22 +15,41 @@ import mastodon4j.api.entity.MediaAttachment
 class MediaMethod(private val client: MastodonClient) {
     
     /**
-     * メディアファイルをアップロード
-     * POST /api/v1/media
-     * 
-     * 注意: この実装は基本的なアップロード機能のみを提供します。
-     * 実際のファイルアップロードについては、プラットフォーム固有の
-     * 実装（androidMain、iosMain等）で詳細を実装してください。
-     * 
-     * @param description メディアの説明（オプション）
-     * @param focus フォーカス座標（オプション）
+     * プラットフォーム固有の実装でクライアントにアクセスするためのinternal getter
      */
-    fun postMedia(
+    internal fun getClient(): MastodonClient = client
+
+    /**
+     * メディア情報を取得
+     * GET /api/v1/media/:id
+     */
+    fun getMedia(mediaId: String): MastodonRequest<MediaAttachment> {
+        return client.createGetRequest<MediaAttachment>("/api/v1/media/$mediaId")
+    }
+
+    /**
+     * メディア情報を更新
+     * PUT /api/v1/media/:id
+     */
+    fun putMedia(
+        mediaId: String,
         description: String? = null,
         focus: String? = null
     ): MastodonRequest<MediaAttachment> {
-        // KMP環境では、実際のファイルアップロードは
-        // プラットフォーム固有の実装で行う必要があります
-        return client.createPostRequest<MediaAttachment>("/api/v1/media")
+        val params = mastodon4j.Parameter().apply {
+            description?.let { append("description", it) }
+            focus?.let { append("focus", it) }
+        }
+        return client.createPutRequest<MediaAttachment>("/api/v1/media/$mediaId", params)
     }
 }
+
+/**
+ * プラットフォーム固有のファイルアップロード関連拡張関数
+ */
+expect fun MediaMethod.postMedia(
+    file: Any,
+    mimeType: String,
+    description: String? = null,
+    focus: String? = null
+): MastodonRequest<MediaAttachment>

@@ -97,7 +97,8 @@ class StatusesMethod(private val client: MastodonClient) {
         mediaIds: List<String>? = null,
         sensitive: Boolean? = null,
         spoilerText: String? = null,
-        visibility: Status.Visibility? = null
+        visibility: Status.Visibility? = null,
+        quoteId: String? = null
     ): MastodonRequest<Status> {
         val params = Parameter().apply {
             append("status", status)
@@ -106,8 +107,88 @@ class StatusesMethod(private val client: MastodonClient) {
             sensitive?.let { append("sensitive", it) }
             spoilerText?.let { append("spoiler_text", it) }
             visibility?.let { append("visibility", it.value) }
+            quoteId?.let { append("quote_id", it) }
         }
         
         return client.createPostRequest<Status>("/api/v1/statuses", params)
+    }
+
+    /**
+     * ステータスを編集
+     * PUT /api/v1/statuses/:id
+     */
+    fun editStatus(
+        statusId: String,
+        status: String,
+        spoilerText: String? = null,
+        sensitive: Boolean? = null,
+        mediaIds: List<String>? = null
+    ): MastodonRequest<Status> {
+        val params = Parameter().apply {
+            append("status", status)
+            spoilerText?.let { append("spoiler_text", it) }
+            sensitive?.let { append("sensitive", it) }
+            mediaIds?.let { append("media_ids", it) }
+        }
+        
+        return client.createPutRequest<Status>("/api/v1/statuses/$statusId", params)
+    }
+
+    /**
+     * ステータスをブーストしたアカウントのリストを取得
+     * GET /api/v1/statuses/:id/reblogged_by
+     */
+    fun getRebloggedBy(statusId: String, range: Range? = null): MastodonRequest<Pageable<Account>> {
+        val path = if (range != null) {
+            "/api/v1/statuses/$statusId/reblogged_by?${range.toParameter().build()}"
+        } else {
+            "/api/v1/statuses/$statusId/reblogged_by"
+        }
+        return client.createListGetRequest<Account>(path).toPageable()
+    }
+
+    /**
+     * ステータスをお気に入りしたアカウントのリストを取得
+     * GET /api/v1/statuses/:id/favourited_by
+     */
+    fun getFavouritedBy(statusId: String, range: Range? = null): MastodonRequest<Pageable<Account>> {
+        val path = if (range != null) {
+            "/api/v1/statuses/$statusId/favourited_by?${range.toParameter().build()}"
+        } else {
+            "/api/v1/statuses/$statusId/favourited_by"
+        }
+        return client.createListGetRequest<Account>(path).toPageable()
+    }
+
+    /**
+     * ステータスをピン留め
+     * POST /api/v1/statuses/:id/pin
+     */
+    fun postPin(statusId: String): MastodonRequest<Status> {
+        return client.createPostRequest<Status>("/api/v1/statuses/$statusId/pin")
+    }
+
+    /**
+     * ステータスのピン留めを解除
+     * POST /api/v1/statuses/:id/unpin
+     */
+    fun postUnpin(statusId: String): MastodonRequest<Status> {
+        return client.createPostRequest<Status>("/api/v1/statuses/$statusId/unpin")
+    }
+
+    /**
+     * ステータスの編集履歴を取得
+     * GET /api/v1/statuses/:id/history
+     */
+    fun getEditHistory(statusId: String): MastodonRequest<List<Status>> {
+        return client.createListGetRequest<Status>("/api/v1/statuses/$statusId/history")
+    }
+
+    /**
+     * ステータスのソースを取得（編集用）
+     * GET /api/v1/statuses/:id/source
+     */
+    fun getStatusSource(statusId: String): MastodonRequest<StatusSource> {
+        return client.createGetRequest<StatusSource>("/api/v1/statuses/$statusId/source")
     }
 }
