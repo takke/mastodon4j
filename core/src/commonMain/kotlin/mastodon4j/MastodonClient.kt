@@ -117,6 +117,9 @@ class MastodonClient private constructor(
     suspend fun post(path: String, parameters: Parameter? = null, headers: Map<String, String>? = null): HttpResponse {
         return client.post(path) {
             parameters?.let {
+                // multipart/form-dataの場合は特別な処理が必要だが、
+                // 通常のフォームデータの場合はContent-Typeを明示的に設定
+                header(io.ktor.http.HttpHeaders.ContentType, io.ktor.http.ContentType.Application.FormUrlEncoded.toString())
                 setBody(it.toParameters())
             }
             headers?.forEach { (key, value) ->
@@ -131,6 +134,8 @@ class MastodonClient private constructor(
     suspend fun put(path: String, parameters: Parameter? = null): HttpResponse {
         return client.put(path) {
             parameters?.let {
+                // Content-Typeを明示的に設定
+                header(io.ktor.http.HttpHeaders.ContentType, io.ktor.http.ContentType.Application.FormUrlEncoded.toString())
                 setBody(it.toParameters())
             }
         }
@@ -149,6 +154,8 @@ class MastodonClient private constructor(
     suspend fun patch(path: String, parameters: Parameter? = null): HttpResponse {
         return client.patch(path) {
             parameters?.let {
+                // Content-Typeを明示的に設定
+                header(io.ktor.http.HttpHeaders.ContentType, io.ktor.http.ContentType.Application.FormUrlEncoded.toString())
                 setBody(it.toParameters())
             }
         }
