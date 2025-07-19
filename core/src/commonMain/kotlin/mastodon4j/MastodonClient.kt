@@ -4,6 +4,7 @@ import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
@@ -115,15 +116,21 @@ class MastodonClient private constructor(
      * POSTリクエストを作成
      */
     suspend fun post(path: String, parameters: Parameter? = null, headers: Map<String, String>? = null): HttpResponse {
-        return client.post(path) {
-            parameters?.let {
-                // multipart/form-dataの場合は特別な処理が必要だが、
-                // 通常のフォームデータの場合はContent-Typeを明示的に設定
-                header(io.ktor.http.HttpHeaders.ContentType, io.ktor.http.ContentType.Application.FormUrlEncoded.toString())
-                setBody(it.toParameters())
+        return if (parameters != null) {
+            // submitFormを使用してフォームデータを送信
+            client.submitForm(
+                url = path,
+                formParameters = parameters.toParameters()
+            ) {
+                headers?.forEach { (key, value) ->
+                    header(key, value)
+                }
             }
-            headers?.forEach { (key, value) ->
-                header(key, value)
+        } else {
+            client.post(path) {
+                headers?.forEach { (key, value) ->
+                    header(key, value)
+                }
             }
         }
     }
@@ -132,12 +139,14 @@ class MastodonClient private constructor(
      * PUTリクエストを作成
      */
     suspend fun put(path: String, parameters: Parameter? = null): HttpResponse {
-        return client.put(path) {
-            parameters?.let {
-                // Content-Typeを明示的に設定
+        return if (parameters != null) {
+            // submitFormを使用（ただしKtorではPUTでのフォーム送信は直接サポートされていないため手動実装）
+            client.put(path) {
                 header(io.ktor.http.HttpHeaders.ContentType, io.ktor.http.ContentType.Application.FormUrlEncoded.toString())
-                setBody(it.toParameters())
+                setBody(FormDataContent(parameters.toParameters()))
             }
+        } else {
+            client.put(path)
         }
     }
 
@@ -152,12 +161,14 @@ class MastodonClient private constructor(
      * PATCHリクエストを作成
      */
     suspend fun patch(path: String, parameters: Parameter? = null): HttpResponse {
-        return client.patch(path) {
-            parameters?.let {
-                // Content-Typeを明示的に設定
+        return if (parameters != null) {
+            // submitFormを使用（ただしKtorではPATCHでのフォーム送信は直接サポートされていないため手動実装）
+            client.patch(path) {
                 header(io.ktor.http.HttpHeaders.ContentType, io.ktor.http.ContentType.Application.FormUrlEncoded.toString())
-                setBody(it.toParameters())
+                setBody(FormDataContent(parameters.toParameters()))
             }
+        } else {
+            client.patch(path)
         }
     }
 
