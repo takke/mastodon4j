@@ -108,8 +108,13 @@ class MastodonClient private constructor(
     /**
      * GETリクエストを作成
      */
-    suspend fun get(path: String): HttpResponse {
-        return client.get(path)
+    suspend fun get(path: String, parameters: Parameter? = null): HttpResponse {
+        return if (parameters != null && parameters.build().isNotEmpty()) {
+            val separator = if (path.contains("?")) "&" else "?"
+            client.get("$path$separator${parameters.build()}")
+        } else {
+            client.get(path)
+        }
     }
 
     /**
@@ -175,9 +180,9 @@ class MastodonClient private constructor(
     /**
      * 型安全なGETリクエストを作成
      */
-    inline fun <reified T> createGetRequest(path: String): MastodonRequest<T> {
+    inline fun <reified T> createGetRequest(path: String, parameters: Parameter? = null): MastodonRequest<T> {
         return MastodonRequest(
-            executor = { get(path) },
+            executor = { get(path, parameters) },
             serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any },
             json = json
         )
@@ -186,9 +191,9 @@ class MastodonClient private constructor(
     /**
      * List型用のGETリクエストを作成（要素型指定）
      */
-    inline fun <reified E> createListGetRequest(path: String): MastodonRequest<List<E>> {
+    inline fun <reified E> createListGetRequest(path: String, parameters: Parameter? = null): MastodonRequest<List<E>> {
         return MastodonRequest(
-            executor = { get(path) },
+            executor = { get(path, parameters) },
             serializer = { jsonString -> json.decodeFromString<List<E>>(jsonString) as Any },
             elementSerializer = { elementJson -> json.decodeFromString<E>(elementJson) as Any },
             json = json

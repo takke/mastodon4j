@@ -20,12 +20,7 @@ class TimelinesMethod(private val client: MastodonClient) {
      * GET /api/v1/timelines/home
      */
     fun getHome(range: Range? = null): MastodonRequest<Pageable<Status>> {
-        val path = if (range != null) {
-            "/api/v1/timelines/home?${range.toParameter().build()}"
-        } else {
-            "/api/v1/timelines/home"
-        }
-        return client.createListGetRequest<Status>(path).toPageable()
+        return client.createListGetRequest<Status>("/api/v1/timelines/home", range?.toParameter()).toPageable()
     }
 
     /**
@@ -33,12 +28,7 @@ class TimelinesMethod(private val client: MastodonClient) {
      * GET /api/v1/conversations
      */
     fun getConversations(range: Range? = null): MastodonRequest<Pageable<Conversation>> {
-        val path = if (range != null) {
-            "/api/v1/conversations?${range.toParameter().build()}"
-        } else {
-            "/api/v1/conversations"
-        }
-        return client.createListGetRequest<Conversation>(path).toPageable()
+        return client.createListGetRequest<Conversation>("/api/v1/conversations", range?.toParameter()).toPageable()
     }
 
     /**
@@ -46,7 +36,6 @@ class TimelinesMethod(private val client: MastodonClient) {
      * GET /api/v1/timelines/personal
      */
     fun getPersonalTimelines(range: Range): MastodonRequest<Pageable<Status>> {
-        val path = "/api/v1/timelines/personal?${range.toParameter().build()}"
-        return client.createListGetRequest<Status>(path).toPageable()
+        return client.createListGetRequest<Status>("/api/v1/timelines/personal", range.toParameter()).toPageable()
     }
 }

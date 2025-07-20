@@ -122,19 +122,12 @@ class AccountsMethod(private val client: MastodonClient) {
         pinned: Boolean? = false,
         range: Range? = Range()
     ): MastodonRequest<Pageable<Status>> {
-        val params = Parameter().apply {
-            onlyMedia?.let { append("only_media", it) }
-            excludeReplies?.let { append("exclude_replies", it) }
-            pinned?.let { append("pinned", it) }
-            range?.let { 
-                append("max_id", it.maxId ?: 0L)
-                append("since_id", it.sinceId ?: "")
-                append("limit", it.limit)
-            }
-        }
+        val params = range?.toParameter() ?: Parameter()
+        onlyMedia?.let { if (it) params.append("only_media", it) }
+        excludeReplies?.let { if (it) params.append("exclude_replies", it) }
+        pinned?.let { if (it) params.append("pinned", it) }
         
-        val path = "/api/v1/accounts/$accountId/statuses?${params.build()}"
-        return client.createListGetRequest<Status>(path).toPageable()
+        return client.createListGetRequest<Status>("/api/v1/accounts/$accountId/statuses", params).toPageable()
     }
 
     /**
