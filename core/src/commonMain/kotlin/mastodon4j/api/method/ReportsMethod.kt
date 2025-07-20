@@ -21,12 +21,7 @@ class ReportsMethod(private val client: MastodonClient) {
      * @param range ページング用のレンジパラメータ
      */
     fun getReports(range: Range? = null): MastodonRequest<Pageable<Report>> {
-        val path = if (range != null) {
-            "/api/v1/reports?${range.toParameter().build()}"
-        } else {
-            "/api/v1/reports"
-        }
-        return client.createListGetRequest<Report>(path).toPageable()
+        return client.createListGetRequest<Report>("/api/v1/reports", range?.toParameter()).toPageable()
     }
 
     /**

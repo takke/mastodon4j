@@ -40,11 +40,10 @@ class PublicMethod(private val client: MastodonClient) {
     private fun getPublic(local: Boolean, range: Range?): MastodonRequest<Pageable<Status>> {
         val params = range?.toParameter() ?: Parameter()
         if (local) {
-            params.append("local", local)
+            params.append("local", true)
         }
         
-        val path = "/api/v1/timelines/public?${params.build()}"
-        return client.createListGetRequest<Status>(path).toPageable()
+        return client.createListGetRequest<Status>("/api/v1/timelines/public", params).toPageable()
     }
 
     /**
@@ -69,11 +68,10 @@ class PublicMethod(private val client: MastodonClient) {
     private fun getTagTimeline(tag: String, local: Boolean, range: Range?): MastodonRequest<Pageable<Status>> {
         val params = range?.toParameter() ?: Parameter()
         if (local) {
-            params.append("local", local)
+            params.append("local", true)
         }
         
-        val path = "/api/v1/timelines/tag/$tag?${params.build()}"
-        return client.createListGetRequest<Status>(path).toPageable()
+        return client.createListGetRequest<Status>("/api/v1/timelines/tag/$tag", params).toPageable()
     }
 
     /**

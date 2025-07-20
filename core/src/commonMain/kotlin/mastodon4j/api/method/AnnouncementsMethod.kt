@@ -18,17 +18,13 @@ class AnnouncementsMethod(private val client: MastodonClient) {
      * GET /api/v1/announcements
      */
     fun getAnnouncements(withDismissed: Boolean? = null): MastodonRequest<List<Announcement>> {
-        val params = Parameter().apply {
-            withDismissed?.let { append("with_dismissed", it) }
-        }
-        
-        val path = if (params.build().isNotEmpty()) {
-            "/api/v1/announcements?${params.build()}"
+        val params = if (withDismissed != null) {
+            Parameter().append("with_dismissed", withDismissed)
         } else {
-            "/api/v1/announcements"
+            null
         }
         
-        return client.createListGetRequest<Announcement>(path)
+        return client.createListGetRequest<Announcement>("/api/v1/announcements", params)
     }
 
     /**

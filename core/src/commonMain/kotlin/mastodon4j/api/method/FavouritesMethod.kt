@@ -20,11 +20,6 @@ class FavouritesMethod(private val client: MastodonClient) {
      * @param range ページング用のレンジパラメータ
      */
     fun getFavourites(range: Range? = null): MastodonRequest<Pageable<Status>> {
-        val path = if (range != null) {
-            "/api/v1/favourites?${range.toParameter().build()}"
-        } else {
-            "/api/v1/favourites"
-        }
-        return client.createListGetRequest<Status>(path).toPageable()
+        return client.createListGetRequest<Status>("/api/v1/favourites", range?.toParameter()).toPageable()
     }
 }

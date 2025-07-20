@@ -10,11 +10,11 @@ import mastodon4j.api.exception.MastodonException
 
 /**
  * Accountsに関するAPIメソッドクラス（KMP対応版）
- * 
+ *
  * See more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#accounts
  */
 class AccountsMethod(private val client: MastodonClient) {
-    
+
     /**
      * プラットフォーム固有の実装でクライアントにアクセスするためのinternal getter
      */
@@ -34,7 +34,7 @@ class AccountsMethod(private val client: MastodonClient) {
      */
     fun lookup(acct: String): MastodonRequest<Account> {
         val params = Parameter().append("acct", acct)
-        return client.createGetRequest<Account>("/api/v1/accounts/lookup?${params.build()}")
+        return client.createGetRequest<Account>("/api/v1/accounts/lookup", params)
     }
 
     /**
@@ -64,14 +64,14 @@ class AccountsMethod(private val client: MastodonClient) {
                 throw MastodonException("fieldsAttributesNames.size != fieldsAttributesValues.size")
             }
         }
-        
+
         val params = Parameter().apply {
             displayName?.let { append("display_name", it) }
             note?.let { append("note", it) }
             locked?.let { append("locked", it) }
             bot?.let { append("bot", it) }
             discoverable?.let { append("discoverable", it) }
-            
+
             // フィールド属性の設定
             if (fieldsAttributesNames != null && fieldsAttributesValues != null) {
                 for (i in fieldsAttributesNames.indices) {
@@ -90,12 +90,10 @@ class AccountsMethod(private val client: MastodonClient) {
      * GET /api/v1/accounts/:id/followers
      */
     fun getFollowers(accountId: String, range: Range? = null): MastodonRequest<Pageable<Account>> {
-        val path = if (range != null) {
-            "/api/v1/accounts/$accountId/followers?${range.toParameter().build()}"
-        } else {
-            "/api/v1/accounts/$accountId/followers"
-        }
-        return client.createListGetRequest<Account>(path).toPageable()
+        return client.createListGetRequest<Account>(
+            path = "/api/v1/accounts/$accountId/followers",
+            parameters = range?.toParameter()
+        ).toPageable()
     }
 
     /**
@@ -103,12 +101,10 @@ class AccountsMethod(private val client: MastodonClient) {
      * GET /api/v1/accounts/:id/following
      */
     fun getFollowing(accountId: String, range: Range? = null): MastodonRequest<Pageable<Account>> {
-        val path = if (range != null) {
-            "/api/v1/accounts/$accountId/following?${range.toParameter().build()}"
-        } else {
-            "/api/v1/accounts/$accountId/following"
-        }
-        return client.createListGetRequest<Account>(path).toPageable()
+        return client.createListGetRequest<Account>(
+            path = "/api/v1/accounts/$accountId/following",
+            parameters = range?.toParameter()
+        ).toPageable()
     }
 
     /**
@@ -126,7 +122,7 @@ class AccountsMethod(private val client: MastodonClient) {
         onlyMedia?.let { if (it) params.append("only_media", it) }
         excludeReplies?.let { if (it) params.append("exclude_replies", it) }
         pinned?.let { if (it) params.append("pinned", it) }
-        
+
         return client.createListGetRequest<Status>("/api/v1/accounts/$accountId/statuses", params).toPageable()
     }
 
@@ -192,7 +188,7 @@ class AccountsMethod(private val client: MastodonClient) {
      */
     fun getRelationships(accountIds: List<String>): MastodonRequest<List<Relationship>> {
         val params = Parameter().append("id", accountIds)
-        return client.createListGetRequest<Relationship>("/api/v1/accounts/relationships?${params.build()}")
+        return client.createListGetRequest<Relationship>("/api/v1/accounts/relationships", params)
     }
 
     /**
@@ -211,7 +207,7 @@ class AccountsMethod(private val client: MastodonClient) {
             resolve?.let { append("resolve", it) }
             following?.let { append("following", it) }
         }
-        return client.createListGetRequest<Account>("/api/v1/accounts/search?${params.build()}")
+        return client.createListGetRequest<Account>("/api/v1/accounts/search", params)
     }
 
     /**

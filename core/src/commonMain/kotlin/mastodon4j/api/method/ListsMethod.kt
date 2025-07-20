@@ -44,12 +44,10 @@ class ListsMethod(private val client: MastodonClient) {
      * @param range ページング用のレンジパラメータ
      */
     fun getListTimeLine(listId: Long, range: Range? = null): MastodonRequest<Pageable<Status>> {
-        val path = if (range != null) {
-            "/api/v1/timelines/list/$listId?${range.toParameter().build()}"
-        } else {
-            "/api/v1/timelines/list/$listId"
-        }
-        return client.createListGetRequest<Status>(path).toPageable()
+        return client.createListGetRequest<Status>(
+            path = "/api/v1/timelines/list/$listId",
+            parameters = range?.toParameter()
+        ).toPageable()
     }
 
     /**
@@ -60,12 +58,10 @@ class ListsMethod(private val client: MastodonClient) {
      * @param range ページング用のレンジパラメータ
      */
     fun getListAccounts(listId: Long, range: Range? = null): MastodonRequest<Pageable<Account>> {
-        val path = if (range != null) {
-            "/api/v1/lists/$listId/accounts?${range.toParameter().build()}"
-        } else {
-            "/api/v1/lists/$listId/accounts"
-        }
-        return client.createListGetRequest<Account>(path).toPageable()
+        return client.createListGetRequest<Account>(
+            path = "/api/v1/lists/$listId/accounts",
+            parameters = range?.toParameter()
+        ).toPageable()
     }
 
     /**

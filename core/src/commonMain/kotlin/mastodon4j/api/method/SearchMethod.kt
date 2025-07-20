@@ -33,8 +33,7 @@ class SearchMethod(private val client: MastodonClient) {
         }
         type?.let { params.append("type", it) }
         
-        val path = "/api/v2/search?${params.build()}"
-        return client.createGetRequest<Results>(path)
+        return client.createGetRequest<Results>("/api/v2/search", params)
     }
 
     /**
@@ -49,7 +48,6 @@ class SearchMethod(private val client: MastodonClient) {
             }
         }
         
-        val path = "/api/v1/search?${params.build()}"
-        return client.createGetRequest<ResultsV1>(path)
+        return client.createGetRequest<ResultsV1>("/api/v1/search", params)
     }
 }

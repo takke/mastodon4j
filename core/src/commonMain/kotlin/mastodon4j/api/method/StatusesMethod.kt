@@ -36,12 +36,10 @@ class StatusesMethod(private val client: MastodonClient) {
      * GET /api/v1/statuses/:id/reblogged_by
      */
     fun getRebloggedBy(statusId: String, range: Range? = null): MastodonRequest<Pageable<Account>> {
-        val path = if (range != null) {
-            "/api/v1/statuses/$statusId/reblogged_by?${range.toParameter().build()}"
-        } else {
-            "/api/v1/statuses/$statusId/reblogged_by"
-        }
-        return client.createListGetRequest<Account>(path).toPageable()
+        return client.createListGetRequest<Account>(
+            path = "/api/v1/statuses/$statusId/reblogged_by",
+            parameters = range?.toParameter()
+        ).toPageable()
     }
 
     /**
@@ -49,12 +47,10 @@ class StatusesMethod(private val client: MastodonClient) {
      * GET /api/v1/statuses/:id/favourited_by
      */
     fun getFavouritedBy(statusId: String, range: Range? = null): MastodonRequest<Pageable<Account>> {
-        val path = if (range != null) {
-            "/api/v1/statuses/$statusId/favourited_by?${range.toParameter().build()}"
-        } else {
-            "/api/v1/statuses/$statusId/favourited_by"
-        }
-        return client.createListGetRequest<Account>(path).toPageable()
+        return client.createListGetRequest<Account>(
+            path = "/api/v1/statuses/$statusId/favourited_by",
+            parameters = range?.toParameter()
+        ).toPageable()
     }
 
     /**
@@ -217,12 +213,10 @@ class StatusesMethod(private val client: MastodonClient) {
      * GET /api/v1/statuses/:id/emoji_reactioned_by
      */
     fun getEmojiReactionedByUsers(statusId: String, range: Range? = null): MastodonRequest<Pageable<EmojiReactionedAccount>> {
-        val path = if (range != null) {
-            "/api/v1/statuses/$statusId/emoji_reactioned_by?${range.toParameter().build()}"
-        } else {
-            "/api/v1/statuses/$statusId/emoji_reactioned_by"
-        }
-        return client.createListGetRequest<EmojiReactionedAccount>(path).toPageable()
+        return client.createListGetRequest<EmojiReactionedAccount>(
+            path = "/api/v1/statuses/$statusId/emoji_reactioned_by",
+            parameters = range?.toParameter()
+        ).toPageable()
     }
 
     /**
@@ -230,12 +224,10 @@ class StatusesMethod(private val client: MastodonClient) {
      * GET /api/v1/emoji_reactions
      */
     fun getEmojiReactions(range: Range? = null): MastodonRequest<Pageable<Status>> {
-        val path = if (range != null) {
-            "/api/v1/emoji_reactions?${range.toParameter().build()}"
-        } else {
-            "/api/v1/emoji_reactions"
-        }
-        return client.createListGetRequest<Status>(path).toPageable()
+        return client.createListGetRequest<Status>(
+            path = "/api/v1/emoji_reactions",
+            parameters = range?.toParameter()
+        ).toPageable()
     }
 
     /**

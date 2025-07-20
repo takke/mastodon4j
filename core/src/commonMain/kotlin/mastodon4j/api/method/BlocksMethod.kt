@@ -20,11 +20,6 @@ class BlocksMethod(private val client: MastodonClient) {
      * @param range ページング用のレンジパラメータ
      */
     fun getBlocks(range: Range? = null): MastodonRequest<Pageable<Account>> {
-        val path = if (range != null) {
-            "/api/v1/blocks?${range.toParameter().build()}"
-        } else {
-            "/api/v1/blocks"
-        }
-        return client.createListGetRequest<Account>(path).toPageable()
+        return client.createListGetRequest<Account>("/api/v1/blocks", range?.toParameter()).toPageable()
     }
 }

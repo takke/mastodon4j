@@ -19,11 +19,6 @@ class FollowedTagsMethod(private val client: MastodonClient) {
      * @param range ページング用のレンジパラメータ
      */
     fun getFollowedTags(range: Range? = null): MastodonRequest<List<Tag>> {
-        val path = if (range != null) {
-            "/api/v1/followed_tags?${range.toParameter().build()}"
-        } else {
-            "/api/v1/followed_tags"
-        }
-        return client.createListGetRequest<Tag>(path)
+        return client.createListGetRequest<Tag>("/api/v1/followed_tags", range?.toParameter())
     }
 }

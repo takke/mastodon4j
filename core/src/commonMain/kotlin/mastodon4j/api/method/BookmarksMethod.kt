@@ -20,11 +20,6 @@ class BookmarksMethod(private val client: MastodonClient) {
      * @param range ページング用のレンジパラメータ
      */
     fun getBookmarks(range: Range? = null): MastodonRequest<Pageable<Status>> {
-        val path = if (range != null) {
-            "/api/v1/bookmarks?${range.toParameter().build()}"
-        } else {
-            "/api/v1/bookmarks"
-        }
-        return client.createListGetRequest<Status>(path).toPageable()
+        return client.createListGetRequest<Status>("/api/v1/bookmarks", range?.toParameter()).toPageable()
     }
 }

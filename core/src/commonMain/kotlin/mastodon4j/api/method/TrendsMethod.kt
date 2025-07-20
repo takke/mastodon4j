@@ -20,19 +20,16 @@ class TrendsMethod(private val client: MastodonClient) {
      * @param offset 取得開始位置のオフセット（オプション）
      */
     fun getTrendsTags(limit: Int? = null, offset: Int? = null): MastodonRequest<List<Tag>> {
-        val params = Parameter().apply {
-            limit?.let { append("limit", it) }
-            offset?.let { append("offset", it) }
-        }
-        
-        val queryString = params.build()
-        val path = if (queryString.isNotEmpty()) {
-            "/api/v1/trends/tags?$queryString"
+        val params = if (limit != null || offset != null) {
+            Parameter().apply {
+                limit?.let { append("limit", it) }
+                offset?.let { append("offset", it) }
+            }
         } else {
-            "/api/v1/trends/tags"
+            null
         }
         
-        return client.createListGetRequest<Tag>(path)
+        return client.createListGetRequest<Tag>("/api/v1/trends/tags", params)
     }
 
     /**
@@ -43,18 +40,15 @@ class TrendsMethod(private val client: MastodonClient) {
      * @param offset 取得開始位置のオフセット（オプション）
      */
     fun getTrends(limit: Int? = null, offset: Int? = null): MastodonRequest<List<Tag>> {
-        val params = Parameter().apply {
-            limit?.let { append("limit", it) }
-            offset?.let { append("offset", it) }
-        }
-        
-        val queryString = params.build()
-        val path = if (queryString.isNotEmpty()) {
-            "/api/v1/trends?$queryString"
+        val params = if (limit != null || offset != null) {
+            Parameter().apply {
+                limit?.let { append("limit", it) }
+                offset?.let { append("offset", it) }
+            }
         } else {
-            "/api/v1/trends"
+            null
         }
         
-        return client.createListGetRequest<Tag>(path)
+        return client.createListGetRequest<Tag>("/api/v1/trends", params)
     }
 }
