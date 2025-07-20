@@ -33,7 +33,6 @@ class AppsMethod(private val client: MastodonClient) {
             website?.let { append("website", it) }
         }
 
-        // TODO "application/x-www-form-urlencoded; charset=utf-8" 指定が必要かもしれない。
         return client.createPostRequest<AppRegistration>("/api/v1/apps", params)
     }
 
@@ -72,7 +71,6 @@ class AppsMethod(private val client: MastodonClient) {
             append("grant_type", grantType)
         }
 
-        // TODO "application/x-www-form-urlencoded; charset=utf-8" 指定が必要かもしれない。
         return client.createPostRequest<AccessToken>("/oauth/token", params)
     }
 
@@ -96,7 +94,6 @@ class AppsMethod(private val client: MastodonClient) {
             append("grant_type", "password")
         }
 
-        // TODO "application/x-www-form-urlencoded; charset=utf-8" 指定が必要かもしれない。
         return client.createPostRequest<AccessToken>("/oauth/token", params)
     }
 }

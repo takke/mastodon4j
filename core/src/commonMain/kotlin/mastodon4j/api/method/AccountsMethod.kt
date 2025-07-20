@@ -81,7 +81,6 @@ class AccountsMethod(private val client: MastodonClient) {
             }
         }
 
-        // TODO "application/x-www-form-urlencoded; charset=utf-8" を指定してリクエストする必要があるかも。
         return client.createPatchRequest<CredentialAccount>("/api/v1/accounts/update_credentials", params)
     }
 
