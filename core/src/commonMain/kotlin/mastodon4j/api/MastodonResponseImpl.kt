@@ -7,8 +7,12 @@ class MastodonResponseImpl<T>(
 ) : MastodonResponse<T> {
 
     override var code: Int = -1
+    override var description: String? = null
     override var headers: Map<String, String> = emptyMap()
-    
+
+    // レスポンス本文：エラーメッセージなどに利用する
+    override suspend fun responseBody(): String? = response?.bodyAsText()
+
     // 内部使用のプロパティ
     internal var response: HttpResponse? = null
     internal var rateLimitValue: Int? = null
@@ -31,6 +35,7 @@ class MastodonResponseImpl<T>(
     fun collectResponse(response: HttpResponse) {
         this.response = response
         this.code = response.status.value
+        this.description = response.status.description
         this.headers = response.headers.entries()
             .associate { it.key to it.value.firstOrNull().orEmpty() }
     }
