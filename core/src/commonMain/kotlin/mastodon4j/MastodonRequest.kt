@@ -117,6 +117,7 @@ class MastodonRequest<T>(
                     it.rateLimitValue = response.headers["X-RateLimit-Limit"]?.toIntOrNull()
                     it.rateLimitRemaining = response.headers["X-RateLimit-Remaining"]?.toIntOrNull()
                     it.rateLimitReset = response.headers["X-RateLimit-Reset"]?.toLongOrNull()
+                    it.collectResponse(response)
                 }
             } catch (e: Exception) {
                 when (e) {
