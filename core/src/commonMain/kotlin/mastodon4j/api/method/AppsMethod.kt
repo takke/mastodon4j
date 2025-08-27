@@ -6,6 +6,7 @@ import mastodon4j.Parameter
 import mastodon4j.api.Scope
 import mastodon4j.api.entity.auth.AccessToken
 import mastodon4j.api.entity.auth.AppRegistration
+import org.slf4j.helpers.CheckReturnValue
 
 /**
  * アプリケーション関連のAPIメソッドクラス（KMP対応版）
@@ -78,6 +79,7 @@ class AppsMethod(private val client: MastodonClient) {
      * ユーザー名とパスワードでアクセストークンを取得
      * POST /oauth/token
      */
+    @CheckReturnValue
     fun postUserNameAndPassword(
         clientId: String,
         clientSecret: String,

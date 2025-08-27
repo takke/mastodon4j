@@ -7,6 +7,7 @@ import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.*
 import mastodon4j.api.exception.MastodonException
+import org.slf4j.helpers.CheckReturnValue
 
 /**
  * Accountsに関するAPIメソッドクラス（KMP対応版）
@@ -49,6 +50,7 @@ class AccountsMethod(private val client: MastodonClient) {
      * アカウント情報を更新
      * PATCH /api/v1/accounts/update_credentials
      */
+    @CheckReturnValue
     fun updateCredentials(
         displayName: String? = null,
         note: String? = null,
@@ -129,6 +131,7 @@ class AccountsMethod(private val client: MastodonClient) {
      * アカウントをフォロー
      * POST /api/v1/accounts/:id/follow
      */
+    @CheckReturnValue
     fun postFollow(accountId: String, reblogs: Boolean? = null, notify: Boolean? = null): MastodonRequest<Relationship> {
         val params = Parameter().apply {
             reblogs?.let { append("reblogs", it) }
@@ -141,6 +144,7 @@ class AccountsMethod(private val client: MastodonClient) {
      * アカウントのフォローを解除
      * POST /api/v1/accounts/:id/unfollow
      */
+    @CheckReturnValue
     fun postUnfollow(accountId: String): MastodonRequest<Relationship> {
         return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/unfollow")
     }
@@ -149,6 +153,7 @@ class AccountsMethod(private val client: MastodonClient) {
      * アカウントをブロック
      * POST /api/v1/accounts/:id/block
      */
+    @CheckReturnValue
     fun postBlock(accountId: String): MastodonRequest<Relationship> {
         return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/block")
     }
@@ -157,6 +162,7 @@ class AccountsMethod(private val client: MastodonClient) {
      * アカウントのブロックを解除
      * POST /api/v1/accounts/:id/unblock
      */
+    @CheckReturnValue
     fun postUnblock(accountId: String): MastodonRequest<Relationship> {
         return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/unblock")
     }
@@ -165,6 +171,7 @@ class AccountsMethod(private val client: MastodonClient) {
      * アカウントをミュート
      * POST /api/v1/accounts/:id/mute
      */
+    @CheckReturnValue
     fun postMute(accountId: String, notifications: Boolean? = null, duration: Int? = null): MastodonRequest<Relationship> {
         val params = Parameter().apply {
             notifications?.let { append("notifications", it) }
@@ -177,6 +184,7 @@ class AccountsMethod(private val client: MastodonClient) {
      * アカウントのミュートを解除
      * POST /api/v1/accounts/:id/unmute
      */
+    @CheckReturnValue
     fun postUnmute(accountId: String): MastodonRequest<Relationship> {
         return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/unmute")
     }

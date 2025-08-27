@@ -6,6 +6,7 @@ import mastodon4j.Parameter
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.Report
+import org.slf4j.helpers.CheckReturnValue
 
 /**
  * レポート（通報）に関するAPIメソッドクラス（KMP対応版）
@@ -32,6 +33,7 @@ class ReportsMethod(private val client: MastodonClient) {
      * @param statusId 通報対象の投稿ID
      * @param comment 通報に関するコメント
      */
+    @CheckReturnValue
     fun postReport(
         accountId: Long,
         statusId: Long,
