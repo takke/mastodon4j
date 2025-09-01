@@ -8,7 +8,6 @@ data class Link(
     val sinceId: Long
 ) {
     companion object {
-        @JvmStatic
         fun parse(linkHeader: String?): Link? {
             return linkHeader?.let {
                 val links = it.split(",")

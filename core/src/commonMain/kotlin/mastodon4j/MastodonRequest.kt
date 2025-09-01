@@ -47,7 +47,6 @@ class MastodonRequest<T>(
         isPageable = true
     } as MastodonRequest<Pageable<T>>
 
-    @JvmSynthetic
     fun doOnJson(action: (json: String, value: Any) -> Unit) = apply {
         this.action = action
     }

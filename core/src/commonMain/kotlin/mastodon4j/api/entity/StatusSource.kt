@@ -2,7 +2,6 @@ package mastodon4j.api.entity
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import java.util.*
 
 /**
  * see more https://docs.joinmastodon.org/entities/StatusSource/
