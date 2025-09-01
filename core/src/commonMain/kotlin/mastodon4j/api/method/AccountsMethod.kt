@@ -1,6 +1,8 @@
 package mastodon4j.api.method
 
 import androidx.annotation.CheckResult
+import io.ktor.client.request.forms.*
+import io.ktor.http.*
 import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.Parameter
@@ -232,10 +234,74 @@ class AccountsMethod(private val client: MastodonClient) {
     fun getListsContainingThisAccount(accountId: String): MastodonRequest<Pageable<MstList>> {
         return client.createListGetRequest<MstList>("/api/v1/accounts/$accountId/lists").toPageable()
     }
-}
 
-/**
- * プラットフォーム固有のファイルアップロード関連拡張関数
- */
-expect fun AccountsMethod.updateAvatar(avatarFile: Any, mimeType: String): MastodonRequest<CredentialAccount>
-expect fun AccountsMethod.updateHeader(headerFile: Any, mimeType: String): MastodonRequest<CredentialAccount>
+    /**
+     * アバター画像を更新
+     * PATCH /api/v1/accounts/update_credentials
+     *
+     * @param avatarBytes アバター画像のバイト配列
+     * @param fileName ファイル名
+     * @param mimeType MIMEタイプ
+     */
+    fun updateAvatar(
+        avatarBytes: ByteArray,
+        fileName: String,
+        mimeType: String
+    ): MastodonRequest<CredentialAccount> {
+        val client = this.getClient()
+
+        return MastodonRequest(
+            {
+                client.getHttpClient().submitFormWithBinaryData(
+                    url = "${client.baseUrl}/api/v1/accounts/update_credentials",
+                    formData = formData {
+                        append("avatar", avatarBytes, Headers.build {
+                            append(HttpHeaders.ContentType, mimeType)
+                            append(HttpHeaders.ContentDisposition, "filename=\"$fileName\"")
+                        })
+                    }
+                ) {
+                    method = HttpMethod.Patch
+                }
+            },
+            { responseText ->
+                client.json.decodeFromString<CredentialAccount>(responseText)
+            }
+        )
+    }
+
+    /**
+     * ヘッダー画像を更新
+     * PATCH /api/v1/accounts/update_credentials
+     *
+     * @param headerBytes ヘッダー画像のバイト配列
+     * @param fileName ファイル名
+     * @param mimeType MIMEタイプ
+     */
+    fun updateHeader(
+        headerBytes: ByteArray,
+        fileName: String,
+        mimeType: String
+    ): MastodonRequest<CredentialAccount> {
+        val client = this.getClient()
+
+        return MastodonRequest(
+            {
+                client.getHttpClient().submitFormWithBinaryData(
+                    url = "${client.baseUrl}/api/v1/accounts/update_credentials",
+                    formData = formData {
+                        append("header", headerBytes, Headers.build {
+                            append(HttpHeaders.ContentType, mimeType)
+                            append(HttpHeaders.ContentDisposition, "filename=\"$fileName\"")
+                        })
+                    }
+                ) {
+                    method = HttpMethod.Patch
+                }
+            },
+            { responseText ->
+                client.json.decodeFromString<CredentialAccount>(responseText)
+            }
+        )
+    }
+}
