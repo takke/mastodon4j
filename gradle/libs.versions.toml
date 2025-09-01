@@ -27,6 +27,8 @@ ktor-client-js = { module = "io.ktor:ktor-client-js", version.ref = "ktorVersion
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serializationVersion" }
 # kotlinx.datetime
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetimeVersion" }
+# AndroidX Annotation
+androidx-annotation = "androidx.annotation:annotation:1.9.1"
 #--------------------------------------------------
 # Test Libraries
 #--------------------------------------------------
