@@ -52,29 +52,20 @@ kotlin {
                 implementation("org.mockito:mockito-core:2.7.22")
             }
         }
-        
+
         // iOS用のソースセット
-        val iosMain by creating {
+        iosMain {
             dependencies {
                 // iOS用のKtorエンジン
                 implementation(libs.ktor.client.darwin)
             }
         }
         
-        val iosTest by creating {
+        iosTest {
             dependencies {
                 // iOS用のテスト依存関係（必要に応じて追加）
             }
         }
-        
-        // iOS各ターゲットをiosMainに依存させる
-        val iosX64Main by getting { dependsOn(iosMain) }
-        val iosArm64Main by getting { dependsOn(iosMain) }
-        val iosSimulatorArm64Main by getting { dependsOn(iosMain) }
-        
-        val iosX64Test by getting { dependsOn(iosTest) }
-        val iosArm64Test by getting { dependsOn(iosTest) }
-        val iosSimulatorArm64Test by getting { dependsOn(iosTest) }
     }
 }
 
