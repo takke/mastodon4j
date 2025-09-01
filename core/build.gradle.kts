@@ -64,28 +64,35 @@ repositories {
 
 publishing {
     publications {
-        named<MavenPublication>("android") {
+        withType<MavenPublication> {
             groupId = "com.sys1yagi"
-            artifactId = "mastodon4j-core-android"
+            artifactId = "mastodon4j-core"
             version = "3.0.0-SNAPSHOT"
 
             pom {
-                name.set("mastodon4j-core-android")
-                description.set("Mastodon4j Core Library for Android")
+                name.set("mastodon4j-core")
+                description.set("Mastodon4j Core Library for Kotlin Multiplatform")
                 url.set("https://github.com/sys1yagi/mastodon4j")
-            }
-        }
-        
-        // iOS用のフレームワーク出力設定
-        create<MavenPublication>("ios") {
-            groupId = "com.sys1yagi"
-            artifactId = "mastodon4j-core-ios"
-            version = "3.0.0-SNAPSHOT"
-
-            pom {
-                name.set("mastodon4j-core-ios")
-                description.set("Mastodon4j Core Library for iOS")
-                url.set("https://github.com/sys1yagi/mastodon4j")
+                
+                licenses {
+                    license {
+                        name.set("MIT License")
+                        url.set("https://opensource.org/licenses/MIT")
+                    }
+                }
+                
+                developers {
+                    developer {
+                        id.set("sys1yagi")
+                        name.set("Toshihiro Yagi")
+                    }
+                }
+                
+                scm {
+                    connection.set("scm:git:git://github.com/sys1yagi/mastodon4j.git")
+                    developerConnection.set("scm:git:ssh://github.com/sys1yagi/mastodon4j.git")
+                    url.set("https://github.com/sys1yagi/mastodon4j")
+                }
             }
         }
     }
