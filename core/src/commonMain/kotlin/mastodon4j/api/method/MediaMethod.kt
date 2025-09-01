@@ -1,6 +1,8 @@
 package mastodon4j.api.method
 
 import androidx.annotation.CheckResult
+import io.ktor.client.request.forms.*
+import io.ktor.http.*
 import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.api.entity.MediaAttachment
@@ -44,14 +46,44 @@ class MediaMethod(private val client: MastodonClient) {
         }
         return client.createPutRequest<MediaAttachment>("/api/v1/media/$mediaId", params)
     }
+
+    /**
+     * メディアファイルをアップロード
+     * POST /api/v1/media
+     *
+     * @param bytes アップロードするファイルのバイト配列
+     * @param fileName ファイル名
+     * @param mimeType MIMEタイプ
+     * @param description メディアの説明
+     * @param focus フォーカスポイント
+     */
+    fun postMedia(
+        bytes: ByteArray,
+        fileName: String,
+        mimeType: String,
+        description: String? = null,
+        focus: String? = null
+    ): MastodonRequest<MediaAttachment> {
+        val client = this.getClient()
+
+        return MastodonRequest(
+            {
+                client.getHttpClient().submitFormWithBinaryData(
+                    url = "${client.baseUrl}/api/v1/media",
+                    formData = formData {
+                        append("file", bytes, Headers.build {
+                            append(HttpHeaders.ContentType, mimeType)
+                            append(HttpHeaders.ContentDisposition, "filename=\"$fileName\"")
+                        })
+                        description?.let { append("description", it) }
+                        focus?.let { append("focus", it) }
+                    }
+                )
+            },
+            { responseText ->
+                client.json.decodeFromString<MediaAttachment>(responseText)
+            }
+        )
+    }
 }
 
-/**
- * プラットフォーム固有のファイルアップロード関連拡張関数
- */
-expect fun MediaMethod.postMedia(
-    file: Any,
-    mimeType: String,
-    description: String? = null,
-    focus: String? = null
-): MastodonRequest<MediaAttachment>
