@@ -1,5 +1,6 @@
 package mastodon4j.api.method
 
+import androidx.annotation.CheckResult
 import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.Parameter
@@ -7,7 +8,6 @@ import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.Notification
 import mastodon4j.api.exception.MastodonException
-import org.slf4j.helpers.CheckReturnValue
 
 /**
  * 通知に関するAPIメソッドクラス（KMP対応版）
@@ -61,7 +61,7 @@ class NotificationsMethod(private val client: MastodonClient) {
      * 指定した通知を既読にマーク
      * POST /api/v1/notifications/:id/dismiss
      */
-    @CheckReturnValue
+    @CheckResult
     fun dismissNotification(id: Long): MastodonRequest<Unit> {
         return MastodonRequest(
             executor = { client.post("/api/v1/notifications/$id/dismiss") },
@@ -73,7 +73,7 @@ class NotificationsMethod(private val client: MastodonClient) {
      * 通知を削除
      * DELETE /api/v1/notifications/:id
      */
-    @CheckReturnValue
+    @CheckResult
     fun deleteNotification(id: Long): MastodonRequest<Unit> {
         return MastodonRequest(
             executor = { client.delete("/api/v1/notifications/$id") },

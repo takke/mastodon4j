@@ -1,5 +1,6 @@
 package mastodon4j.api.method
 
+import androidx.annotation.CheckResult
 import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.Parameter
@@ -7,7 +8,6 @@ import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.*
 import mastodon4j.api.exception.MastodonException
-import org.slf4j.helpers.CheckReturnValue
 
 /**
  * Statusesに関するAPIメソッドクラス（KMP対応版）
@@ -58,7 +58,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * 新しいステータスを投稿
      * POST /api/v1/statuses
      */
-    @CheckReturnValue
+    @CheckResult
     fun postStatus(
         status: String,
         inReplyToId: String? = null,
@@ -88,7 +88,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * ステータスを編集
      * PUT /api/v1/statuses/:id
      */
-    @CheckReturnValue
+    @CheckResult
     fun editStatus(
         statusId: String,
         status: String,
@@ -110,7 +110,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * ステータスを削除
      * DELETE /api/v1/statuses/:id
      */
-    @CheckReturnValue
+    @CheckResult
     fun deleteStatus(statusId: String): MastodonRequest<Status> {
         return client.createDeleteRequest<Status>("/api/v1/statuses/$statusId")
     }
@@ -119,7 +119,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * ステータスをブースト（リブログ）
      * POST /api/v1/statuses/:id/reblog
      */
-    @CheckReturnValue
+    @CheckResult
     fun postReblog(statusId: String): MastodonRequest<Status> {
         return client.createPostRequest<Status>("/api/v1/statuses/$statusId/reblog")
     }
@@ -128,7 +128,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * ステータスのブーストを解除
      * POST /api/v1/statuses/:id/unreblog
      */
-    @CheckReturnValue
+    @CheckResult
     fun postUnreblog(statusId: String): MastodonRequest<Status> {
         return client.createPostRequest<Status>("/api/v1/statuses/$statusId/unreblog")
     }
@@ -137,7 +137,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * ステータスをお気に入りに追加
      * POST /api/v1/statuses/:id/favourite
      */
-    @CheckReturnValue
+    @CheckResult
     fun postFavourite(statusId: String): MastodonRequest<Status> {
         return client.createPostRequest<Status>("/api/v1/statuses/$statusId/favourite")
     }
@@ -146,7 +146,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * ステータスのお気に入りを解除
      * POST /api/v1/statuses/:id/unfavourite
      */
-    @CheckReturnValue
+    @CheckResult
     fun postUnfavourite(statusId: String): MastodonRequest<Status> {
         return client.createPostRequest<Status>("/api/v1/statuses/$statusId/unfavourite")
     }
@@ -155,7 +155,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * ステータスをピン留め
      * POST /api/v1/statuses/:id/pin
      */
-    @CheckReturnValue
+    @CheckResult
     fun postPin(statusId: String): MastodonRequest<Status> {
         return client.createPostRequest<Status>("/api/v1/statuses/$statusId/pin")
     }
@@ -164,7 +164,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * ステータスのピン留めを解除
      * POST /api/v1/statuses/:id/unpin
      */
-    @CheckReturnValue
+    @CheckResult
     fun postUnpin(statusId: String): MastodonRequest<Status> {
         return client.createPostRequest<Status>("/api/v1/statuses/$statusId/unpin")
     }
@@ -173,7 +173,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * ステータスをブックマークに追加
      * POST /api/v1/statuses/:id/bookmark
      */
-    @CheckReturnValue
+    @CheckResult
     fun postBookmark(statusId: String): MastodonRequest<Status> {
         return client.createPostRequest<Status>("/api/v1/statuses/$statusId/bookmark")
     }
@@ -182,7 +182,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * ステータスのブックマークを解除
      * POST /api/v1/statuses/:id/unbookmark
      */
-    @CheckReturnValue
+    @CheckResult
     fun postUnbookmark(statusId: String): MastodonRequest<Status> {
         return client.createPostRequest<Status>("/api/v1/statuses/$statusId/unbookmark")
     }
@@ -224,7 +224,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * ステータスに絵文字リアクションしたユーザーを取得
      * GET /api/v1/statuses/:id/emoji_reactioned_by
      */
-    @CheckReturnValue
+    @CheckResult
     fun getEmojiReactionedByUsers(statusId: String, range: Range? = null): MastodonRequest<Pageable<EmojiReactionedAccount>> {
         return client.createListGetRequest<EmojiReactionedAccount>(
             path = "/api/v1/statuses/$statusId/emoji_reactioned_by",
@@ -247,7 +247,7 @@ class StatusesMethod(private val client: MastodonClient) {
      * 投票に参加
      * POST /api/v1/polls/:id/votes
      */
-    @CheckReturnValue
+    @CheckResult
     fun postPollsVotes(pollId: String, choices: List<Int>): MastodonRequest<Poll> {
         val params = Parameter().apply {
             append("choices", choices)

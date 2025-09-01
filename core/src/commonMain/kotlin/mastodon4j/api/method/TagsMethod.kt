@@ -3,7 +3,7 @@ package mastodon4j.api.method
 import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.api.entity.Tag
-import org.slf4j.helpers.CheckReturnValue
+import androidx.annotation.CheckResult
 
 /**
  * タグに関するAPIメソッドクラス（KMP対応版）
@@ -18,7 +18,7 @@ class TagsMethod(private val client: MastodonClient) {
      * 
      * @param id フォローするタグのID
      */
-    @CheckReturnValue
+    @CheckResult
     fun followTag(id: String): MastodonRequest<Tag> {
         return client.createPostRequest<Tag>("/api/v1/tags/$id/follow")
     }
@@ -29,7 +29,7 @@ class TagsMethod(private val client: MastodonClient) {
      * 
      * @param id フォロー解除するタグのID
      */
-    @CheckReturnValue
+    @CheckResult
     fun unfollowTag(id: String): MastodonRequest<Tag> {
         return client.createPostRequest<Tag>("/api/v1/tags/$id/unfollow")
     }

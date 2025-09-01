@@ -1,5 +1,6 @@
 package mastodon4j.api.method
 
+import androidx.annotation.CheckResult
 import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.Parameter
@@ -9,9 +10,6 @@ import mastodon4j.api.entity.Account
 import mastodon4j.api.entity.MstList
 import mastodon4j.api.entity.MstListRepliesPolicy
 import mastodon4j.api.entity.Status
-import mastodon4j.api.exception.MastodonException
-import org.slf4j.helpers.CheckReturnValue
-import kotlin.contracts.contract
 
 /**
  * リストに関するAPIメソッドクラス（KMP対応版）
@@ -74,7 +72,7 @@ class ListsMethod(private val client: MastodonClient) {
      * @param repliesPolicy リプライポリシー（オプション）
      * @param exclusive 排他的設定（オプション）
      */
-    @CheckReturnValue
+    @CheckResult
     fun createList(
         title: String,
         repliesPolicy: MstListRepliesPolicy? = null,
@@ -97,7 +95,7 @@ class ListsMethod(private val client: MastodonClient) {
      * @param repliesPolicy リプライポリシー（オプション）
      * @param exclusive 排他的設定（オプション）
      */
-    @CheckReturnValue
+    @CheckResult
     fun editList(
         listId: Long,
         title: String,
@@ -118,7 +116,7 @@ class ListsMethod(private val client: MastodonClient) {
      * 
      * @param listId 削除するリストのID
      */
-    @CheckReturnValue
+    @CheckResult
     fun deleteList(listId: Long): MastodonRequest<Unit> {
         return client.createDeleteRequest<Unit>("/api/v1/lists/$listId")
     }
@@ -130,7 +128,7 @@ class ListsMethod(private val client: MastodonClient) {
      * @param listId リストのID
      * @param accountIds 追加するアカウントIDの配列
      */
-    @CheckReturnValue
+    @CheckResult
     fun addAccountsToList(listId: Long, accountIds: Array<String>): MastodonRequest<Unit> {
         val params = Parameter().apply {
             accountIds.forEach { append("account_ids[]", it) }
@@ -145,7 +143,7 @@ class ListsMethod(private val client: MastodonClient) {
      * @param listId リストのID
      * @param accountIds 削除するアカウントIDの配列
      */
-    @CheckReturnValue
+    @CheckResult
     fun removeAccountsFromList(listId: Long, accountIds: Array<String>): MastodonRequest<Unit> {
         val params = Parameter().apply {
             accountIds.forEach { append("account_ids[]", it) }

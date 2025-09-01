@@ -1,11 +1,11 @@
 package mastodon4j.api.method
 
+import androidx.annotation.CheckResult
 import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.api.Pageable
 import mastodon4j.api.Range
 import mastodon4j.api.entity.Account
-import org.slf4j.helpers.CheckReturnValue
 
 /**
  * フォローリクエストに関するAPIメソッドクラス（KMP対応版）
@@ -33,7 +33,7 @@ class FollowRequestsMethod(private val client: MastodonClient) {
      * 
      * @param accountId 承認するアカウントのID
      */
-    @CheckReturnValue
+    @CheckResult
     fun postAuthorize(accountId: String): MastodonRequest<Unit> {
         return client.createPostRequest<Unit>("/api/v1/follow_requests/$accountId/authorize")
     }
@@ -44,7 +44,7 @@ class FollowRequestsMethod(private val client: MastodonClient) {
      * 
      * @param accountId 拒否するアカウントのID
      */
-    @CheckReturnValue
+    @CheckResult
     fun postReject(accountId: String): MastodonRequest<Unit> {
         return client.createPostRequest<Unit>("/api/v1/follow_requests/$accountId/reject")
     }

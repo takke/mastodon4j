@@ -1,9 +1,9 @@
 package mastodon4j.api.method
 
+import androidx.annotation.CheckResult
 import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.api.entity.MediaAttachment
-import org.slf4j.helpers.CheckReturnValue
 
 /**
  * メディアに関するAPIメソッドクラス（KMP対応版）
@@ -32,7 +32,7 @@ class MediaMethod(private val client: MastodonClient) {
      * メディア情報を更新
      * PUT /api/v1/media/:id
      */
-    @CheckReturnValue
+    @CheckResult
     fun putMedia(
         mediaId: String,
         description: String? = null,

@@ -1,10 +1,10 @@
 package mastodon4j.api.method
 
+import androidx.annotation.CheckResult
 import mastodon4j.MastodonClient
 import mastodon4j.MastodonRequest
 import mastodon4j.Parameter
 import mastodon4j.api.entity.Account
-import org.slf4j.helpers.CheckReturnValue
 
 /**
  * フォローに関するAPIメソッドクラス（KMP対応版）
@@ -19,7 +19,7 @@ class FollowsMethod(private val client: MastodonClient) {
      * 
      * @param uri フォローしたいアカウントのusername@domain形式の識別子
      */
-    @CheckReturnValue
+    @CheckResult
     fun postRemoteFollow(uri: String): MastodonRequest<Account> {
         val params = Parameter().append("uri", uri)
         return client.createPostRequest<Account>("/api/v1/follows", params)
