@@ -8,7 +8,7 @@ kotlin {
     jvmToolchain(11)
     
     jvm("android")
-    
+
     // iOS用の設定を追加
     iosX64()
     iosArm64()
@@ -66,7 +66,7 @@ publishing {
     publications {
         withType<MavenPublication> {
             groupId = "com.sys1yagi"
-            artifactId = "mastodon4j-core"
+            artifactId = "mastodon4j-$artifactId"
             version = "3.0.0-SNAPSHOT"
 
             pom {
