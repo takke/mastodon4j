@@ -67,8 +67,15 @@ class MastodonRequest<T>(
      */
     @Suppress("UNCHECKED_CAST")
     suspend fun executeAsync(): MastodonResponse<T> {
-        val response = executor()
-        
+        val response = try {
+            executor()
+        } catch (e: Exception) {
+            when (e) {
+                is MastodonException -> throw e
+                else -> throw MastodonException(cause = e)
+            }
+        }
+
         if (response.status.isSuccess()) {
             try {
                 val body = response.bodyAsText()
