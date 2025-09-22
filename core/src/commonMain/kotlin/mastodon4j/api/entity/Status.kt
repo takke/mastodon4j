@@ -49,8 +49,8 @@ data class Status(
     // for fedibird.com
     @SerialName("status_referred_by_count") val statusReferredByCount: Long = 0,
 
-    // quote of fedibird.com
-    @SerialName("quote") val quote: Status? = null,
+    // quote
+    @SerialName("quote") val quote: Quote? = null,
 ) {
     enum class Visibility(val value: String) {
         Public("public"),
