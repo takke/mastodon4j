@@ -11,11 +11,13 @@ data class Account(
     @SerialName("id") val id: String = "",
     @SerialName("username") val userName: String = "",
     @SerialName("acct") val acct: String = "",
-    @SerialName("display_name") val displayName_: String? = "", // null when calckey.jp
-    @SerialName("note") val note_: String? = "",                // null when calckey.jp
+    @SerialName("display_name") val displayName_: String? = "",     // null when calckey.jp
+    @SerialName("note") val note_: String? = "",                    // null when calckey.jp
     @SerialName("url") val url: String = "",
     @SerialName("avatar") val avatar: String = "",
-    @SerialName("header") val header_: String? = "",            // null when calckey.jp
+    @SerialName("avatar_static") val avatarStatic: String = "",
+    @SerialName("header") val header_: String? = "",                // null when calckey.jp
+    @SerialName("header_static") val headerStatic_: String? = "",   // null when calckey.jp
     @SerialName("locked") val isLocked: Boolean = false,
     @SerialName("created_at") val createdAt: String = "",
     @SerialName("followers_count") val followersCount: Long = 0,
@@ -32,4 +34,5 @@ data class Account(
     val displayName: String get() = displayName_ ?: ""
     val note: String get() = note_ ?: ""
     val header: String get() = header_ ?: ""
+    val headerStatic: String get() = headerStatic_ ?: ""
 }
