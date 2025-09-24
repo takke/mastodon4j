@@ -23,7 +23,8 @@ class SearchMethod(private val client: MastodonClient) {
         query: String,
         resolve: Boolean = false,
         range: Range? = null,
-        type: String? = null
+        type: String? = null,
+        offset: Int? = null,
     ): MastodonRequest<Results> {
         val params = range?.toParameter() ?: Parameter()
         
@@ -32,6 +33,7 @@ class SearchMethod(private val client: MastodonClient) {
             params.append("resolve", true)
         }
         type?.let { params.append("type", it) }
+        offset?.let { params.append("offset", it) }
         
         return client.createGetRequest<Results>("/api/v2/search", params)
     }
