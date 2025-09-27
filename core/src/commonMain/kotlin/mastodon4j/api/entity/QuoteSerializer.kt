@@ -34,8 +34,9 @@ object QuoteSerializer : KSerializer<Quote?> {
             // Mastodon公式形式: { "state": "accepted", "quoted_status": {...} }
             val state = jsonElement["state"]?.jsonPrimitive?.content ?: "accepted"
             val quotedStatusJson = jsonElement["quoted_status"]
-            val quotedStatus = quotedStatusJson?.let {
-                json.decodeFromJsonElement<Status>(it)
+            val quotedStatus = when (quotedStatusJson) {
+                null, is JsonNull -> null
+                else -> json.decodeFromJsonElement<Status>(quotedStatusJson)
             }
             Quote(state = state, quotedStatus = quotedStatus)
         } else {

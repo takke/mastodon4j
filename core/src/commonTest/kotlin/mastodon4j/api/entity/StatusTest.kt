@@ -3,6 +3,7 @@ package mastodon4j.api.entity
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.decodeFromString
 
@@ -445,4 +446,88 @@ class StatusTest {
         // quoteフィールドがnullであることを確認
         assertEquals(null, status.quote, "quoteフィールドが明示的にnullの場合もnullであることを確認")
     }
+
+    @Test
+    fun parseStatusWithMastodonQuoteNull() {
+
+        // Mastodon公式のquoteフィールド(但し quoted_status は null)を含むJSONをパース
+        val jsonWithQuote = """
+        {
+            "id": "123456789",
+            "created_at": "2024-01-01T00:00:00.000Z",
+            "in_reply_to_id": null,
+            "in_reply_to_account_id": null,
+            "sensitive": false,
+            "spoiler_text": "",
+            "visibility": "public",
+            "language": "ja",
+            "uri": "https://fedibird.com/@user/123456789",
+            "url": "https://fedibird.com/@user/123456789",
+            "replies_count": 0,
+            "reblogs_count": 0,
+            "favourites_count": 0,
+            "edited_at": null,
+            "favourited": false,
+            "reblogged": false,
+            "muted": false,
+            "bookmarked": false,
+            "pinned": false,
+            "content": "<p>これは引用投稿のテストです</p>",
+            "reblog": null,
+            "application": null,
+            "account": {
+                "id": "1",
+                "username": "testuser",
+                "acct": "testuser",
+                "display_name": "Test User",
+                "locked": false,
+                "bot": false,
+                "discoverable": true,
+                "group": false,
+                "created_at": "2023-01-01T00:00:00.000Z",
+                "note": "",
+                "url": "https://fedibird.com/@testuser",
+                "avatar": "https://example.com/avatar.png",
+                "avatar_static": "https://example.com/avatar.png",
+                "header": "https://example.com/header.png",
+                "header_static": "https://example.com/header.png",
+                "followers_count": 100,
+                "following_count": 50,
+                "statuses_count": 500,
+                "last_status_at": "2024-01-01",
+                "emojis": [],
+                "fields": []
+            },
+            "media_attachments": [],
+            "mentions": [],
+            "tags": [],
+            "emojis": [],
+            "card": null,
+            "poll": null,
+            "quote": {
+                "state": "accepted",
+                "quoted_status": null
+            }
+        }
+        """.trimIndent()
+
+        val json = Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+        }
+
+        // JSONをパース
+        val status: Status = json.decodeFromString(jsonWithQuote)
+
+        // 基本的なフィールドの検証
+        assertEquals("123456789", status.id)
+        val content1: String = status.content.replace("<p>", "").replace("</p>", "")
+        assertEquals("これは引用投稿のテストです", content1)
+        assertEquals("public", status.visibilityValue)
+
+        // quoteフィールドが正しくパースされていることを確認
+        assertNotNull(status.quote, "quoteフィールドがnullではないことを確認")
+        assertNull(status.quote?.quotedStatus)
+    }
+
 }
