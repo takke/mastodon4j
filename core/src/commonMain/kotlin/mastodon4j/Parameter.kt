@@ -27,11 +27,7 @@ class Parameter {
     }
 
     fun build(): String =
-        parameters
-            .map {
-                "${it.first}=${it.second.encodeURLParameter()}"
-            }
-            .joinToString(separator = "&")
+        parameters.joinToString(separator = "&") { "${it.first}=${it.second.encodeURLParameter()}" }
 
     fun toMap(): Map<String, List<String>> {
         return parameters.groupBy({ it.first }, { it.second })
