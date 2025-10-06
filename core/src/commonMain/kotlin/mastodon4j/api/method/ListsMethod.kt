@@ -148,6 +148,6 @@ class ListsMethod(private val client: MastodonClient) {
         val params = Parameter().apply {
             accountIds.forEach { append("account_ids[]", it) }
         }
-        return client.createDeleteRequest<Unit>("/api/v1/lists/$listId/accounts")
+        return client.createDeleteRequest<Unit>("/api/v1/lists/$listId/accounts", params)
     }
 }
