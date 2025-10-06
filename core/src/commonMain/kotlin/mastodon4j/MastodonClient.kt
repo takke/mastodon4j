@@ -158,8 +158,14 @@ class MastodonClient private constructor(
     /**
      * DELETEリクエストを作成
      */
-    suspend fun delete(path: String): HttpResponse {
-        return client.delete(path)
+    suspend fun delete(path: String, parameters: Parameter? = null): HttpResponse {
+        val urlString = if (parameters != null && parameters.build().isNotEmpty()) {
+            val separator = if (path.contains("?")) "&" else "?"
+            "$path$separator${parameters.build()}"
+        } else {
+            path
+        }
+        return client.delete(urlString)
     }
 
     /**
@@ -225,9 +231,9 @@ class MastodonClient private constructor(
     /**
      * 型安全なDELETEリクエストを作成
      */
-    inline fun <reified T> createDeleteRequest(path: String): MastodonRequest<T> {
+    inline fun <reified T> createDeleteRequest(path: String, parameters: Parameter? = null): MastodonRequest<T> {
         return MastodonRequest(
-            executor = { delete(path) },
+            executor = { delete(path, parameters) },
             serializer = { jsonString -> json.decodeFromString<T>(jsonString) as Any },
             json = json
         )
