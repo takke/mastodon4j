@@ -1,7 +1,18 @@
 package mastodon4j.api.entity
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.element
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.JsonDecoder
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonPrimitive
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#instance
@@ -10,6 +21,9 @@ import kotlinx.serialization.Serializable
 data class Instance(
     @SerialName("uri")
     val uri: String = "",
+
+    @SerialName("domain")
+    val domain: String = "",
 
     @SerialName("title")
     val title: String = "",
@@ -39,7 +53,8 @@ data class Instance(
     val stats: Stats? = null,
 
     @SerialName("thumbnail")
-    val thumbnail: String? = null,
+    @Serializable(with = ThumbnailSerializer::class)
+    val thumbnail: Thumbnail? = null,
 
     @SerialName("configuration")
     val configuration: Configuration? = null,
@@ -52,6 +67,31 @@ data class Instance(
 ) {
     val fedibirdCapabilities: FedibirdCapabilities
         get() = FedibirdCapabilities(fedibirdCapabilitiesList)
+
+    /**
+     * サムネイル情報
+     * 文字列形式（古いAPI）とオブジェクト形式（新しいAPI）の両方に対応
+     */
+    @Serializable
+    data class Thumbnail(
+        @SerialName("url")
+        val url: String,
+
+        @SerialName("blurhash")
+        val blurhash: String? = null,
+
+        @SerialName("versions")
+        val versions: Versions? = null,
+    ) {
+        @Serializable
+        data class Versions(
+            @SerialName("@1x")
+            val at1x: String? = null,
+
+            @SerialName("@2x")
+            val at2x: String? = null,
+        )
+    }
 
     @Serializable
     data class Stats(
@@ -133,6 +173,60 @@ data class Instance(
         val timelineEmojiReactionMediaOption: Boolean get() = capabilities.contains("timeline_emoji_reaction_media_option")
         val timelinePersonalMediaOption: Boolean get() = capabilities.contains("timeline_personal_media_option")
         val kmyblueVisibilityPublicUnlisted: Boolean get() = capabilities.contains("kmyblue_visibility_public_unlisted")
+    }
+}
+
+/**
+ * Thumbnailのカスタムシリアライザー
+ * 文字列形式（古いAPI）とオブジェクト形式（新しいAPI）の両方に対応
+ */
+object ThumbnailSerializer : KSerializer<Instance.Thumbnail?> {
+    override val descriptor: SerialDescriptor = buildClassSerialDescriptor("Thumbnail") {
+        element<String?>("url")
+        element<String?>("blurhash")
+        element<Instance.Thumbnail.Versions?>("versions")
+    }
+
+    override fun deserialize(decoder: Decoder): Instance.Thumbnail? {
+        val jsonDecoder = decoder as? JsonDecoder
+            ?: throw IllegalArgumentException("This serializer can only be used with JSON")
+
+        val element = jsonDecoder.decodeJsonElement()
+
+        return when {
+            // nullの場合
+            element is JsonPrimitive && element.isString && element.content == "null" -> null
+            // 文字列形式（古いAPI）の場合
+            element is JsonPrimitive && element.isString -> {
+                Instance.Thumbnail(url = element.content)
+            }
+            // オブジェクト形式（新しいAPI）の場合
+            element is JsonObject -> {
+                val url = element["url"]?.jsonPrimitive?.content ?: ""
+                val blurhash = element["blurhash"]?.jsonPrimitive?.content
+                val versions = element["versions"]?.let { versionsElement ->
+                    if (versionsElement is JsonObject) {
+                        Instance.Thumbnail.Versions(
+                            at1x = versionsElement["@1x"]?.jsonPrimitive?.content,
+                            at2x = versionsElement["@2x"]?.jsonPrimitive?.content
+                        )
+                    } else null
+                }
+                Instance.Thumbnail(url = url, blurhash = blurhash, versions = versions)
+            }
+
+            else -> null
+        }
+    }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    override fun serialize(encoder: Encoder, value: Instance.Thumbnail?) {
+        if (value == null) {
+            encoder.encodeNull()
+        } else {
+            // オブジェクト形式でシリアライズ
+            encoder.encodeSerializableValue(Instance.Thumbnail.serializer(), value)
+        }
     }
 }
 
