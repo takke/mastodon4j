@@ -22,8 +22,16 @@ class PublicMethod(private val client: MastodonClient) {
      * インスタンス情報を取得
      * GET /api/v1/instance
      */
-    fun getInstance(): MastodonRequest<Instance> {
+    fun getInstance1(): MastodonRequest<Instance> {
         return client.createGetRequest<Instance>("/api/v1/instance")
+    }
+
+    /**
+     * インスタンス情報を取得
+     * GET /api/v2/instance
+     */
+    fun getInstance2(): MastodonRequest<Instance> {
+        return client.createGetRequest<Instance>("/api/v2/instance")
     }
 
     /**
