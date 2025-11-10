@@ -58,7 +58,8 @@ data class Status(
         Private("private"),
         Direct("direct"),
         PublicUnlisted("public_unlisted"),  // visibility_ex only (for kmy.blue)
-        Personal("personal"),               // visibility_ex only (for fedibird)
+        Personal("personal"),               // visibility_ex only (for fedibird: 自分限定)
+        Limited("limited"),                 // visibility_ex only (for fedibird: サークル or 相互フォロー限定)
         ;
 
         companion object {
