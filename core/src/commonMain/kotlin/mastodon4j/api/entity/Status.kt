@@ -64,11 +64,11 @@ data class Status(
 
         companion object {
             fun fromString(value: String): Visibility {
-                return Visibility.values().firstOrNull { it.value == value } ?: Public
+                return entries.firstOrNull { it.value == value } ?: Public
             }
 
             fun fromStringOrNull(value: String): Visibility? {
-                return Visibility.values().firstOrNull { it.value == value }
+                return entries.firstOrNull { it.value == value }
             }
         }
     }
