@@ -59,6 +59,13 @@ data class Instance(
     @SerialName("configuration")
     val configuration: Configuration? = null,
 
+    // TODO registrations
+
+    @SerialName("api_versions")
+    val apiVersions: Map<String, Int> = emptyMap(),
+
+    // TODO contact
+
     @SerialName("feature_quote")
     val featureQuote: Boolean = false,
 
