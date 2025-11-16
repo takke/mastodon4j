@@ -51,6 +51,8 @@ data class Status(
 
     // quote
     @SerialName("quote") val quote: Quote? = null,
+    @SerialName("quotes_count") val quotesCount: Long = 0,
+    @SerialName("quote_approval") val quoteApproval: QuoteApproval? = null,
 ) {
     enum class Visibility(val value: String) {
         Public("public"),
