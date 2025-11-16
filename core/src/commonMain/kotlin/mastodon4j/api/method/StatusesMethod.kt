@@ -68,7 +68,8 @@ class StatusesMethod(private val client: MastodonClient) {
         visibility: Status.Visibility? = null,
         quoteId: String? = null,
         quotedStatusId: String? = null,
-        idempotencyKey: String? = null
+        quoteApprovalPolicy: String? = null,
+        idempotencyKey: String? = null,
     ): MastodonRequest<Status> {
         val params = Parameter().apply {
             append("status", status)
@@ -79,6 +80,7 @@ class StatusesMethod(private val client: MastodonClient) {
             visibility?.let { append("visibility", it.value) }
             quoteId?.let { append("quote_id", it) }
             quotedStatusId?.let { append("quoted_status_id", it) }
+            quoteApprovalPolicy?.let { append("quote_approval_policy", it) }
         }
         
         val headers = idempotencyKey?.let { mapOf("Idempotency-Key" to it) }
