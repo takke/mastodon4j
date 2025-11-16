@@ -49,6 +49,8 @@ data class Notification(
         StatusReference("status_reference"),
         AdminSignup("admin.sign_up"),
         AdminReport("admin.report"),
+        Quote("quote"), // 自分のステータスが引用された時の通知
+        QuotedUpdate("quoted_update"), // 自分が引用したステータスが編集された時の通知
         Unknown("unknown"),
     }
 
