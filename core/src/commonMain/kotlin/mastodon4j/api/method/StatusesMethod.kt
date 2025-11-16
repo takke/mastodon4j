@@ -275,4 +275,19 @@ class StatusesMethod(private val client: MastodonClient) {
         return client.createListGetRequest<Status>("/api/v1/statuses/$statusId/history")
     }
 
+    /**
+     * ステータスを引用している投稿の一覧を取得
+     * GET /api/v1/statuses/:id/quotes
+     *
+     * @param statusId ステータスID
+     * @param range ページネーションパラメータ（max_id, since_id, limit）
+     * @return 引用ステータスのページネーション可能なリスト
+     */
+    fun getQuotes(statusId: String, range: Range? = null): MastodonRequest<Pageable<Status>> {
+        return client.createListGetRequest<Status>(
+            path = "/api/v1/statuses/$statusId/quotes",
+            parameters = range?.toParameter()
+        ).toPageable()
+    }
+
 }
