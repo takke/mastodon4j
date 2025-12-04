@@ -1,238 +1,146 @@
 # mastodon4j
 
 [![](https://jitpack.io/v/sys1yagi/mastodon4j.svg)](https://jitpack.io/#sys1yagi/mastodon4j)
-[![wercker status](https://app.wercker.com/status/498944e68f1f37a697fcbab383b0299c/s/master "wercker status")](https://app.wercker.com/project/byKey/498944e68f1f37a697fcbab383b0299c)
-[![codecov](https://codecov.io/gh/sys1yagi/mastodon4j/branch/master/graph/badge.svg)](https://codecov.io/gh/sys1yagi/mastodon4j)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-mastodon4j-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/5637)
 
-mastodon4j is [mastodon](https://github.com/tootsuite/mastodon) client for Java and Kotlin.
+mastodon4j is a [Mastodon](https://github.com/mastodon/mastodon) client library for Kotlin.
 
-# Official API Doc
+## Features
 
-https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md
+- Kotlin Multiplatform対応
+- Ktor Client + Kotlin Serializationベース
+- Coroutines対応（suspend関数）
 
-# Sample App
+## Official API Doc
 
-__Android App__
-
-- https://github.com/sys1yagi/DroiDon
+https://docs.joinmastodon.org/api/
 
 # Get Started
 
-Mastodon4j publish in jitpack.
-Add it in your root build.gradle at the end of repositories:
+Mastodon4jはJitpackで公開されています。
+(このtakke変更版は公開されていません)
 
-```groovy
-allprojects {
-  repositories {
-    ...
-    maven { url 'https://jitpack.io' }
-  }
+```kotlin
+// settings.gradle.kts
+dependencyResolutionManagement {
+    repositories {
+        maven { url = uri("https://jitpack.io") }
+    }
 }
 ```
 
-```groovy
-compile 'com.github.sys1yagi.mastodon4j:mastodon4j:$version'
+```kotlin
+// build.gradle.kts
+dependencies {
+    implementation("com.github.sys1yagi.mastodon4j:mastodon4j:$version")
+}
 ```
-
-Check latest version on Jitpack [![](https://jitpack.io/v/sys1yagi/mastodon4j.svg)](https://jitpack.io/#sys1yagi/mastodon4j)
 
 # Usage
 
-## Get Public Timeline
-
-__kotlin__
+## Basic Client Creation
 
 ```kotlin
-val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient.Builder(), Gson()).build()
-        
-val timelines = Timelines(client)
-val statuses: List<Status> = timelines.getPublic().execute()
+val client = MastodonClient.Builder("mstdn.jp").build()
 ```
 
-__java__
+## Get Public Timeline
 
-```java
-MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient.Builder(), new Gson()).build();
-Timelines timelines = new Timelines(client);
+```kotlin
+val client = MastodonClient.Builder("mstdn.jp").build()
 
-try {
-  List<Status> statuses = timelines.getPublic(new Range()).execute();
-  statuses.forEach(status->{
-    System.out.println("=============");
-    System.out.println(status.getAccount().getDisplayName());
-    System.out.println(status.getContent());
-  });
-} catch (MastodonException e) {
-  e.printStackTrace();
+// コルーチンスコープ内で実行
+val statuses: List<Status> = client.timelines.getPublic().execute()
+statuses.forEach { status ->
+    println("=============")
+    println(status.account?.displayName)
+    println(status.content)
 }
 ```
 
 ## Register App
 
-If you want to access the auth required API, you need create client credential and get access token. see more [docs](https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#apps)
-
-__kotlin__
+認証が必要なAPIにアクセスするには、クライアント資格情報を作成してアクセストークンを取得する必要があります。詳細は[Mastodon API docs](https://docs.joinmastodon.org/client/token/)を参照してください。
 
 ```kotlin
-val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient.Builder(), Gson()).build()
-val apps = Apps(client)
-val appRegistration = apps.createApp(
-	clientName = "client name",
-	redirectUris = "urn:ietf:wg:oauth:2.0:oob",
-	scope = Scope(Scope.Name.ALL),
-	website = "https://sample.com"
+val client = MastodonClient.Builder("mstdn.jp").build()
+
+val appRegistration = client.apps.createApp(
+    clientName = "my-app",
+    redirectUris = "urn:ietf:wg:oauth:2.0:oob",
+    scopes = Scope(Scope.Name.ALL),
+    website = "https://example.com"
 ).execute()
-save(appRegistration) // appRegistration needs to be saved.
+
+// appRegistrationを保存してください（client_id, client_secretが含まれています）
+save(appRegistration)
 ```
 
-AppRegistration has client id and client secret.
-
-__java__
-
-```java
-MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient.Builder(), new Gson()).build();
-Apps apps = new Apps(client);
-try {
-	AppRegistration registration = apps.createApp(
-	    "mastodon4j-sample-app",
-	    "urn:ietf:wg:oauth:2.0:oob",
-	    new Scope(Scope.Name.ALL),
-        "https://sample.com"
-    ).execute();
-    System.out.println("instance=" + registration.getInstanceName());
-    System.out.println("client_id=" + registration.getClientId());
-    System.out.println("client_secret=" + registration.getClientSecret());
-} catch (MastodonException e) {
-	int statusCode = e.getResponse().code();
-	// error handling.
-}
-```
-
-## OAuth login and get Access Token
-
-__kotlin__
+## OAuth Login and Get Access Token
 
 ```kotlin
-val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient.Builder(), Gson()).build()
+val client = MastodonClient.Builder("mstdn.jp").build()
 val clientId = appRegistration.clientId
-val apps = Apps(client)
 
-val url = apps.getOAuthUrl(clientId, Scope(Scope.Name.ALL))
-// url like bellow
-// https://:instance_name/oauth/authorize?client_id=:client_id&redirect_uri=:redirect_uri&response_type=code&scope=read 
-// open url and OAuth login and get auth code
+// OAuthログインURLを生成
+val url = client.apps.getOAuthUrl(clientId, Scope(Scope.Name.ALL))
+// URLを開いてOAuthログインを行い、認可コードを取得
+// https://:instance_name/oauth/authorize?client_id=:client_id&redirect_uri=:redirect_uri&response_type=code&scope=read
 
-val authCode = //...
+val authCode = // ユーザーが取得した認可コード
 val clientSecret = appRegistration.clientSecret
 val redirectUri = appRegistration.redirectUri
-val accessToken = apps.getAccessToken(
-			clientId,
-			clientSecret,
-			redirectUri,
-			authCode,
-			"authorization_code"
-		)
-// 	accessToken needs to be saved.
+
+val accessToken = client.apps.getAccessToken(
+    clientId = clientId,
+    clientSecret = clientSecret,
+    redirectUri = redirectUri,
+    code = authCode,
+    grantType = "authorization_code"
+).execute()
+
+// accessTokenを保存してください
 ```
 
 ## Get Home Timeline
 
-__kotlin__
-
 ```kotlin
-// Need parameter of accessToken
-val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient.Builder(), Gson())
-  .accessToken(accessToken)
-  .build()
+// アクセストークンを設定してクライアントを作成
+val client = MastodonClient.Builder("mstdn.jp")
+    .accessToken(accessToken)
+    .build()
 
-val statuses: List<Status> = timelines.getHome().execute()
+val statuses: List<Status> = client.timelines.getHome().execute()
 ```
 
-## Get raw json
-
-v0.0.7 or later
-
-__kotlin__
+## Post a Status
 
 ```kotlin
-val client = //...
-val publicMethod = Public(client)
+val client = MastodonClient.Builder("mstdn.jp")
+    .accessToken(accessToken)
+    .build()
 
-publicMethod.getLocalPublic()
-  .doOnJson { jsonString -> 
-    // You can get raw json for each element.
-    println(jsonString)
-  }
-  .execute() 
+val status = client.statuses.postStatus(
+    status = "Hello, Mastodon!",
+    visibility = Status.Visibility.Public
+).execute()
 ```
 
-## Streaming API
-
-v1.0.0 or later
-
-__kotlin__
+## Get Raw JSON
 
 ```kotlin
-val client: MastodonClient = MastodonClient.Builder("mstdn.jp", OkHttpClient.Builder(), Gson())
-  .accessToken(accessToken)
-  .useStreamingApi()
-  .build()
+val client = MastodonClient.Builder("mstdn.jp").build()
 
-val handler = object : Handler {
-  override fun onStatus(status: Status) {
-    println(status.content)
-  }
-  override fun onNotification(notification: Notification) {/* no op */}
-  override fun onDelete(id: Long) {/* no op */}
-}
-
-val streaming = Streaming(client)
-try {
-  val shutdownable = streaming.localPublic(handler)
-  Thread.sleep(10000L)
-  shutdownable.shutdown()
-} catch(e: MastodonException) {
-  e.printStackTrace()
-}
-```
-
-__java__
-
-```java
-MastodonClient client = new MastodonClient.Builder("mstdn.jp", new OkHttpClient.Builder(), new Gson())
-        .accessToken(accessToken)
-        .useStreamingApi()
-        .build();
-Handler handler = new Handler() {
-    @Override
-    public void onStatus(@NotNull Status status) {
-        System.out.println(status.getContent());
+client.public.getLocalPublic()
+    .doOnJson { jsonString ->
+        // 各要素のJSONを取得できます
+        println(jsonString)
     }
-
-    @Override
-    public void onNotification(@NotNull Notification notification) {/* no op */}
-    @Override
-    public void onDelete(long id) {/* no op */}
-};
-
-Streaming streaming = new Streaming(client);
-try {
-    Shutdownable shutdownable = streaming.localPublic(handler);
-    Thread.sleep(10000L);
-    shutdownable.shutdown();
-} catch (Exception e) {
-    e.printStackTrace();
-}
+    .execute()
 ```
 
 ## Timeout Configuration
 
-v3.0.0 or later
-
 デフォルトのタイムアウトは60秒に設定されています。メディアアップロードなど長時間かかる処理では、`httpClientConfig`パラメータでタイムアウトを延長できます。
-
-__kotlin__
 
 ```kotlin
 import io.ktor.client.plugins.*
@@ -258,6 +166,23 @@ val client = MastodonClient.Builder(
 | `connectTimeoutMillis` | 接続確立のタイムアウト | 60,000ms |
 | `socketTimeoutMillis` | ソケット読み書きのタイムアウト | 60,000ms |
 
+## Custom JSON Configuration
+
+```kotlin
+import kotlinx.serialization.json.Json
+
+val customJson = Json {
+    ignoreUnknownKeys = true
+    coerceInputValues = true
+    isLenient = true
+    prettyPrint = true
+}
+
+val client = MastodonClient.Builder(
+    instanceName = "mstdn.jp",
+    json = customJson
+).build()
+```
 
 # Versioning
 
@@ -312,28 +237,17 @@ val client = MastodonClient.Builder(
 - [x] GET `/api/v1/timelines/public`
 - [x] GET `/api/v1/timelines/tag/:hashtag`
 
-## Streaming
-
-v1.0.0 or later
-
-- [x] `GET /api/v1/streaming/user`
-- [x] `GET /api/v1/streaming/public`
-- [x] `GET /api/v1/streaming/public/local`
-- [x] `GET /api/v1/streaming/hashtag`
-- [x] `GET /api/v1/streaming/hashtag/local`
-
 ## Auth
 
-- [x] Generate Url for OAuth `/oauth/authorize`
-- [x] POST password authorize `/oauth/token` v0.0.2 or later
+- [x] Generate URL for OAuth `/oauth/authorize`
+- [x] POST password authorize `/oauth/token`
 - [x] POST `/oauth/token`
-
 
 # Contribution
 
 ## Reporting Issues
 
-Found a problem? Want a new feature? First of all see if your issue or idea has already been reported. If don't, just open a new clear and descriptive [issues](https://github.com/sys1yagi/mastodon4j/issues)
+問題を発見した場合や新機能のリクエストがある場合は、まず[issues](https://github.com/sys1yagi/mastodon4j/issues)で既存の報告を確認してください。未報告の場合は、明確で具体的なissueを作成してください。
 
 # License
 
