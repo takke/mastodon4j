@@ -226,6 +226,38 @@ try {
 }
 ```
 
+## Timeout Configuration
+
+v3.0.0 or later
+
+デフォルトのタイムアウトは60秒に設定されています。メディアアップロードなど長時間かかる処理では、`httpClientConfig`パラメータでタイムアウトを延長できます。
+
+__kotlin__
+
+```kotlin
+import io.ktor.client.plugins.*
+
+val client = MastodonClient.Builder(
+    instanceName = "mstdn.jp",
+    httpClientConfig = {
+        // タイムアウトを3分に延長
+        install(HttpTimeout) {
+            requestTimeoutMillis = 180_000
+            connectTimeoutMillis = 60_000
+            socketTimeoutMillis = 180_000
+        }
+    }
+)
+    .accessToken(accessToken)
+    .build()
+```
+
+| パラメータ | 説明 | デフォルト値 |
+|-----------|------|-------------|
+| `requestTimeoutMillis` | リクエスト全体のタイムアウト | 60,000ms |
+| `connectTimeoutMillis` | 接続確立のタイムアウト | 60,000ms |
+| `socketTimeoutMillis` | ソケット読み書きのタイムアウト | 60,000ms |
+
 
 # Versioning
 

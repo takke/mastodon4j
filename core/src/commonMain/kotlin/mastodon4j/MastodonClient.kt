@@ -49,9 +49,6 @@ class MastodonClient private constructor(
 
         fun build(): MastodonClient {
             val client = HttpClient {
-                // ユーザーが指定した設定を適用
-                httpClientConfig()
-
                 // 共通設定
                 install(ContentNegotiation) {
                     json(json)
@@ -69,7 +66,7 @@ class MastodonClient private constructor(
                 // デバッグモードの場合はロギングを有効化
                 // TODO: ロギングプラグインを追加
 
-                // タイムアウト設定
+                // デフォルトのタイムアウト設定（先に適用）
                 install(HttpTimeout) {
                     requestTimeoutMillis = 60_000
                     connectTimeoutMillis = 60_000
@@ -83,6 +80,9 @@ class MastodonClient private constructor(
                         host = instanceName
                     }
                 }
+
+                // ユーザーが指定した設定を最後に適用（上書き可能にする）
+                httpClientConfig()
             }
 
             return MastodonClient(instanceName, client, json).also {
