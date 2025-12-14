@@ -17,5 +17,7 @@ data class Tag(
     @SerialName("following")
     val following: Boolean = false,
 
-    // TODO support history
+    // タグの使用統計（通常は過去7日間のデータ）
+    @SerialName("history")
+    val history: List<History> = emptyList(),
 )
