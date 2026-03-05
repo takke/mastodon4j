@@ -16,6 +16,7 @@ data class MediaAttachment(
     @SerialName("text_url") val textUrl: String? = null,
     @SerialName("description") val description: String? = null,
     @SerialName("blurhash") val blurHash: String? = null,
+    @SerialName("meta") val meta: Meta? = null,
 ) {
 
     enum class Type(val value: String) {
@@ -25,4 +26,23 @@ data class MediaAttachment(
         Audio("audio"),
         Unknown("unknwon")
     }
+
+    /**
+     * メディアのメタ情報
+     */
+    @Serializable
+    data class Meta(
+        @SerialName("original") val original: MetaSize? = null,
+        @SerialName("small") val small: MetaSize? = null,
+    )
+
+    /**
+     * メディアのサイズ情報
+     */
+    @Serializable
+    data class MetaSize(
+        @SerialName("width") val width: Int? = null,
+        @SerialName("height") val height: Int? = null,
+        @SerialName("aspect") val aspect: Double? = null,
+    )
 }
