@@ -1,5 +1,7 @@
 package mastodon4j.api.method
 
+import io.ktor.client.plugins.HttpTimeoutConfig
+import io.ktor.client.plugins.timeout
 import io.ktor.client.plugins.websocket.*
 import io.ktor.http.*
 import io.ktor.websocket.*
@@ -13,6 +15,7 @@ import mastodon4j.api.entity.Announcement
 import mastodon4j.api.entity.Conversation
 import mastodon4j.api.entity.Notification
 import mastodon4j.api.entity.Status
+import mastodon4j.api.exception.MastodonStreamingException
 
 /**
  * Mastodon Streaming API クライアント（WebSocket版）
@@ -90,6 +93,14 @@ class Streaming(private val client: MastodonClient) {
 
         httpClient.webSocket(
             request = {
+                // WebSocket 接続では、MastodonClient のグローバル HttpTimeout
+                // （socketTimeoutMillis=60秒）が長時間アイドル時に接続を切ってしまうため、
+                // ストリーム特有の長時間接続を許容するように socket / request timeout を無効化する。
+                // ネットワーク断は incoming channel のクローズで検出する。
+                timeout {
+                    socketTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+                    requestTimeoutMillis = HttpTimeoutConfig.INFINITE_TIMEOUT_MS
+                }
                 url {
                     protocol = URLProtocol.WSS
                     host = client.getInstanceName()
@@ -104,7 +115,18 @@ class Streaming(private val client: MastodonClient) {
                 val event = parseFrame(frame.readText(), client.json) ?: continue
                 emit(event)
             }
+            // for ループ抜け = サーバー側 close。CloseReason を確認し、
+            // NORMAL / GOING_AWAY 以外（認証切れ・ポリシー違反など）は例外として伝播する。
+            val reason = closeReason.await()
+            if (reason != null && !isNormalClose(reason)) {
+                throw MastodonStreamingException(reason)
+            }
         }
+    }
+
+    private fun isNormalClose(reason: CloseReason): Boolean {
+        return reason.code == CloseReason.Codes.NORMAL.code ||
+            reason.code == CloseReason.Codes.GOING_AWAY.code
     }
 
     private fun parseFrame(text: String, json: Json): StreamingEvent? {
