@@ -3,6 +3,7 @@ package mastodon4j
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
@@ -53,6 +54,9 @@ class MastodonClient private constructor(
                 install(ContentNegotiation) {
                     json(json)
                 }
+
+                // Streaming API（WebSocket）対応
+                install(WebSockets)
 
                 // アクセストークンが設定されている場合はヘッダーに追加
                 accessToken?.let { token ->
@@ -271,7 +275,5 @@ class MastodonClient private constructor(
     val tags get() = TagsMethod(this)
     val timelines get() = TimelinesMethod(this)
     val trends get() = TrendsMethod(this)
-
-    // TODO: Streamingの実装（WebSocket対応）
-//   val streaming get() = Streaming(this)
+    val streaming get() = Streaming(this)
 }
