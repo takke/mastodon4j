@@ -82,10 +82,49 @@ class StatusesMethod(private val client: MastodonClient) {
             quotedStatusId?.let { append("quoted_status_id", it) }
             quoteApprovalPolicy?.let { append("quote_approval_policy", it) }
         }
-        
+
         val headers = idempotencyKey?.let { mapOf("Idempotency-Key" to it) }
 
         return client.createPostRequest<Status>("/api/v1/statuses", params, headers)
+    }
+
+    /**
+     * 予約投稿（スケジュール投稿）を作成
+     * POST /api/v1/statuses （`scheduled_at` を指定した場合は ScheduledStatus が返却される）
+     *
+     * @param scheduledAt 公開予約日時（ISO 8601形式、例: `2025-12-25T12:00:00.000Z`）。
+     *                    現在時刻より最低5分以上先である必要がある。
+     */
+    @CheckResult
+    fun postScheduledStatus(
+        status: String,
+        scheduledAt: String,
+        inReplyToId: String? = null,
+        mediaIds: List<String>? = null,
+        sensitive: Boolean? = null,
+        spoilerText: String? = null,
+        visibility: Status.Visibility? = null,
+        quoteId: String? = null,
+        quotedStatusId: String? = null,
+        quoteApprovalPolicy: String? = null,
+        idempotencyKey: String? = null,
+    ): MastodonRequest<ScheduledStatus> {
+        val params = Parameter().apply {
+            append("status", status)
+            append("scheduled_at", scheduledAt)
+            inReplyToId?.let { append("in_reply_to_id", it) }
+            mediaIds?.let { append("media_ids", it) }
+            sensitive?.let { append("sensitive", it) }
+            spoilerText?.let { append("spoiler_text", it) }
+            visibility?.let { append("visibility", it.value) }
+            quoteId?.let { append("quote_id", it) }
+            quotedStatusId?.let { append("quoted_status_id", it) }
+            quoteApprovalPolicy?.let { append("quote_approval_policy", it) }
+        }
+
+        val headers = idempotencyKey?.let { mapOf("Idempotency-Key" to it) }
+
+        return client.createPostRequest<ScheduledStatus>("/api/v1/statuses", params, headers)
     }
 
     /**
