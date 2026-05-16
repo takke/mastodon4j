@@ -51,6 +51,7 @@ data class Notification(
         AdminReport("admin.report"),
         Quote("quote"), // 自分のステータスが引用された時の通知
         QuotedUpdate("quoted_update"), // 自分が引用したステータスが編集された時の通知
+        ScheduledStatus("scheduled_status"), // 自分の予約投稿が公開された時の通知 (Mastodon 4.4以降)
         Unknown("unknown"),
     }
 
