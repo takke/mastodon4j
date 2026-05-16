@@ -122,6 +122,9 @@ data class Instance(
 
         @SerialName("emoji_reactions")
         val emojiReactions: EmojiReactions? = null,
+
+        @SerialName("media_attachments")
+        val mediaAttachments: MediaAttachments? = null,
     ) {
         @Serializable
         data class Statuses(
@@ -142,6 +145,36 @@ data class Instance(
 
             @SerialName("max_reactions_per_account")
             val maxReactionsPerAccount: Int? = null,
+        )
+
+        /**
+         * インスタンスのメディアアップロード上限。
+         * Mastodon 4.x の `/api/v2/instance` の `configuration.media_attachments` に対応。
+         *
+         * デフォルト値: video 40MB, image 10MB, frame rate 60fps, video matrix (= width * height) 2,304,000 (例: 1920x1200)。
+         * インスタンス管理者の設定で変動するため、 取得できた値があればそちらを優先する。
+         */
+        @Serializable
+        data class MediaAttachments(
+            /** 画像ファイルサイズ上限 (bytes) */
+            @SerialName("image_size_limit")
+            val imageSizeLimit: Long? = null,
+
+            /** 画像ピクセル数上限 (width * height) */
+            @SerialName("image_matrix_limit")
+            val imageMatrixLimit: Long? = null,
+
+            /** 動画ファイルサイズ上限 (bytes) */
+            @SerialName("video_size_limit")
+            val videoSizeLimit: Long? = null,
+
+            /** 動画フレームレート上限 (fps) */
+            @SerialName("video_frame_rate_limit")
+            val videoFrameRateLimit: Int? = null,
+
+            /** 動画ピクセル数上限 (width * height) */
+            @SerialName("video_matrix_limit")
+            val videoMatrixLimit: Long? = null,
         )
     }
 
