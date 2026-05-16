@@ -13,6 +13,14 @@ import mastodon4j.api.entity.Status
 sealed class StreamingEvent {
 
     /**
+     * WebSocket ハンドシェイクが完了し、ストリーム接続が確立された瞬間に一度だけ emit される擬似イベント。
+     *
+     * Mastodon サーバーが送るフレームではなく、クライアント (mastodon4j) 側で生成して通知する。
+     * 「接続中」UI 表示や Backfill リロード等を「実際に接続できたタイミング」で発火させたい場合に利用する。
+     */
+    object Connected : StreamingEvent()
+
+    /**
      * 新しい投稿（タイムライン更新）
      * event: "update"
      */
