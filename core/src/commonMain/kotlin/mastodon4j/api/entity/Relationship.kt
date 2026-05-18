@@ -21,4 +21,8 @@ data class Relationship(
     @SerialName("domain_blocking") val isDomainBlocking: Boolean = false,
     @SerialName("endorsed") val isEndorsed: Boolean = false,
     @SerialName("note") val note: String? = null,
+
+    // Fedibird 拡張: アカウント購読中かどうか
+    // see https://fedibird.com/@info/103297996886217295
+    @SerialName("subscribing") val isSubscribing: Boolean = false,
 )

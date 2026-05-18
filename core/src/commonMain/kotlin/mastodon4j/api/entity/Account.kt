@@ -23,6 +23,10 @@ data class Account(
     @SerialName("followers_count") val followersCount: Long = 0,
     @SerialName("following_count") val followingCount: Long = 0,
     @SerialName("statuses_count") val statusesCount: Long = 0,
+
+    // Fedibird 拡張: アカウントの購読者数
+    // see https://fedibird.com/@info/103308964302566365
+    @SerialName("subscribing_count") val subscribingCount: Long = 0,
     @SerialName("emojis") val emojis: List<Emoji> = emptyList(),
     @SerialName("fields") val fields: List<Field> = emptyList(),
 

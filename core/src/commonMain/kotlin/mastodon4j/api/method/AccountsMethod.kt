@@ -201,6 +201,47 @@ class AccountsMethod(private val client: MastodonClient) {
     }
 
     /**
+     * アカウントを購読 (Fedibird 拡張)
+     * POST /api/v1/accounts/:id/subscribe
+     *
+     * 購読は、相手に通知せず・許可不要で、相手の公開投稿のみを
+     * 自分のタイムラインに流す Fedibird 独自機能。
+     * フォローとは独立した関係で、同時に有効にできる。
+     *
+     * see https://fedibird.com/@info/103297996886217295
+     */
+    @CheckResult
+    fun postSubscribe(accountId: String): MastodonRequest<Relationship> {
+        return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/subscribe")
+    }
+
+    /**
+     * アカウントの購読を解除 (Fedibird 拡張)
+     * POST /api/v1/accounts/:id/unsubscribe
+     *
+     * see https://fedibird.com/@info/103297996886217295
+     */
+    @CheckResult
+    fun postUnsubscribe(accountId: String): MastodonRequest<Relationship> {
+        return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/unsubscribe")
+    }
+
+    /**
+     * 自分が購読しているアカウント一覧を取得 (Fedibird 拡張)
+     * GET /api/v1/accounts/subscribing
+     *
+     * 自分のアカウント購読一覧のみ取得可能。他ユーザーの購読情報は取得不可。
+     *
+     * see https://fedibird.com/@info/103308964302566365
+     */
+    fun getSubscribing(range: Range? = null): MastodonRequest<Pageable<Account>> {
+        return client.createListGetRequest<Account>(
+            path = "/api/v1/accounts/subscribing",
+            parameters = range?.toParameter()
+        ).toPageable()
+    }
+
+    /**
      * アカウントを検索
      * GET /api/v1/accounts/search
      */
