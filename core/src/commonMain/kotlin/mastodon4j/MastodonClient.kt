@@ -269,6 +269,7 @@ class MastodonClient private constructor(
     val mutes get() = MutesMethod(this)
     val notifications get() = NotificationsMethod(this)
     val public get() = PublicMethod(this)
+    val push get() = PushMethod(this)
     val reports get() = ReportsMethod(this)
     val scheduledStatuses get() = ScheduledStatusesMethod(this)
     val search get() = SearchMethod(this)
