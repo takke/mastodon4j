@@ -91,5 +91,8 @@ class PushMethod(private val client: MastodonClient) {
         append("data[alerts][update]", alerts.update.toString())
         append("data[alerts][admin.sign_up]", alerts.adminSignUp.toString())
         append("data[alerts][admin.report]", alerts.adminReport.toString())
+        // 拡張サーバー向け（Fedibird / kmyblue）。本家 Mastodon では無視されるだけで安全。
+        append("data[alerts][emoji_reaction]", alerts.emojiReaction.toString())
+        append("data[alerts][reaction]", alerts.reaction.toString())
     }
 }

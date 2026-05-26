@@ -66,6 +66,21 @@ data class PushSubscription(
 
         @SerialName("admin.report")
         val adminReport: Boolean = false,
+
+        /**
+         * Fedibird 独自の絵文字リアクション通知（拡張タイプ）。
+         * 本家 Mastodon / kmyblue / Glitch-soc 等は `data['alerts']` を動的に参照するため、
+         * 知らないキーが送られても無視されるだけで安全。
+         */
+        @SerialName("emoji_reaction")
+        val emojiReaction: Boolean = false,
+
+        /**
+         * kmyblue 独自のリアクション通知（拡張タイプ）。emoji_reaction とは別キー。
+         * 本家 Mastodon では無視される。
+         */
+        @SerialName("reaction")
+        val reaction: Boolean = false,
     )
 
     companion object {
@@ -81,6 +96,10 @@ data class PushSubscription(
             update = false,
             adminSignUp = false,
             adminReport = false,
+            // 拡張サーバー (Fedibird / kmyblue 等) でのリアクション通知も既定で受け取る。
+            // 本家 Mastodon は未知キーを無視するため副作用なし。
+            emojiReaction = true,
+            reaction = true,
         )
 
         const val POLICY_ALL = "all"
