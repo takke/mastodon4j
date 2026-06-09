@@ -1,9 +1,7 @@
 package mastodon4j.api.entity.util
 
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 /**
  * Calckey/Misskey互換性ユーティリティ

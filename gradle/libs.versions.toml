@@ -1,6 +1,6 @@
 [versions]
 # Kotlin
-kotlin = "2.2.0"
+kotlin = "2.4.0"
 # OkHttp
 okhttpVersion = "4.12.0"
 # Ktor
@@ -8,7 +8,7 @@ ktorVersion = "3.2.2"
 # kotlinx.serialization
 serializationVersion = "1.9.0"
 # kotlinx.datetime
-datetimeVersion = "0.6.1"
+datetimeVersion = "0.8.0"
 [libraries]
 # OkHttp
 #com-squareup-okhttp3-okhttp = "com.squareup.okhttp3:okhttp:5.0.0-alpha.3"

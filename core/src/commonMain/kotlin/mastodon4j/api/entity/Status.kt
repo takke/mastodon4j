@@ -1,9 +1,9 @@
 package mastodon4j.api.entity
 
-import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import mastodon4j.api.entity.util.CalckeyCompatUtil
+import kotlin.time.Instant
 
 /**
  * see more https://github.com/tootsuite/documentation/blob/master/Using-the-API/API.md#status
