@@ -63,12 +63,16 @@ repositories {
     mavenCentral()
 }
 
+// バージョン方針:
+//   - takke.github.io/maven へ公開するため SNAPSHOT ではなく日付付き固定版 (3.0.0-YYYYMMDD) を採用
+//     公開済みバージョンは Gradle が永久キャッシュするため、再公開時は必ず日付を上げること
+//   - 公開手順は ../publish_all_libs_to_github_io.sh を参照（TwitPane 側の libs.versions.toml も合わせて更新する）
 publishing {
     publications {
         withType<MavenPublication> {
             groupId = "com.sys1yagi"
             artifactId = "mastodon4j-$artifactId"
-            version = "3.0.0-SNAPSHOT"
+            version = "3.0.0-20260908"
 
             pom {
                 name.set("mastodon4j-core")
@@ -95,6 +99,17 @@ publishing {
                     url.set("https://github.com/sys1yagi/mastodon4j")
                 }
             }
+        }
+    }
+    // takke.github.io/maven (GitHub Pages の静的 Maven リポジトリ) への公開先
+    // 既定は ../takke.github.io/maven (git clone git@github.com:takke/takke.github.io.git)
+    // -PgithubIoMavenDir=/path/to/takke.github.io/maven で上書き可能
+    // publish: ./gradlew :core:publishAllPublicationsToGithubIoRepository
+    repositories {
+        maven {
+            name = "githubIo"
+            val dir = project.findProperty("githubIoMavenDir")?.toString() ?: "${rootDir}/../takke.github.io/maven"
+            url = file(dir).toURI()
         }
     }
 }
