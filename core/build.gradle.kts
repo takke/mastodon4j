@@ -72,7 +72,7 @@ publishing {
         withType<MavenPublication> {
             groupId = "com.sys1yagi"
             artifactId = "mastodon4j-$artifactId"
-            version = "3.0.0-20260908"
+            version = "3.0.0-20260924"
 
             pom {
                 name.set("mastodon4j-core")

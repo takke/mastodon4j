@@ -170,6 +170,15 @@ class AccountsMethod(private val client: MastodonClient) {
     }
 
     /**
+     * アカウントをフォロワーから削除 (v3.5.0以降)
+     * POST /api/v1/accounts/:id/remove_from_followers
+     */
+    @CheckResult
+    fun postRemoveFromFollowers(accountId: String): MastodonRequest<Relationship> {
+        return client.createPostRequest<Relationship>("/api/v1/accounts/$accountId/remove_from_followers")
+    }
+
+    /**
      * アカウントをミュート
      * POST /api/v1/accounts/:id/mute
      */
