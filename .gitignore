@@ -36,3 +36,4 @@ credential.properties
 /fix_mv.sh
 /publish_to_maven_local.sh
 /docs
+.DS_Store
