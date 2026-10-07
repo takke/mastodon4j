@@ -53,6 +53,9 @@ data class Status(
     @SerialName("quote") val quote: Quote? = null,
     @SerialName("quotes_count") val quotesCount: Long = 0,
     @SerialName("quote_approval") val quoteApproval: QuoteApproval? = null,
+
+    // マッチしたフィルター (Filters v2, Mastodon 4.0+ / fedibird.com の filter_v2)
+    @SerialName("filtered") val filtered: List<FilterResult> = emptyList(),
 ) {
     enum class Visibility(val value: String) {
         Public("public"),
