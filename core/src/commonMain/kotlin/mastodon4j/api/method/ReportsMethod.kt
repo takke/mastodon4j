@@ -28,21 +28,32 @@ class ReportsMethod(private val client: MastodonClient) {
     /**
      * 新しいレポートを提出
      * POST /api/v1/reports
-     * 
+     *
+     * See https://docs.joinmastodon.org/methods/reports/#post
+     *
      * @param accountId 通報対象のアカウントID
-     * @param statusId 通報対象の投稿ID
-     * @param comment 通報に関するコメント
+     * @param statusIds 証拠として添付する投稿IDのリスト(status_ids[] として送信)
+     * @param comment 通報理由(サーバー既定の上限は1000文字)
+     * @param forward リモートアカウントの場合、相手サーバーの管理者にも転送するか (v2.3.0以降)
+     * @param category 通報カテゴリ (v3.5.0以降。未指定時はサーバー側で other 扱い)
+     * @param ruleIds 違反したサーバールールのIDリスト(category=violation 時のみ。rule_ids[] として送信)
      */
     @CheckResult
     fun postReport(
-        accountId: Long,
-        statusId: Long,
-        comment: String
+        accountId: String,
+        statusIds: List<String>? = null,
+        comment: String? = null,
+        forward: Boolean? = null,
+        category: Report.Category? = null,
+        ruleIds: List<String>? = null,
     ): MastodonRequest<Report> {
         val params = Parameter().apply {
             append("account_id", accountId)
-            append("status_ids", statusId)
-            append("comment", comment)
+            statusIds?.let { append("status_ids", it) }
+            comment?.let { append("comment", it) }
+            forward?.let { append("forward", it) }
+            category?.let { append("category", it.value) }
+            ruleIds?.let { append("rule_ids", it) }
         }
         return client.createPostRequest<Report>("/api/v1/reports", params)
     }
