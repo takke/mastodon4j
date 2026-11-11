@@ -137,13 +137,19 @@ class StatusesMethod(private val client: MastodonClient) {
         status: String,
         spoilerText: String? = null,
         sensitive: Boolean? = null,
-        mediaIds: List<String>? = null
+        mediaIds: List<String>? = null,
+        mediaAttributes: List<MediaAttribute>? = null
     ): MastodonRequest<Status> {
         val params = Parameter().apply {
             append("status", status)
             spoilerText?.let { append("spoiler_text", it) }
             sensitive?.let { append("sensitive", it) }
             mediaIds?.let { append("media_ids", it) }
+            // 既存メディアの属性更新(Rails の配列ハッシュ形式で、要素ごとに id → description の順で送る)
+            mediaAttributes?.forEach { attr ->
+                append("media_attributes[][id]", attr.id)
+                attr.description?.let { append("media_attributes[][description]", it) }
+            }
         }
 
         return client.createPutRequest<Status>("/api/v1/statuses/$statusId", params)
